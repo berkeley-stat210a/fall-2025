@@ -27,6 +27,7 @@ jobs:
         with:
           packages: |
             any::RColorBrewer
+            any::rmarkdown
 
       - name: Install Python and Dependencies
         uses: actions/setup-python@v4
