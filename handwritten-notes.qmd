@@ -1,0 +1,12 @@
+---
+title: "Handwritten notes"
+editor: visual
+---
+
+## Handwritten lecture notes
+
+-   [Lecture 1: Induction](handwritten/lecture01-intro.pdf)
+
+-   [Lecture 2: Probability](handwritten/lecture02-probability.pdf)
+
+-   [Lecture 3: Estimation](handwritten/lecture03-estimation.pdf)

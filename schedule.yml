@@ -1,0 +1,55 @@
+- week: 1
+  days:
+    - date: "Aug 29"
+      items:
+        - type: "Lecture"
+          id: "1"
+          name: Introduction
+          href: reader/introduction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture01-intro.pdf
+- week: 2
+  days:
+    - date: "Sep 3"
+      items:
+        - type: "Lecture"
+          id: "2"
+          name: "Probability"
+          href: reader/probability.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture02-probability.pdf
+    - date: "Sep 5"
+      items:
+        - type: "Lecture"
+          id: "3"
+          name: "Estimation"
+          href: reader/estimation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture03-estimation.pdf
+    - date: "Sep 6"
+      items:
+        - type: "Recitation"
+          id: "1"
+          name: "Probability review"
+          href: recitation/recitation1-probability.pdf
+- week: 3
+  days:
+    - date: "Sep 11"
+      items:
+        - type: "Homework"
+          id: "1"
+          name: "Problems"
+          href: homework/homework1.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework1.tex
+- week: 17
+  days:
+    - date: "Dec 18"
+      items:
+        - type: "Exam"
+          name: "Final Exam, 8-11am"
+          href: old-exams.qmd
