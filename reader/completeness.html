@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7aaeca69b4e146fcaaa982daeac7f2ee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-06484fad4722108f498d8c00c46b7438.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -202,7 +202,7 @@ Under construction
 <section id="definition-of-completeness" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="definition-of-completeness"><span class="header-section-number">1.1</span> Definition of completeness</h3>
 <p>A statistic <span class="math inline">\(T(X)\)</span> is complete for a family of distributions <span class="math inline">\(\cP = \{P_\theta: \theta \in \Theta\}\)</span> if no nontrivial function of <span class="math inline">\(T\)</span> can have expectation zero for every distribution in the family:</p>
-<p><span class="math display">\[\EE_\theta \,f(T(X)) = 0 \quad \forall \theta \in \Theta \implies f(T) \eqPas 0\]</span> ::: callout-note The name for complete statistics comes from a prior notion that <span class="math inline">\(\cP^T = \{P_\theta^T:\; \theta \in \Theta\}\)</span> is ``complete’’ as a model if its linear span includes all possible distributions on <span class="math inline">\(T(X)\)</span>; see Homework 3. :::</p>
+<p><span class="math display">\[\EE_\theta \,f(T(X)) = 0 \quad \forall \theta \in \Theta \implies f(T) \eqPas 0\]</span> ::: callout-note The name for complete statistics comes from a prior notion that <span class="math inline">\(\cP^T = \{P_\theta^T:\; \theta \in \Theta\}\)</span> is <em>complete</em> as a model if its linear span includes all possible distributions on <span class="math inline">\(T(X)\)</span>; see Homework 3. :::</p>
 <p>If <span class="math inline">\(X\)</span> itself is complete, then the definition immediately implies that there can be at most one unbiased estimator for any estimand: if <span class="math inline">\(\EE_\theta \delta_1(X) = \EE_\theta \delta_2(X) = g(\theta)\)</span> for all <span class="math inline">\(\theta \in \Theta\)</span>, then <span class="math inline">\(f(X) = \delta_1(X) - \delta_2(X) = 0\)</span> almost surely. More generally, if <span class="math inline">\(T(X)\)</span> is a complete statistic then there can be at most one unbiased estimator that runs through <span class="math inline">\(T\)</span>. We will return to this fact when we discuss unbiased estimation.</p>
 <p>We will be especially interested in statistics that are both complete and sufficient. If <span class="math inline">\(T(X)\)</span> is complete and sufficient we call it a <em>complete sufficient statistic</em>.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
