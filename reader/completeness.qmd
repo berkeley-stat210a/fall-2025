@@ -26,7 +26,7 @@ A statistic $T(X)$ is complete for a family of distributions $\cP = \{P_\theta: 
 
 $$\EE_\theta \,f(T(X)) = 0 \quad \forall \theta \in \Theta \implies f(T) \eqPas 0$$
 ::: callout-note
-The name for complete statistics comes from a prior notion that $\cP^T = \{P_\theta^T:\; \theta \in \Theta\}$ is ``complete'' as a model if its linear span includes all possible distributions on $T(X)$; see Homework 3.
+The name for complete statistics comes from a prior notion that $\cP^T = \{P_\theta^T:\; \theta \in \Theta\}$ is *complete* as a model if its linear span includes all possible distributions on $T(X)$; see Homework 3.
 :::
 
 If $X$ itself is complete, then the definition immediately implies that there can be at most one unbiased estimator for any estimand: if $\EE_\theta \delta_1(X) = \EE_\theta \delta_2(X) = g(\theta)$ for all $\theta \in \Theta$, then $f(X) = \delta_1(X) - \delta_2(X) = 0$ almost surely. More generally, if $T(X)$ is a complete statistic then there can be at most one unbiased estimator that runs through $T$. We will return to this fact when we discuss unbiased estimation.
