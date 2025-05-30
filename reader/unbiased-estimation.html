@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-02">
 
-<title>Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</title>
+<title>Unbiased Estimation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,23 +123,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-to-asymptotic-theory" id="toc-introduction-to-asymptotic-theory" class="nav-link active" data-scroll-target="#introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</a></li>
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence"><span class="header-section-number">2</span> Convergence</a>
-  <ul class="collapse">
-  <li><a href="#convergence-in-probability" id="toc-convergence-in-probability" class="nav-link" data-scroll-target="#convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</a></li>
-  <li><a href="#convergence-in-distribution" id="toc-convergence-in-distribution" class="nav-link" data-scroll-target="#convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">2.3</span> Example</a></li>
-  <li><a href="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" id="toc-proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="nav-link" data-scroll-target="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></a></li>
-  <li><a href="#law-of-large-numbers-lln" id="toc-law-of-large-numbers-lln" class="nav-link" data-scroll-target="#law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</a></li>
-  <li><a href="#central-limit-theorem-clt" id="toc-central-limit-theorem-clt" class="nav-link" data-scroll-target="#central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</a></li>
-  </ul></li>
-  <li><a href="#continuous-mapping-theorem" id="toc-continuous-mapping-theorem" class="nav-link" data-scroll-target="#continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</a></li>
-  <li><a href="#slutskys-theorem" id="toc-slutskys-theorem" class="nav-link" data-scroll-target="#slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</a></li>
-  <li><a href="#delta-method" id="toc-delta-method" class="nav-link" data-scroll-target="#delta-method"><span class="header-section-number">5</span> Delta Method</a>
-  <ul class="collapse">
-  <li><a href="#example-delta-method-application" id="toc-example-delta-method-application" class="nav-link" data-scroll-target="#example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</a></li>
-  <li><a href="#what-if-mu-0" id="toc-what-if-mu-0" class="nav-link" data-scroll-target="#what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</a></li>
-  </ul></li>
+  <li><a href="#outline" id="toc-outline" class="nav-link active" data-scroll-target="#outline"><span class="header-section-number">1</span> Outline</a></li>
+  <li><a href="#unbiased-estimation" id="toc-unbiased-estimation" class="nav-link" data-scroll-target="#unbiased-estimation"><span class="header-section-number">2</span> Unbiased Estimation</a></li>
+  <li><a href="#convex-loss-functions" id="toc-convex-loss-functions" class="nav-link" data-scroll-target="#convex-loss-functions"><span class="header-section-number">3</span> Convex Loss Functions</a></li>
+  <li><a href="#the-rao-blackwell-theorem" id="toc-the-rao-blackwell-theorem" class="nav-link" data-scroll-target="#the-rao-blackwell-theorem"><span class="header-section-number">4</span> The Rao-Blackwell Theorem</a></li>
+  <li><a href="#umvu-estimators" id="toc-umvu-estimators" class="nav-link" data-scroll-target="#umvu-estimators"><span class="header-section-number">5</span> UMVU estimators</a></li>
+  <li><a href="#finding-the-umvue" id="toc-finding-the-umvue" class="nav-link" data-scroll-target="#finding-the-umvue"><span class="header-section-number">6</span> Finding the UMVUE</a></li>
   </ul>
 </nav>
     </div>
@@ -149,7 +137,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</h1>
+<h1 class="title">Unbiased Estimation</h1>
 </div>
 
 
@@ -157,12 +145,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 2, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -194,126 +176,175 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<section id="introduction-to-asymptotic-theory" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</h2>
-<p>So far, everything has been finite sample, often using special properties of model <span class="math inline">\(\cP\)</span> (e.g., exponential family) to do exact calculations. For generic models, exact calculations may be intractable or impossible. However, we may be able to approximate our problem with a simpler problem in which calculations are easy.</p>
-<p>Typically, we approximate by Gaussian by taking the limit as observations <span class="math inline">\(n \to \infty\)</span>. But this is only interesting if the approximation is good for reasonable sample sizes.</p>
-</section>
-<section id="convergence" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2</span> Convergence</h2>
-<p>Let <span class="math inline">\(X_1, X_2, \ldots \in \mathbb{R}^d\)</span> be a sequence of random vectors. We care about two kinds of convergence:</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Under construction
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Check that examples and proofs are complete and accurate.</p>
+<p>Add link to Lecture 2</p>
+</div>
+</div>
+<section id="outline" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="outline"><span class="header-section-number">1</span> Outline</h2>
 <ol type="1">
-<li>Convergence in probability: <span class="math inline">\(X_n \to\)</span> a constant</li>
-<li>Convergence in distribution: <span class="math inline">\(X_n \to N(0, I_d)\)</span> (usually)</li>
+<li>Convex Loss</li>
+<li>Rao-Blackwell Theorem</li>
+<li>UMVU Estimators</li>
+<li>Examples</li>
 </ol>
-<section id="convergence-in-probability" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</h3>
-<p>We say the sequence converges in probability to <span class="math inline">\(c \in \mathbb{R}^d\)</span> (<span class="math inline">\(X_n \xrightarrow{p} c\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \to 0 \quad \forall \epsilon &gt; 0\]</span></p>
-<p>(Could really be any distance on any <span class="math inline">\(\cX\)</span>)</p>
-<p>Can converge to a r.v. <span class="math inline">\(X\)</span> too, but we don’t need this.</p>
 </section>
-<section id="convergence-in-distribution" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</h3>
-<p>We say the sequence converges in distribution to random variable <span class="math inline">\(X\)</span> (<span class="math inline">\(X_n \xrightarrow{d} X\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{E}[f(X_n)] \to \mathbb{E}[f(X)] \text{ for all bounded continuous } f: \cX \to \mathbb{R}\]</span></p>
-<p>Theorem: <span class="math inline">\(X_n, X \in \mathbb{R}\)</span>. Fix <span class="math inline">\(\mathbb{P}(X = x) = 0\)</span>. Let <span class="math inline">\(F_n(x) = \mathbb{P}(X_n \leq x)\)</span>, <span class="math inline">\(F(x) = \mathbb{P}(X \leq x)\)</span>. Then <span class="math inline">\(X_n \xrightarrow{d} X\)</span> iff <span class="math inline">\(F_n(x) \to F(x)\)</span> <span class="math inline">\(\forall x: F\)</span> is continuous at <span class="math inline">\(x\)</span>.</p>
-<p>Also known as weak convergence.</p>
-</section>
-<section id="example" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="example"><span class="header-section-number">2.3</span> Example</h3>
-<p>If <span class="math inline">\(X_n \xrightarrow{d} X \sim g\)</span>, then <span class="math inline">\(X_n \xrightarrow{d} X\)</span>:</p>
-<p><span class="math display">\[F_n(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-1 - \frac{1}{n} &amp; \text{if } x = 0 \\
-0 &amp; \text{if } x &lt; 0
-\end{cases}\]</span></p>
-<p><span class="math display">\[F(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-0 &amp; \text{if } x \leq 0
-\end{cases}\]</span></p>
-</section>
-<section id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></h3>
-<p>Let <span class="math inline">\(f_\epsilon(x) = \max\{1 - \frac{\|x-c\|}{\epsilon}, 0\}\)</span>. Then <span class="math inline">\(\forall \epsilon &gt; 0\)</span>:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \leq \mathbb{E}[1 - f_\epsilon(X_n)] \to 0\]</span></p>
-<p><span class="math inline">\(f\)</span> bounded continuous. Note <span class="math inline">\(\mathbb{E}[f(c)] = f(c)\)</span>.</p>
-<p><span class="math inline">\(\forall \epsilon &gt; 0\)</span>, <span class="math inline">\(\exists \delta &gt; 0\)</span> s.t. <span class="math inline">\(\|x - c\| &lt; \delta \implies |f(x) - f(c)| &lt; \epsilon\)</span></p>
-<p><span class="math display">\[|\mathbb{E}[f(X_n)] - f(c)| \leq |\mathbb{E}[f(X_n) - f(c)]1_{\|X_n - c\| &lt; \delta}| + |\mathbb{E}[(f(X_n) - f(c))1_{\|X_n - c\| \geq \delta}]|\]</span> <span class="math display">\[\leq \epsilon + 2\sup |f| \cdot \mathbb{P}(\|X_n - c\| \geq \delta)\]</span></p>
-<p>For sufficiently large <span class="math inline">\(n\)</span>. <span class="math inline">\(\square\)</span></p>
-<p>In a sequence of statistical models <span class="math inline">\(\cP_n = \{P_{n,\theta}: \theta \in \Theta\}\)</span> with <span class="math inline">\(X_n \sim P_{n,\theta}\)</span>, we say <span class="math inline">\(\hat{\theta}_n\)</span> is consistent for <span class="math inline">\(g(\theta)\)</span> if <span class="math inline">\(\hat{\theta}_n \xrightarrow{p} g(\theta)\)</span>, meaning:</p>
-<p><span class="math display">\[\mathbb{P}_\theta(|\hat{\theta}_n - g(\theta)| &gt; \epsilon) \to 0\]</span></p>
-<p>Usually, we omit the index <span class="math inline">\(n\)</span>; sequence is implicit.</p>
-</section>
-<section id="law-of-large-numbers-lln" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</h3>
-<p>Let <span class="math inline">\(\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\)</span></p>
-<p>If <span class="math inline">\(\mathbb{E}|X_i| &lt; \infty\)</span>, <span class="math inline">\(\mathbb{E}X_i = \mu\)</span>, then <span class="math inline">\(\bar{X}_n \xrightarrow{p} \mu\)</span></p>
-</section>
-<section id="central-limit-theorem-clt" class="level3" data-number="2.6">
-<h3 data-number="2.6" class="anchored" data-anchor-id="central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</h3>
-<p>If <span class="math inline">\(\text{Var}(X_i) = \sigma^2 &lt; \infty\)</span>, then <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span></p>
-<p>There are stronger versions of both the LLN and CLT, but this will generally be enough for us.</p>
-</section>
-</section>
-<section id="continuous-mapping-theorem" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</h2>
-<p>Theorem (Continuous Mapping): Let <span class="math inline">\(g\)</span> be continuous, <span class="math inline">\(X_n, X\)</span> r.v.’s.</p>
+<section id="unbiased-estimation" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="unbiased-estimation"><span class="header-section-number">2</span> Unbiased Estimation</h2>
+<p>Recall from Lecture 2 that we had two primary strategies to choose an estimator:</p>
 <ol type="1">
-<li>If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{d} g(X)\)</span></li>
-<li>If <span class="math inline">\(X_n \xrightarrow{p} c\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{p} g(c)\)</span></li>
+<li>Summarize the risk function by a scalar (average or supremum)</li>
+<li>Restrict attention to a smaller class of estimators</li>
 </ol>
-<p>Proof: <span class="math inline">\(f\)</span> bounded continuous <span class="math inline">\(\implies f \circ g\)</span> bounded continuous If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(\mathbb{E}[f(g(X_n))] \to \mathbb{E}[f(g(X))]\)</span> <span class="math inline">\(X_n \xrightarrow{p} c\)</span> special case with <span class="math inline">\(X \equiv c\)</span></p>
+<p>Today we’ll discuss <em>unbiased estimation</em>, which is an example of the second strategy. That is, if <span class="math inline">\(g(\theta)\)</span> is our estimand, we will require that <span class="math inline">\(\EE_\theta \delta = g(\theta)\)</span> for all <span class="math inline">\(\theta\)</span></p>
+<p>Unbiased estimation is especially convenient in models with a complete sufficient statistic <span class="math inline">\(T(X)\)</span>. In that case:</p>
+<ul>
+<li>There is at most one unbiased <span class="math inline">\(\delta(T(X))\)</span> (if <span class="math inline">\(\delta_1, \delta_2(T)\)</span> are both unbiased, then <span class="math inline">\(\delta_1 \eqas \delta_2\)</span>)</li>
+<li>If an unbiased estimator exists, it <strong>uniformly minimizes</strong> risk for any convex loss function</li>
+</ul>
 </section>
-<section id="slutskys-theorem" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</h2>
-<p>Theorem (Slutsky): Assume <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{p} c\)</span>. Then:</p>
+<section id="convex-loss-functions" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="convex-loss-functions"><span class="header-section-number">3</span> Convex Loss Functions</h2>
+<p>Recall <span class="math inline">\(f(y)\)</span> is <em>convex</em> if for all <span class="math inline">\(x_1, x_2\)</span> and all <span class="math inline">\(\gamma \in [0,1]\)</span>:</p>
+<p><span class="math display">\[f(\gamma x_1 + (1-\gamma)x_2) \leq \gamma f(x_1) + (1-\gamma) f(x_2)\]</span> <span class="math inline">\(f\)</span> is <em>strictly convex</em> if the inequality is strict unless <span class="math inline">\(x_1 = x_2\)</span>.</p>
+<p>An key fact about convex functions is <strong>Jensen’s Inequality:</strong> If <span class="math inline">\(f\)</span> is convex, then for <em>any</em> random variable <span class="math inline">\(X\)</span>, we have</p>
+<p><span class="math display">\[f(\EE[X]) \leq \EE[f(X)]\]</span> If <span class="math inline">\(f\)</span> is strictly convex, then the inequality is strict unless <span class="math inline">\(X\)</span> is constant.</p>
+<p>We say a loss function <span class="math inline">\(L(\theta, d)\)</span> is (strictly) convex if is (strictly) convex as a function of the estimate <span class="math inline">\(d\)</span>, its second argument, holding the parameter <span class="math inline">\(\theta\)</span> fixed.</p>
+<p><strong>Example:</strong> The best-known example of a convex loss function is the squared error loss. Recall that the corresponding risk, the MSE, can be decomposed as the sum of the bias squared and the variance:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{MSE}_\theta(\delta) &amp;= \EE_\theta[(\delta(X) - g(\theta))^2] \\[5pt]
+&amp;= \text{Bias}_\theta(\delta)^2 + \text{Var}_\theta(\delta(X))
+\end{aligned}
+\]</span> If <span class="math inline">\(\delta(X)\)</span> is unbiased, then its MSE is exactly its variance, so minimizing the risk among unbiased estimators just amounts to finding one with the least variance.</p>
+</section>
+<section id="the-rao-blackwell-theorem" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-rao-blackwell-theorem"><span class="header-section-number">4</span> The Rao-Blackwell Theorem</h2>
+<p>Intuitively, convex losses punish us for using noisy estimators: we would always improve the risk if we could replace an estimator <span class="math inline">\(\delta(X)\)</span> with its expectation: <span class="math display">\[L(\theta, \EE_\theta [\delta(X)]) \leq \EE_\theta \left[L(\theta, \delta(X))\right].\]</span>Generally, this is not feasible in real problems because <span class="math inline">\(\EE_\theta [\delta(X)]\)</span> depends on <span class="math inline">\(\theta\)</span>, so it is not an estimator. But for any sufficient statistic <span class="math inline">\(T(X)\)</span>, the <strong>conditional expectation</strong> of <span class="math inline">\(\delta(X)\)</span> given <span class="math inline">\(T(X)\)</span> really is an estimator, and it is always at least as good as <span class="math inline">\(\delta(X\)</span>) if the loss is convex.</p>
+<p>The next result formalizes this fact, and thereby gives decision-theoretic teeth to the sufficiency principle:</p>
+<p><strong>Theorem (Rao-Blackwell):</strong> Let <span class="math inline">\(T(X)\)</span> be sufficient for <span class="math inline">\(\cP = \{P_\theta:\;\theta\in\Theta\}\)</span>, and let <span class="math inline">\(\delta(X)\)</span> be any estimator for <span class="math inline">\(g(\theta)\)</span>. Define the new estimator:</p>
+<p><span class="math display">\[\bar{\delta}(T(X)) = \EE[\delta(X) \mid T(X)]\]</span></p>
+<p>Then for any convex loss <span class="math inline">\(L(\theta, d)\)</span>, we have <span class="math inline">\(R(\theta, \bar{\delta}) \leq R(\theta, \delta)\)</span> for all <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(L\)</span> is strictly convex, <span class="math inline">\(\bar{\delta}\)</span> strictly dominates <span class="math inline">\(\delta\)</span> as an estimator unless <span class="math inline">\(\delta(X) \eqPas \bar{\delta}(T(X))\)</span>.</p>
+<p><em>Proof:</em></p>
+<p><span class="math display">\[\begin{aligned}
+R(\theta, \bar{\delta}) &amp;= \EE_\theta\left[\,L(\theta, \;\EE[\delta \mid T])\,\right]\\[5pt]
+&amp;\leq \EE_\theta\left[\,\EE[L(\theta, \delta) \mid T]\,\right]\\[5pt]
+&amp;= \EE_\theta[\,L(\theta, \delta)\,] \\[5pt]
+&amp;= R(\theta, \bar{\delta})
+\end{aligned}\]</span></p>
+<p><span class="math inline">\(\bar{\delta}\)</span> is called the Rao-Blackwellization of <span class="math inline">\(\delta\)</span>. Note that the condition $\delta(X) \eqPas \bar{\delta}(T(X))$ is equivalent to the condition that <span class="math inline">\(\delta\)</span> depends only on <span class="math inline">\(X\)</span> through <span class="math inline">\(T(X)\)</span>.</p>
+<p>Whenever we are dealing with a convex loss, the Rao-Blackwell theorem lets us restrict our attention only to estimators that run through <span class="math inline">\(T(X)\)</span>, because any other estimator could be improved (or at least not worsened) by Rao-Blackwellization. The theorem even gives us a recipe for **constructing** the improved estimator.</p>
+</section>
+<section id="umvu-estimators" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="umvu-estimators"><span class="header-section-number">5</span> UMVU estimators</h2>
+<p>In this section we will combine two key facts from this lecture and last concerning unbiased estimation of any estimand <span class="math inline">\(g(\theta)\)</span>.</p>
 <ol type="1">
-<li><span class="math inline">\(X_n + Y_n \xrightarrow{d} X + c\)</span></li>
-<li><span class="math inline">\(X_n Y_n \xrightarrow{d} cX\)</span></li>
-<li><span class="math inline">\(X_n / Y_n \xrightarrow{d} X/c\)</span> if <span class="math inline">\(c \neq 0\)</span></li>
+<li>If <span class="math inline">\(T(X)\)</span> is complete sufficient, there can be at most one unbiased estimator based on <span class="math inline">\(T(X)\)</span>.</li>
+<li>If the loss is convex, then we can restrict our attention only to estimators that are based on <span class="math inline">\(T(X)\)</span>.</li>
 </ol>
-<p>Proof: Show <span class="math inline">\((X_n, Y_n) \xrightarrow{d} (X, c)\)</span>, apply continuous mapping.</p>
-<p>Wouldn’t normally be true that <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{d} Y\)</span> implies <span class="math inline">\(X_n + Y_n \xrightarrow{d} X + Y\)</span> without specifying joint dist.</p>
-</section>
-<section id="delta-method" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="delta-method"><span class="header-section-number">5</span> Delta Method</h2>
-<p>Theorem (Delta Method): If <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span> <span class="math inline">\(f(x)\)</span> differentiable at <span class="math inline">\(x = \mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Instant: <span class="math inline">\(X \sim N(\mu, \sigma^2/n) \implies f(X) \sim N(f(\mu), [f'(\mu)]^2 \sigma^2/n + o(1/n))\)</span></p>
-<p>Proof: <span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + o(X_n - \mu)\)</span> <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) = f'(\mu)\sqrt{n}(X_n - \mu) + \sqrt{n}o(X_n - \mu)\)</span> <span class="math inline">\(N(0, \sigma^2) + 0 \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Multivariate: <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)\)</span>, <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}^k\)</span> Derivative <span class="math inline">\(Df(\mu)\)</span> exists at <span class="math inline">\(\mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, Df(\mu) \Sigma Df(\mu)^T)\)</span></p>
-<p><span class="math inline">\(N(f(\mu), Df(\mu) \Sigma Df(\mu)^T/n + o(1/n))\)</span> if <span class="math inline">\(k=1\)</span></p>
-<section id="example-delta-method-application" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</h3>
-<p><span class="math inline">\(X_1, \ldots, X_n \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(Y_1, \ldots, Y_m \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(X, Y\)</span> independent</p>
-<p>For large <span class="math inline">\(n, m\)</span>, what is the distribution of <span class="math inline">\(T = \frac{\bar{X}}{\bar{Y}}\)</span>?</p>
+<p>Together these facts imply that, if any unbiased estimator exists at all, then there is a unique best unbiased estimator.</p>
+<p>Not all estimands have unbiased estimators. We say <span class="math inline">\(g(\theta)\)</span> is <em>U-estimable</em> if there exists any <span class="math inline">\(\delta(X)\)</span> with <span class="math inline">\(\EE_\theta \delta(X) = g(\theta)\)</span> for all <span class="math inline">\(\theta\)</span>. This leads to the following theorem:</p>
+<p><strong>Theorem:</strong> For model <span class="math inline">\(\mathcal{P} = \{P_\theta : \theta \in \Theta\}\)</span>, assume <span class="math inline">\(T(X)\)</span> is a complete sufficient statistic. Then</p>
 <ol type="1">
-<li><span class="math inline">\(\sqrt{n}(\bar{X} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(n \to \infty\)</span></li>
-<li><span class="math inline">\(\sqrt{m}(\bar{Y} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(m \to \infty\)</span></li>
+<li>For any U-estimable <span class="math inline">\(g(\theta)\)</span> there exists a unique unbiased estimator of the form <span class="math inline">\(\delta(T(X))\)</span>.</li>
+<li>For a (strictly) convex loss, that estimator (strictly) dominates any other unbiased estimator <span class="math inline">\(\tilde{\delta}(X)\)</span> unless <span class="math inline">\(\tilde{\delta}(X) \eqas \delta(T(X))\)</span>.</li>
 </ol>
-<p><span class="math inline">\(T_n = \frac{\bar{X}}{\bar{Y}} = \frac{\theta/2}{\theta/2} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></p>
-<p>Let <span class="math inline">\(f(x,y) = x/y\)</span></p>
-<p><span class="math inline">\(f_x'(\frac{\theta}{2}, \frac{\theta}{2}) = \frac{1}{\theta/2} = \frac{2}{\theta}\)</span> <span class="math inline">\(f_y'(\frac{\theta}{2}, \frac{\theta}{2}) = -\frac{\theta/2}{(\theta/2)^2} = -\frac{2}{\theta}\)</span></p>
-<p><span class="math inline">\(f'(\frac{\theta}{2}, \frac{\theta}{2}) = (\frac{2}{\theta}, -\frac{2}{\theta})\)</span></p>
-<p><span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{1}{n} + \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{n}{m})\)</span></p>
-<p><span class="math inline">\(= N(0, \frac{1}{3n} + \frac{1}{3m})\)</span></p>
-<p>More accurate: <span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{3}(1 + \frac{n}{m}))\)</span></p>
+<p>As usual the “uniqueness” here is only up to <span class="math inline">\(\eqPas\)</span>.</p>
+<p><em>Proof:</em></p>
+<p>(1) Since <span class="math inline">\(g(\theta)\)</span> is U-estimable, there exists some unbiased estimator <span class="math inline">\(\delta_0(X)\)</span>. Then its Rao-Blackwellization <span class="math inline">\(\delta(T(X)) = \EE[\delta_0 \mid T]\)</span> is also unbiased, since</p>
+<p><span class="math display">\[
+\EE_\theta \delta(T) = \EE_\theta[\EE[\delta_0 | T]] = \EE_\theta \delta_0 = g(\theta).
+\]</span></p>
+<p>Any other estimator of the form <span class="math inline">\(\tilde\delta(T)\)</span> must be almost surely equal to <span class="math inline">\(\delta(T)\)</span>, by completeness: if <span class="math inline">\(f(t) = \delta(t)-\tilde\delta(t)\)</span>, then both estimators being unbiased means <span class="math inline">\(\EE_\theta f(T) = g(\theta)-g(\theta) = 0\)</span>, so <span class="math inline">\(f(T(X)) \eqas 0\)</span>. Thus, <span class="math inline">\(\delta(T)\)</span> is unique.</p>
+<p>(2) The first result implies that every unbiased estimator has the same Rao-Blackwellization, namely <span class="math inline">\(\delta(T)\)</span>. Thus, by the Rao-Blackwell theorem, <span class="math inline">\(\delta(T)\)</span> (strictly) dominates every other unbiased estimator for any (strictly) convex loss function, unless the estimator is almost surely identical to <span class="math inline">\(\delta\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
+<p>The estimator from this theorem is usually called the <em>UMVU (Uniformly Minimum Variance Unbiased) Estimator</em>. We say <span class="math inline">\(\delta(X)\)</span> is UMVU if:</p>
+<ol type="1">
+<li><span class="math inline">\(\delta(X)\)</span> is unbiased</li>
+<li><span class="math inline">\(\text{Var}_\theta \,\delta(X) \leq \text{Var}_\theta \,\tilde{\delta}(X)\)</span> for all <span class="math inline">\(\theta\)</span> and all unbiased <span class="math inline">\(\tilde{\delta}(X)\)</span></li>
+</ol>
+<p>Since <span class="math inline">\(\text{MSE}(\theta; \delta) = \text{Var}_\theta(\delta(X))\)</span> for any unbiased estimator, and the squared error loss is strictly convex, Theorem XXX immediately implies the existence of a unique UMVU estimator for any U-estimable <span class="math inline">\(g(\theta)\)</span>, whenever we have a complete sufficient statistic.</p>
+<p>Note that in problems where no complete sufficient statistic exists, there can be multiple unbiased estimators based on the minimal sufficient statistic; for example, both the mean and the median are unbiased for the Laplace location parameter, but they are not almost surely equal to each other, and they do not have the same risk function.</p>
 </section>
-<section id="what-if-mu-0" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</h3>
-<ol start="3" type="1">
-<li>What if <span class="math inline">\(\mu_1 = \mu_2 = 0\)</span>? Conclusion still holds: <span class="math inline">\(T_n = \frac{1 + O_p(n^{-1/2})}{1 + O_p(m^{-1/2})} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></li>
+<section id="finding-the-umvue" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="finding-the-umvue"><span class="header-section-number">6</span> Finding the UMVUE</h2>
+<p>Theorem XXX suggests two strategies for finding the UMVUE:</p>
+<ol type="1">
+<li>Solve directly for an unbiased estimator based on <span class="math inline">\(T\)</span></li>
+<li>Find any unbiased estimator at all, then Rao-Blackwellize it</li>
 </ol>
-<p>Note: <span class="math inline">\(\frac{1}{1 + n^{-1/2}} \to 1\)</span> (continuous mapping) Not Slutsky</p>
-<p>So <span class="math inline">\(n(T_n - 1)^2 \xrightarrow{d} \chi^2_1\)</span> (continuous mapping) Why not delta method?</p>
-<p>In general, can do higher-order Taylor expansions for delta method if derivatives <span class="math inline">\(\neq 0\)</span>:</p>
-<p><span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + \frac{1}{2}f''(\mu)(X_n - \mu)^2 + O_p(n^{-3/2})\)</span></p>
-<p>If <span class="math inline">\(f'(\mu) = 0\)</span>, use second-order term: <span class="math inline">\(n(f(X_n) - f(\mu)) \xrightarrow{d} \frac{1}{2}f''(\mu)\chi^2_1\)</span></p>
+<p>We give examples of both strategies below:</p>
+<p><strong>Example (Poisson):</strong> Let <span class="math inline">\(X_1, \ldots, X_n \sim \text{Pois}(\theta)\)</span>, <span class="math inline">\(g(\theta) = e^{-\theta}\)</span> and consider unbiased estimation for <span class="math inline">\(g(\theta) = \theta^2\)</span>.</p>
+<p>The complete sufficient statistic for the model is</p>
+<p><span class="math display">\[T(X) = \sum X_i \sim \text{Pois}(n\theta),\]</span> and its probability mass function for <span class="math inline">\(t \geq 0\)</span> is <span class="math display">\[
+p_\theta(t) = \frac{e^{-n\theta} (n\theta)^t}{t!}
+\]</span> <strong>Strategy 1</strong></p>
+<p>If there is some unbiased estimator <span class="math inline">\(\delta(t)\)</span>, we can try to solve for it by setting its expectation equal to <span class="math inline">\(\theta^2\)</span>: <span class="math display">\[
+\theta^2 = \EE_\theta \delta(T) = \sum_{t=0}^\infty \delta(t) \frac{e^{-n\theta} (n\theta)^t}{t!}.
+\]</span> Rearranging factors, we obtain matching power series: <span class="math display">\[
+\sum_{t=0}^\infty \delta(t) \frac{n^t \theta^t}{t!} = e^{n\theta}\theta^2 =  \sum_{k=0}^\infty \frac{n^k\theta^{k+2}}{k!}.
+\]</span> We will choose the coefficients on the left-hand side to match terms. First, change the index for the left-hand sum to <span class="math inline">\(t = k+2\)</span>: <span class="math display">\[
+\sum_{t=0}^\infty \delta(t) \frac{n^t \theta^t}{t!} = e^{n\theta}\theta^2 =  \sum_{t=2}^\infty \frac{n^{t-2}\theta^{t}}{(t-2)!}.
+\]</span> To match the terms, we can set <span class="math inline">\(\delta(0)=\delta(1)=0\)</span>, and for <span class="math inline">\(t\geq 2\)</span>, set <span class="math inline">\(\delta(t)=\frac{t!}{n^2(t-2)!}=\frac{t(t-1)}{n^2}\)</span>. The same expression works for both, so we obtain the estimator <span class="math display">\[
+\delta(T) = \frac{T(T-1)}{n^2}
+\]</span></p>
+<p><strong>Strategy 2:</strong></p>
+<p>Alternatively, we can find an unbiased estimator and Rao-Blackwellize it. If $n$, we can use the fact that</p>
+<p><span class="math display">\[
+\EE_\theta [X_1 X_2] = \EE_\theta [X_1] \;\cdot\; \EE_\theta [X_2] = \theta^2
+\]</span> to obtain an initial unbiased estimator <span class="math inline">\(\delta_0(X) = X_1X_2\)</span>, which we will Rao-Blackwellize.</p>
+<p>Conditional on $</p>
+<p>to match the terms</p>
+<p><span class="math inline">\(\delta(T) = (1 - 1/n)^T\)</span> unbiased:</p>
+<p><span class="math display">\[\begin{aligned}
+\EE_\theta \delta(T) &amp;= \sum_{t=0}^\infty (1-1/n)^t e^{-n\theta} (n\theta)^t / t! \\
+&amp;= e^{-n\theta} \sum_{t=0}^\infty ((n-1)\theta)^t / t! \\
+&amp;= e^{-n\theta} e^{(n-1)\theta} = e^{-\theta}
+\end{aligned}\]</span></p>
+<p>Alternatively, we could Rao-Blackwellize <span class="math inline">\(\delta_0(X) = I(X_1 = 0)\)</span>:</p>
+<p><span class="math display">\[\begin{aligned}
+\EE[I(X_1 = 0) | T] &amp;= \PP(X_1 = 0 | T) \\
+&amp;= \frac{\PP(X_1 = 0, X_2 + \cdots + X_n = T)}{\PP(X_2 + \cdots + X_n = T-1) + \PP(X_2 + \cdots + X_n = T)} \\
+&amp;= \frac{\binom{n-1}{T} (1/n)^0 (1-1/n)^T}{\binom{n-1}{T-1} (1/n) (1-1/n)^{T-1} + \binom{n-1}{T} (1-1/n)^T} \\
+&amp;= \frac{(1-1/n)^T}{T/n + (1-1/n)^T} \\
+&amp;= (1-1/n)^T
+\end{aligned}\]</span></p>
+<p><strong>Example:</strong> <span class="math inline">\(X_1, \ldots, X_n \sim U[0, \theta]\)</span>, <span class="math inline">\(\theta &gt; 0\)</span></p>
+<p><span class="math inline">\(T = X_{(n)}\)</span> complete sufficient</p>
+<p><span class="math inline">\(p_\theta(t) = n t^{n-1} / \theta^n \cdot I(0 &lt; t &lt; \theta)\)</span></p>
+<p><span class="math inline">\(\EE_\theta[T] = \frac{n}{n+1} \theta\)</span></p>
+<p><span class="math inline">\(T \cdot \frac{n+1}{n}\)</span> is UMVUE</p>
+<p>Alternatively, <span class="math inline">\(2X_1\)</span> is unbiased:</p>
+<p><span class="math display">\[\EE[2X_1 | T] = 2T \cdot \frac{n+1}{2n} = T \cdot \frac{n+1}{n}\]</span></p>
+<p>Actually, <span class="math inline">\(T\)</span> is inadmissible too! Keener shows <span class="math inline">\(\frac{n-1}{n} T\)</span> has better MSE for any estimator <span class="math inline">\(c \cdot T\)</span>.</p>
+<p>This raises the question: why do we require zero bias?</p>
+<p>The UMVUE is often inefficient, inadmissible, or just dumb in cases where another approach makes much more sense.</p>
+<p><strong>Example:</strong> <span class="math inline">\(X \sim \text{Bin}(1000, \theta)\)</span></p>
+<p>Estimate <span class="math inline">\(g(\theta) = I(\theta &gt; 0.5)\)</span></p>
+<p>UMVUE is <span class="math inline">\(I(X &gt; 500)\)</span>. Why?</p>
+<ul>
+<li><span class="math inline">\(X = 500\)</span>: Conclude <span class="math inline">\(g(\theta) = 1\)</span></li>
+<li><span class="math inline">\(X = 499\)</span>: Conclude <span class="math inline">\(g(\theta) = 0\)</span></li>
+</ul>
+<p>This is not epistemically reasonable. Could do much better with e.g.&nbsp;MLE or a Bayes estimator.</p>
+<p>In fact, our theorem should make us suspicious of UMVUEs: every idiotic function of <span class="math inline">\(T\)</span> is a UMVUE of its own expectation!</p>
+<p><strong>Example:</strong> <span class="math inline">\(X_1, \ldots, X_n \sim N(\mu, 1)\)</span>, estimate <span class="math inline">\(g(\mu) = \|\mu\|\)</span></p>
+<p><span class="math inline">\(\bar{X}\)</span> is complete sufficient</p>
+<p><span class="math inline">\(\|\bar{X}\|\)</span> is unbiased: <span class="math inline">\(\EE[\|\bar{X}\|] = \EE[\|N(\mu, 1/n)\|] = \|\mu\|\)</span></p>
+<p>So <span class="math inline">\(\|\bar{X}\|\)</span> is UMVUE</p>
+<p>If <span class="math inline">\(\mu = 0\)</span>, <span class="math inline">\(\delta(\bar{X}) = 0\)</span> about half the time</p>
+<p><span class="math inline">\(\|\bar{X}\| + d \cdot \max(0, \|\bar{X}\| - d)\)</span> strictly dominates UMVUE</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

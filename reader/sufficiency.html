@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-02">
+<meta name="author" content="Will Fithian">
+<meta name="dcterms.date" content="2023-08-29">
 
-<title>Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</title>
+<title>Sufficiency</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,23 +125,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-to-asymptotic-theory" id="toc-introduction-to-asymptotic-theory" class="nav-link active" data-scroll-target="#introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</a></li>
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence"><span class="header-section-number">2</span> Convergence</a>
-  <ul class="collapse">
-  <li><a href="#convergence-in-probability" id="toc-convergence-in-probability" class="nav-link" data-scroll-target="#convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</a></li>
-  <li><a href="#convergence-in-distribution" id="toc-convergence-in-distribution" class="nav-link" data-scroll-target="#convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">2.3</span> Example</a></li>
-  <li><a href="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" id="toc-proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="nav-link" data-scroll-target="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></a></li>
-  <li><a href="#law-of-large-numbers-lln" id="toc-law-of-large-numbers-lln" class="nav-link" data-scroll-target="#law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</a></li>
-  <li><a href="#central-limit-theorem-clt" id="toc-central-limit-theorem-clt" class="nav-link" data-scroll-target="#central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</a></li>
-  </ul></li>
-  <li><a href="#continuous-mapping-theorem" id="toc-continuous-mapping-theorem" class="nav-link" data-scroll-target="#continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</a></li>
-  <li><a href="#slutskys-theorem" id="toc-slutskys-theorem" class="nav-link" data-scroll-target="#slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</a></li>
-  <li><a href="#delta-method" id="toc-delta-method" class="nav-link" data-scroll-target="#delta-method"><span class="header-section-number">5</span> Delta Method</a>
-  <ul class="collapse">
-  <li><a href="#example-delta-method-application" id="toc-example-delta-method-application" class="nav-link" data-scroll-target="#example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</a></li>
-  <li><a href="#what-if-mu-0" id="toc-what-if-mu-0" class="nav-link" data-scroll-target="#what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</a></li>
-  </ul></li>
+  <li><a href="#sufficiency" id="toc-sufficiency" class="nav-link active" data-scroll-target="#sufficiency">Sufficiency</a></li>
+  <li><a href="#factorization-theorem" id="toc-factorization-theorem" class="nav-link" data-scroll-target="#factorization-theorem">Factorization theorem</a></li>
+  <li><a href="#sufficient-statistics-in-exponential-families" id="toc-sufficient-statistics-in-exponential-families" class="nav-link" data-scroll-target="#sufficient-statistics-in-exponential-families">Sufficient statistics in exponential families</a></li>
   </ul>
 </nav>
     </div>
@@ -149,18 +136,24 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</h1>
+<h1 class="title">Sufficiency</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Will Fithian </p>
+          </div>
+  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 2, 2023</p>
+      <p class="date">August 29, 2023</p>
     </div>
   </div>
   
@@ -194,126 +187,74 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<section id="introduction-to-asymptotic-theory" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</h2>
-<p>So far, everything has been finite sample, often using special properties of model <span class="math inline">\(\cP\)</span> (e.g., exponential family) to do exact calculations. For generic models, exact calculations may be intractable or impossible. However, we may be able to approximate our problem with a simpler problem in which calculations are easy.</p>
-<p>Typically, we approximate by Gaussian by taking the limit as observations <span class="math inline">\(n \to \infty\)</span>. But this is only interesting if the approximation is good for reasonable sample sizes.</p>
+<section id="sufficiency" class="level2">
+<h2 class="anchored" data-anchor-id="sufficiency">Sufficiency</h2>
+<p>Sufficiency is a central concept in statistics that allows us to focus on the essential aspects of the data set while ignoring details that are irrelevant to the inference problem. If <span class="math inline">\(X\sim P_\theta\)</span> represents the entire data set, drawn from a model <span class="math inline">\(\cP = \{P_\theta:\; \theta \in \Theta\}\)</span>, then this lecture will concern the idea of a <em>sufficient statistic</em> <span class="math inline">\(T(X)\)</span> that carries all of the information in the data that can help us learn about <span class="math inline">\(\theta\)</span>.</p>
+<p>A <em>statistic</em> <span class="math inline">\(T(X)\)</span> is any random variable which is a function of the data <span class="math inline">\(X\)</span>, and which does <strong>not</strong> depend on the unknown parameter <span class="math inline">\(\theta\)</span>. We say the statistic <span class="math inline">\(T(X)\)</span> is <em>sufficient</em> for the model <span class="math inline">\(\cP\)</span> if <span class="math inline">\(P_\theta(X \mid T)\)</span> does not depend on <span class="math inline">\(\theta\)</span>. This lecture will be devoted to interpreting this definition and giving examples.</p>
+<p><strong>Example (Independent Bernoulli sequence):</strong> We introduced the binomial example from Lecture 2 by telling a story about an investigator who flips a biased coin <span class="math inline">\(n\)</span> times and records the total number of heads, which has a binomial distribution. All of the estimators we considered were functions only of the (binomially-distributed) count of heads.</p>
+<p>But if the investigator had actually performed this experiment, they would have observed more than just the total number of heads: they would have observed the entire sequence of <span class="math inline">\(n\)</span> heads and tails. If we let <span class="math inline">\(X_i\)</span> denote a binary indicator of whether the <span class="math inline">\(i\)</span>th throw is heads, for <span class="math inline">\(i=1,\ldots,n\)</span>, then we have assumed that these indicators are i.i.d. Bernoulli random variables:</p>
+<p><span class="math display">\[
+X_1,\ldots,X_n \simiid \text{Bern}(\theta).
+\]</span></p>
+<p>Let <span class="math inline">\(T(X) = \sum_i X_i \sim \text{Binom}(n,\theta)\)</span> denote the summary statistic that we previously used to represent the entire data set. It is undeniable that we have lost some information by only recording <span class="math inline">\(T(X)\)</span> instead of the entire sequence <span class="math inline">\(X = (X_1,\ldots,X_n)\)</span>. As a result, we might wonder whether we could have improved the estimator by considering all functions of <span class="math inline">\(X\)</span>, not just functions of <span class="math inline">\(T(X)\)</span>.</p>
+<p>The answer is that, no, we did not really lose anything by summarizing the data by <span class="math inline">\(T(X)\)</span> because <span class="math inline">\(T(X)\)</span> is sufficient. The joint pmf of the data set <span class="math inline">\(X \in \{0,1\}^n\)</span> (i.e., the density wrt the counting measure on <span class="math inline">\(\{0,1\}^n\)</span>) is</p>
+<p><span class="math display">\[
+p_\theta(x) = \prod_{i=1}^n \theta^{x_i}(1-\theta)^{1-x_i} = \theta^{\sum_i x_i}(1-\theta)^{n-\sum_i x_i}.
+\]</span></p>
+<p>Note that this pmf depends only on <span class="math inline">\(T(x)\)</span>: it assigns probability <span class="math inline">\(\theta^t (1-\theta)^{n-t}\)</span> to every sequence with <span class="math inline">\(T(X)=t\)</span> total heads. As a result, the conditional distribution given <span class="math inline">\(T(X)=t\)</span> should be uniform on all of the <span class="math inline">\(\binom{n}{t}\)</span> sequences with <span class="math inline">\(t\)</span> heads. We can confirm this by calculating the conditional pmf directly:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\PP_\theta(X = x \mid T(X) = t)
+&amp;= \frac{\PP_\theta(X=x, \sum_i X_i = t)}{\PP_\theta(T(X) = t)} \\[7pt]
+&amp;= \frac{\theta^t (1-\theta)^{n-t}1\{\sum_i x_i = t\}}{\theta^t(1-\theta)^{n-t}\binom{n}{t}}\\[5pt]
+&amp;= \binom{n}{t}^{-1}1\{T(x) = t\}.
+\end{aligned}
+\]</span></p>
+<p>Since the conditional distribution does not depend on <span class="math inline">\(\theta\)</span>, <span class="math inline">\(T(X)\)</span> is sufficient for the model <span class="math inline">\(\cP\)</span>.</p>
+<p>As we will see next, we didn’t really need to go to the trouble of calculating the conditional distribution. Once we noticed that the density depends on <span class="math inline">\(x\)</span> only through <span class="math inline">\(T(x)\)</span>, we could have concluded that <span class="math inline">\(T(X)\)</span> was sufficient.</p>
 </section>
-<section id="convergence" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2</span> Convergence</h2>
-<p>Let <span class="math inline">\(X_1, X_2, \ldots \in \mathbb{R}^d\)</span> be a sequence of random vectors. We care about two kinds of convergence:</p>
-<ol type="1">
-<li>Convergence in probability: <span class="math inline">\(X_n \to\)</span> a constant</li>
-<li>Convergence in distribution: <span class="math inline">\(X_n \to N(0, I_d)\)</span> (usually)</li>
-</ol>
-<section id="convergence-in-probability" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</h3>
-<p>We say the sequence converges in probability to <span class="math inline">\(c \in \mathbb{R}^d\)</span> (<span class="math inline">\(X_n \xrightarrow{p} c\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \to 0 \quad \forall \epsilon &gt; 0\]</span></p>
-<p>(Could really be any distance on any <span class="math inline">\(\cX\)</span>)</p>
-<p>Can converge to a r.v. <span class="math inline">\(X\)</span> too, but we don’t need this.</p>
+<section id="factorization-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="factorization-theorem">Factorization theorem</h2>
+<p>The easiest way to verify that a statistic is sufficient is to show that the density <span class="math inline">\(p_\theta\)</span> factorizes into a part that involves only <span class="math inline">\(\theta\)</span> and <span class="math inline">\(T(x)\)</span>, and a part that involves only <span class="math inline">\(h(x)\)</span>.</p>
+<p><strong>Factorization Theorem:</strong> Let <span class="math inline">\(\cP\)</span> be a model having densities <span class="math inline">\(p_\theta(x)\)</span> with respect to a common dominating measure <span class="math inline">\(\mu\)</span>. Then <span class="math inline">\(T(X)\)</span> is sufficient for <span class="math inline">\(\cP\)</span> if and only if there exist non-negative functions <span class="math inline">\(g_\theta\)</span> and <span class="math inline">\(h\)</span> for which</p>
+<p><span class="math display">\[
+p_\theta(x) = g_\theta(T(x)) h(x),
+\]</span></p>
+<p>for almost every <span class="math inline">\(x\)</span> under <span class="math inline">\(\mu\)</span>.</p>
+<p>The “almost every <span class="math inline">\(x\)</span>” qualification means that</p>
+<p><span class="math display">\[
+\mu\left(\{x:\; p_\theta(x) \neq g_\theta(T(x))h(x)\}\right) = 0.
+\]</span></p>
+<p>It is needed to avoid counterexamples with continuous distributions where we could arbitrarily change the value of <span class="math inline">\(p_{\theta_0}(x_0)\)</span> for a single <span class="math inline">\(\theta_0\)</span> and <span class="math inline">\(x_0\)</span> without actually changing any of the distributions.</p>
+<p><strong>Proof:</strong> The proof is easiest in the discrete case, so we don’t have to deal with conditioning on measure-zero events.</p>
+<p>First, assume that there exists a factorization <span class="math inline">\(p_\theta(x) = g_\theta(T(x)) h(x)\)</span>. Then we</p>
+<p><span class="math display">\[
+\begin{aligned}
+\PP_\theta(X = x \mid T(X) = t)
+&amp;= \frac{p_\theta(x)1\{T(x) = t\}}{\displaystyle\sum_{z:\;T(z) = t} p_\theta(z)}\\[7pt]
+&amp;= \frac{g_\theta(t) h(x) 1\{T(x) = t\}}{g_\theta(t)\displaystyle\sum_{z:\;T(z) = t} h(z)}\\[7pt]
+&amp;= \frac{h(x) 1\{T(x) = t\}}{\displaystyle\sum_{z:\;T(z) = t} h(z)},
+\end{aligned}
+\]</span></p>
+<p>which we see does not depend on <span class="math inline">\(\theta\)</span>.</p>
+<p>Next consider the opposite direction. If <span class="math inline">\(T(X)\)</span> is sufficient, then we can construct a factorization by writing</p>
+<p>. First, define</p>
+<p><span class="math display">\[
+g_\theta(t) = \PP_\theta(T(X)=t) = \sum_{x:\;T(x) = t} p_\theta(x).
+\]</span></p>
+<p>Then, let</p>
+<p><span class="math display">\[
+h(x) = \PP(X = x \mid T(X) = T(x)),
+\]</span></p>
+<p>which does not depend on <span class="math inline">\(\theta\)</span> by sufficiency. Then we have</p>
+<p><span class="math display">\[
+\PP_\theta(X = x) = \PP_\theta(T(X) = T(x)) \;\cdot\;\PP_\theta(X = x \mid T(X) = T(x)) = g_\theta(T(x)) h(x)
+\]</span></p>
 </section>
-<section id="convergence-in-distribution" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</h3>
-<p>We say the sequence converges in distribution to random variable <span class="math inline">\(X\)</span> (<span class="math inline">\(X_n \xrightarrow{d} X\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{E}[f(X_n)] \to \mathbb{E}[f(X)] \text{ for all bounded continuous } f: \cX \to \mathbb{R}\]</span></p>
-<p>Theorem: <span class="math inline">\(X_n, X \in \mathbb{R}\)</span>. Fix <span class="math inline">\(\mathbb{P}(X = x) = 0\)</span>. Let <span class="math inline">\(F_n(x) = \mathbb{P}(X_n \leq x)\)</span>, <span class="math inline">\(F(x) = \mathbb{P}(X \leq x)\)</span>. Then <span class="math inline">\(X_n \xrightarrow{d} X\)</span> iff <span class="math inline">\(F_n(x) \to F(x)\)</span> <span class="math inline">\(\forall x: F\)</span> is continuous at <span class="math inline">\(x\)</span>.</p>
-<p>Also known as weak convergence.</p>
-</section>
-<section id="example" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="example"><span class="header-section-number">2.3</span> Example</h3>
-<p>If <span class="math inline">\(X_n \xrightarrow{d} X \sim g\)</span>, then <span class="math inline">\(X_n \xrightarrow{d} X\)</span>:</p>
-<p><span class="math display">\[F_n(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-1 - \frac{1}{n} &amp; \text{if } x = 0 \\
-0 &amp; \text{if } x &lt; 0
-\end{cases}\]</span></p>
-<p><span class="math display">\[F(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-0 &amp; \text{if } x \leq 0
-\end{cases}\]</span></p>
-</section>
-<section id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></h3>
-<p>Let <span class="math inline">\(f_\epsilon(x) = \max\{1 - \frac{\|x-c\|}{\epsilon}, 0\}\)</span>. Then <span class="math inline">\(\forall \epsilon &gt; 0\)</span>:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \leq \mathbb{E}[1 - f_\epsilon(X_n)] \to 0\]</span></p>
-<p><span class="math inline">\(f\)</span> bounded continuous. Note <span class="math inline">\(\mathbb{E}[f(c)] = f(c)\)</span>.</p>
-<p><span class="math inline">\(\forall \epsilon &gt; 0\)</span>, <span class="math inline">\(\exists \delta &gt; 0\)</span> s.t. <span class="math inline">\(\|x - c\| &lt; \delta \implies |f(x) - f(c)| &lt; \epsilon\)</span></p>
-<p><span class="math display">\[|\mathbb{E}[f(X_n)] - f(c)| \leq |\mathbb{E}[f(X_n) - f(c)]1_{\|X_n - c\| &lt; \delta}| + |\mathbb{E}[(f(X_n) - f(c))1_{\|X_n - c\| \geq \delta}]|\]</span> <span class="math display">\[\leq \epsilon + 2\sup |f| \cdot \mathbb{P}(\|X_n - c\| \geq \delta)\]</span></p>
-<p>For sufficiently large <span class="math inline">\(n\)</span>. <span class="math inline">\(\square\)</span></p>
-<p>In a sequence of statistical models <span class="math inline">\(\cP_n = \{P_{n,\theta}: \theta \in \Theta\}\)</span> with <span class="math inline">\(X_n \sim P_{n,\theta}\)</span>, we say <span class="math inline">\(\hat{\theta}_n\)</span> is consistent for <span class="math inline">\(g(\theta)\)</span> if <span class="math inline">\(\hat{\theta}_n \xrightarrow{p} g(\theta)\)</span>, meaning:</p>
-<p><span class="math display">\[\mathbb{P}_\theta(|\hat{\theta}_n - g(\theta)| &gt; \epsilon) \to 0\]</span></p>
-<p>Usually, we omit the index <span class="math inline">\(n\)</span>; sequence is implicit.</p>
-</section>
-<section id="law-of-large-numbers-lln" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</h3>
-<p>Let <span class="math inline">\(\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\)</span></p>
-<p>If <span class="math inline">\(\mathbb{E}|X_i| &lt; \infty\)</span>, <span class="math inline">\(\mathbb{E}X_i = \mu\)</span>, then <span class="math inline">\(\bar{X}_n \xrightarrow{p} \mu\)</span></p>
-</section>
-<section id="central-limit-theorem-clt" class="level3" data-number="2.6">
-<h3 data-number="2.6" class="anchored" data-anchor-id="central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</h3>
-<p>If <span class="math inline">\(\text{Var}(X_i) = \sigma^2 &lt; \infty\)</span>, then <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span></p>
-<p>There are stronger versions of both the LLN and CLT, but this will generally be enough for us.</p>
-</section>
-</section>
-<section id="continuous-mapping-theorem" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</h2>
-<p>Theorem (Continuous Mapping): Let <span class="math inline">\(g\)</span> be continuous, <span class="math inline">\(X_n, X\)</span> r.v.’s.</p>
-<ol type="1">
-<li>If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{d} g(X)\)</span></li>
-<li>If <span class="math inline">\(X_n \xrightarrow{p} c\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{p} g(c)\)</span></li>
-</ol>
-<p>Proof: <span class="math inline">\(f\)</span> bounded continuous <span class="math inline">\(\implies f \circ g\)</span> bounded continuous If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(\mathbb{E}[f(g(X_n))] \to \mathbb{E}[f(g(X))]\)</span> <span class="math inline">\(X_n \xrightarrow{p} c\)</span> special case with <span class="math inline">\(X \equiv c\)</span></p>
-</section>
-<section id="slutskys-theorem" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</h2>
-<p>Theorem (Slutsky): Assume <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{p} c\)</span>. Then:</p>
-<ol type="1">
-<li><span class="math inline">\(X_n + Y_n \xrightarrow{d} X + c\)</span></li>
-<li><span class="math inline">\(X_n Y_n \xrightarrow{d} cX\)</span></li>
-<li><span class="math inline">\(X_n / Y_n \xrightarrow{d} X/c\)</span> if <span class="math inline">\(c \neq 0\)</span></li>
-</ol>
-<p>Proof: Show <span class="math inline">\((X_n, Y_n) \xrightarrow{d} (X, c)\)</span>, apply continuous mapping.</p>
-<p>Wouldn’t normally be true that <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{d} Y\)</span> implies <span class="math inline">\(X_n + Y_n \xrightarrow{d} X + Y\)</span> without specifying joint dist.</p>
-</section>
-<section id="delta-method" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="delta-method"><span class="header-section-number">5</span> Delta Method</h2>
-<p>Theorem (Delta Method): If <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span> <span class="math inline">\(f(x)\)</span> differentiable at <span class="math inline">\(x = \mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Instant: <span class="math inline">\(X \sim N(\mu, \sigma^2/n) \implies f(X) \sim N(f(\mu), [f'(\mu)]^2 \sigma^2/n + o(1/n))\)</span></p>
-<p>Proof: <span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + o(X_n - \mu)\)</span> <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) = f'(\mu)\sqrt{n}(X_n - \mu) + \sqrt{n}o(X_n - \mu)\)</span> <span class="math inline">\(N(0, \sigma^2) + 0 \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Multivariate: <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)\)</span>, <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}^k\)</span> Derivative <span class="math inline">\(Df(\mu)\)</span> exists at <span class="math inline">\(\mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, Df(\mu) \Sigma Df(\mu)^T)\)</span></p>
-<p><span class="math inline">\(N(f(\mu), Df(\mu) \Sigma Df(\mu)^T/n + o(1/n))\)</span> if <span class="math inline">\(k=1\)</span></p>
-<section id="example-delta-method-application" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</h3>
-<p><span class="math inline">\(X_1, \ldots, X_n \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(Y_1, \ldots, Y_m \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(X, Y\)</span> independent</p>
-<p>For large <span class="math inline">\(n, m\)</span>, what is the distribution of <span class="math inline">\(T = \frac{\bar{X}}{\bar{Y}}\)</span>?</p>
-<ol type="1">
-<li><span class="math inline">\(\sqrt{n}(\bar{X} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(n \to \infty\)</span></li>
-<li><span class="math inline">\(\sqrt{m}(\bar{Y} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(m \to \infty\)</span></li>
-</ol>
-<p><span class="math inline">\(T_n = \frac{\bar{X}}{\bar{Y}} = \frac{\theta/2}{\theta/2} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></p>
-<p>Let <span class="math inline">\(f(x,y) = x/y\)</span></p>
-<p><span class="math inline">\(f_x'(\frac{\theta}{2}, \frac{\theta}{2}) = \frac{1}{\theta/2} = \frac{2}{\theta}\)</span> <span class="math inline">\(f_y'(\frac{\theta}{2}, \frac{\theta}{2}) = -\frac{\theta/2}{(\theta/2)^2} = -\frac{2}{\theta}\)</span></p>
-<p><span class="math inline">\(f'(\frac{\theta}{2}, \frac{\theta}{2}) = (\frac{2}{\theta}, -\frac{2}{\theta})\)</span></p>
-<p><span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{1}{n} + \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{n}{m})\)</span></p>
-<p><span class="math inline">\(= N(0, \frac{1}{3n} + \frac{1}{3m})\)</span></p>
-<p>More accurate: <span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{3}(1 + \frac{n}{m}))\)</span></p>
-</section>
-<section id="what-if-mu-0" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</h3>
-<ol start="3" type="1">
-<li>What if <span class="math inline">\(\mu_1 = \mu_2 = 0\)</span>? Conclusion still holds: <span class="math inline">\(T_n = \frac{1 + O_p(n^{-1/2})}{1 + O_p(m^{-1/2})} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></li>
-</ol>
-<p>Note: <span class="math inline">\(\frac{1}{1 + n^{-1/2}} \to 1\)</span> (continuous mapping) Not Slutsky</p>
-<p>So <span class="math inline">\(n(T_n - 1)^2 \xrightarrow{d} \chi^2_1\)</span> (continuous mapping) Why not delta method?</p>
-<p>In general, can do higher-order Taylor expansions for delta method if derivatives <span class="math inline">\(\neq 0\)</span>:</p>
-<p><span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + \frac{1}{2}f''(\mu)(X_n - \mu)^2 + O_p(n^{-3/2})\)</span></p>
-<p>If <span class="math inline">\(f'(\mu) = 0\)</span>, use second-order term: <span class="math inline">\(n(f(X_n) - f(\mu)) \xrightarrow{d} \frac{1}{2}f''(\mu)\chi^2_1\)</span></p>
+<section id="sufficient-statistics-in-exponential-families" class="level2">
+<h2 class="anchored" data-anchor-id="sufficient-statistics-in-exponential-families">Sufficient statistics in exponential families</h2>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

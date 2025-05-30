@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-02">
+<meta name="dcterms.date" content="2023-10-05">
 
-<title>Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</title>
+<title>Minimax Estimation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,22 +124,25 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-to-asymptotic-theory" id="toc-introduction-to-asymptotic-theory" class="nav-link active" data-scroll-target="#introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</a></li>
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence"><span class="header-section-number">2</span> Convergence</a>
+  <li><a href="#minimax-risk-estimator" id="toc-minimax-risk-estimator" class="nav-link active" data-scroll-target="#minimax-risk-estimator"><span class="header-section-number">1</span> Minimax Risk Estimator</a>
   <ul class="collapse">
-  <li><a href="#convergence-in-probability" id="toc-convergence-in-probability" class="nav-link" data-scroll-target="#convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</a></li>
-  <li><a href="#convergence-in-distribution" id="toc-convergence-in-distribution" class="nav-link" data-scroll-target="#convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">2.3</span> Example</a></li>
-  <li><a href="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" id="toc-proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="nav-link" data-scroll-target="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></a></li>
-  <li><a href="#law-of-large-numbers-lln" id="toc-law-of-large-numbers-lln" class="nav-link" data-scroll-target="#law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</a></li>
-  <li><a href="#central-limit-theorem-clt" id="toc-central-limit-theorem-clt" class="nav-link" data-scroll-target="#central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</a></li>
+  <li><a href="#definition-of-minimax-risk" id="toc-definition-of-minimax-risk" class="nav-link" data-scroll-target="#definition-of-minimax-risk"><span class="header-section-number">1.1</span> Definition of Minimax Risk</a></li>
+  <li><a href="#game-theory-interpretation" id="toc-game-theory-interpretation" class="nav-link" data-scroll-target="#game-theory-interpretation"><span class="header-section-number">1.2</span> Game Theory Interpretation</a></li>
   </ul></li>
-  <li><a href="#continuous-mapping-theorem" id="toc-continuous-mapping-theorem" class="nav-link" data-scroll-target="#continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</a></li>
-  <li><a href="#slutskys-theorem" id="toc-slutskys-theorem" class="nav-link" data-scroll-target="#slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</a></li>
-  <li><a href="#delta-method" id="toc-delta-method" class="nav-link" data-scroll-target="#delta-method"><span class="header-section-number">5</span> Delta Method</a>
+  <li><a href="#least-favorable-priors" id="toc-least-favorable-priors" class="nav-link" data-scroll-target="#least-favorable-priors"><span class="header-section-number">2</span> Least Favorable Priors</a>
   <ul class="collapse">
-  <li><a href="#example-delta-method-application" id="toc-example-delta-method-application" class="nav-link" data-scroll-target="#example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</a></li>
-  <li><a href="#what-if-mu-0" id="toc-what-if-mu-0" class="nav-link" data-scroll-target="#what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</a></li>
+  <li><a href="#theorem" id="toc-theorem" class="nav-link" data-scroll-target="#theorem"><span class="header-section-number">2.1</span> Theorem</a></li>
+  <li><a href="#example-binomial" id="toc-example-binomial" class="nav-link" data-scroll-target="#example-binomial"><span class="header-section-number">2.2</span> Example: Binomial</a></li>
+  </ul></li>
+  <li><a href="#least-favorable-sequence" id="toc-least-favorable-sequence" class="nav-link" data-scroll-target="#least-favorable-sequence"><span class="header-section-number">3</span> Least Favorable Sequence</a>
+  <ul class="collapse">
+  <li><a href="#theorem-1" id="toc-theorem-1" class="nav-link" data-scroll-target="#theorem-1"><span class="header-section-number">3.1</span> Theorem</a></li>
+  <li><a href="#basic-picture" id="toc-basic-picture" class="nav-link" data-scroll-target="#basic-picture"><span class="header-section-number">3.2</span> Basic Picture</a></li>
+  </ul></li>
+  <li><a href="#practical-applications" id="toc-practical-applications" class="nav-link" data-scroll-target="#practical-applications"><span class="header-section-number">4</span> Practical Applications</a>
+  <ul class="collapse">
+  <li><a href="#approach-1-near-optimal-estimators" id="toc-approach-1-near-optimal-estimators" class="nav-link" data-scroll-target="#approach-1-near-optimal-estimators"><span class="header-section-number">4.1</span> Approach 1: Near-optimal Estimators</a></li>
+  <li><a href="#approach-2-problem-hardness" id="toc-approach-2-problem-hardness" class="nav-link" data-scroll-target="#approach-2-problem-hardness"><span class="header-section-number">4.2</span> Approach 2: Problem Hardness</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -149,7 +152,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</h1>
+<h1 class="title">Minimax Estimation</h1>
 </div>
 
 
@@ -160,7 +163,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 2, 2023</p>
+      <p class="date">October 5, 2023</p>
     </div>
   </div>
   
@@ -194,123 +197,121 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<section id="introduction-to-asymptotic-theory" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</h2>
-<p>So far, everything has been finite sample, often using special properties of model <span class="math inline">\(\cP\)</span> (e.g., exponential family) to do exact calculations. For generic models, exact calculations may be intractable or impossible. However, we may be able to approximate our problem with a simpler problem in which calculations are easy.</p>
-<p>Typically, we approximate by Gaussian by taking the limit as observations <span class="math inline">\(n \to \infty\)</span>. But this is only interesting if the approximation is good for reasonable sample sizes.</p>
+<section id="minimax-risk-estimator" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="minimax-risk-estimator"><span class="header-section-number">1</span> Minimax Risk Estimator</h2>
+<section id="definition-of-minimax-risk" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="definition-of-minimax-risk"><span class="header-section-number">1.1</span> Definition of Minimax Risk</h3>
+<p>The last idea for choosing an estimator: worst-case risk.</p>
+<p>Minimize <span class="math inline">\(\sup_\theta R(\theta, \delta)\)</span></p>
+<p>The minimum achievable sup risk is called the minimax risk of the estimation problem:</p>
+<p><span class="math display">\[r = \inf_\delta \sup_\theta R(\theta, \delta)\]</span></p>
+<p>An estimator <span class="math inline">\(\delta\)</span> is called minimax if it achieves the minimax risk, i.e.,</p>
+<p><span class="math display">\[\sup_\theta R(\theta, \delta) = r\]</span></p>
 </section>
-<section id="convergence" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2</span> Convergence</h2>
-<p>Let <span class="math inline">\(X_1, X_2, \ldots \in \mathbb{R}^d\)</span> be a sequence of random vectors. We care about two kinds of convergence:</p>
+<section id="game-theory-interpretation" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="game-theory-interpretation"><span class="header-section-number">1.2</span> Game Theory Interpretation</h3>
 <ol type="1">
-<li>Convergence in probability: <span class="math inline">\(X_n \to\)</span> a constant</li>
-<li>Convergence in distribution: <span class="math inline">\(X_n \to N(0, I_d)\)</span> (usually)</li>
+<li>Analyst chooses estimator <span class="math inline">\(\delta\)</span></li>
+<li>Nature chooses parameter <span class="math inline">\(\theta\)</span> to maximize risk</li>
 </ol>
-<section id="convergence-in-probability" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</h3>
-<p>We say the sequence converges in probability to <span class="math inline">\(c \in \mathbb{R}^d\)</span> (<span class="math inline">\(X_n \xrightarrow{p} c\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \to 0 \quad \forall \epsilon &gt; 0\]</span></p>
-<p>(Could really be any distance on any <span class="math inline">\(\cX\)</span>)</p>
-<p>Can converge to a r.v. <span class="math inline">\(X\)</span> too, but we don’t need this.</p>
-</section>
-<section id="convergence-in-distribution" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</h3>
-<p>We say the sequence converges in distribution to random variable <span class="math inline">\(X\)</span> (<span class="math inline">\(X_n \xrightarrow{d} X\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{E}[f(X_n)] \to \mathbb{E}[f(X)] \text{ for all bounded continuous } f: \cX \to \mathbb{R}\]</span></p>
-<p>Theorem: <span class="math inline">\(X_n, X \in \mathbb{R}\)</span>. Fix <span class="math inline">\(\mathbb{P}(X = x) = 0\)</span>. Let <span class="math inline">\(F_n(x) = \mathbb{P}(X_n \leq x)\)</span>, <span class="math inline">\(F(x) = \mathbb{P}(X \leq x)\)</span>. Then <span class="math inline">\(X_n \xrightarrow{d} X\)</span> iff <span class="math inline">\(F_n(x) \to F(x)\)</span> <span class="math inline">\(\forall x: F\)</span> is continuous at <span class="math inline">\(x\)</span>.</p>
-<p>Also known as weak convergence.</p>
-</section>
-<section id="example" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="example"><span class="header-section-number">2.3</span> Example</h3>
-<p>If <span class="math inline">\(X_n \xrightarrow{d} X \sim g\)</span>, then <span class="math inline">\(X_n \xrightarrow{d} X\)</span>:</p>
-<p><span class="math display">\[F_n(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-1 - \frac{1}{n} &amp; \text{if } x = 0 \\
-0 &amp; \text{if } x &lt; 0
-\end{cases}\]</span></p>
-<p><span class="math display">\[F(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-0 &amp; \text{if } x \leq 0
-\end{cases}\]</span></p>
-</section>
-<section id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></h3>
-<p>Let <span class="math inline">\(f_\epsilon(x) = \max\{1 - \frac{\|x-c\|}{\epsilon}, 0\}\)</span>. Then <span class="math inline">\(\forall \epsilon &gt; 0\)</span>:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \leq \mathbb{E}[1 - f_\epsilon(X_n)] \to 0\]</span></p>
-<p><span class="math inline">\(f\)</span> bounded continuous. Note <span class="math inline">\(\mathbb{E}[f(c)] = f(c)\)</span>.</p>
-<p><span class="math inline">\(\forall \epsilon &gt; 0\)</span>, <span class="math inline">\(\exists \delta &gt; 0\)</span> s.t. <span class="math inline">\(\|x - c\| &lt; \delta \implies |f(x) - f(c)| &lt; \epsilon\)</span></p>
-<p><span class="math display">\[|\mathbb{E}[f(X_n)] - f(c)| \leq |\mathbb{E}[f(X_n) - f(c)]1_{\|X_n - c\| &lt; \delta}| + |\mathbb{E}[(f(X_n) - f(c))1_{\|X_n - c\| \geq \delta}]|\]</span> <span class="math display">\[\leq \epsilon + 2\sup |f| \cdot \mathbb{P}(\|X_n - c\| \geq \delta)\]</span></p>
-<p>For sufficiently large <span class="math inline">\(n\)</span>. <span class="math inline">\(\square\)</span></p>
-<p>In a sequence of statistical models <span class="math inline">\(\cP_n = \{P_{n,\theta}: \theta \in \Theta\}\)</span> with <span class="math inline">\(X_n \sim P_{n,\theta}\)</span>, we say <span class="math inline">\(\hat{\theta}_n\)</span> is consistent for <span class="math inline">\(g(\theta)\)</span> if <span class="math inline">\(\hat{\theta}_n \xrightarrow{p} g(\theta)\)</span>, meaning:</p>
-<p><span class="math display">\[\mathbb{P}_\theta(|\hat{\theta}_n - g(\theta)| &gt; \epsilon) \to 0\]</span></p>
-<p>Usually, we omit the index <span class="math inline">\(n\)</span>; sequence is implicit.</p>
-</section>
-<section id="law-of-large-numbers-lln" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</h3>
-<p>Let <span class="math inline">\(\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\)</span></p>
-<p>If <span class="math inline">\(\mathbb{E}|X_i| &lt; \infty\)</span>, <span class="math inline">\(\mathbb{E}X_i = \mu\)</span>, then <span class="math inline">\(\bar{X}_n \xrightarrow{p} \mu\)</span></p>
-</section>
-<section id="central-limit-theorem-clt" class="level3" data-number="2.6">
-<h3 data-number="2.6" class="anchored" data-anchor-id="central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</h3>
-<p>If <span class="math inline">\(\text{Var}(X_i) = \sigma^2 &lt; \infty\)</span>, then <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span></p>
-<p>There are stronger versions of both the LLN and CLT, but this will generally be enough for us.</p>
+<p>Note: Nature chooses <span class="math inline">\(\theta\)</span> adversarially, not <span class="math inline">\(X\)</span>.</p>
+<p>Compare to Bayes where Nature chooses prior from a known distribution (Nature plays a specific mixed strategy).</p>
+<p>We will look for Nature’s Nash equilibrium strategy.</p>
 </section>
 </section>
-<section id="continuous-mapping-theorem" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</h2>
-<p>Theorem (Continuous Mapping): Let <span class="math inline">\(g\)</span> be continuous, <span class="math inline">\(X_n, X\)</span> r.v.’s.</p>
+<section id="least-favorable-priors" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="least-favorable-priors"><span class="header-section-number">2</span> Least Favorable Priors</h2>
+<p>Minimax is closely related to Bayes.</p>
+<p>Key observation: average case risk ≤ worst case risk</p>
+<p>For proper prior <span class="math inline">\(\pi\)</span>, the Bayes risk is:</p>
+<p><span class="math display">\[r(\pi) = \int_\Theta R(\theta, \delta_\pi) d\pi(\theta)\]</span></p>
+<p><span class="math display">\[\leq \int_\Theta \sup_\theta R(\theta, \delta) d\pi(\theta) = \sup_\theta R(\theta, \delta)\]</span></p>
+<p>If <span class="math inline">\(\delta_\pi\)</span> is Bayes, then <span class="math inline">\(r(\pi) = \inf_\delta \int_\Theta R(\theta, \delta) d\pi(\theta)\)</span></p>
+<p>Bayes risk of any Bayes estimator lower bounds <span class="math inline">\(r\)</span>.</p>
+<p>Least favorable prior <span class="math inline">\(\pi\)</span> gives best lower bound: <span class="math inline">\(r(\pi) = \sup_\pi r(\pi)\)</span></p>
+<p>Sup risk of any estimator upper bounds <span class="math inline">\(r\)</span>:</p>
+<p><span class="math display">\[\sup_\theta R(\theta, \delta) \geq r \geq \sup_\pi r(\pi)\]</span></p>
+<p>Can exhibit minimax est. &amp; LF prior by finding <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\delta\)</span> that collapse these inequalities.</p>
+<section id="theorem" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="theorem"><span class="header-section-number">2.1</span> Theorem</h3>
+<p>If <span class="math inline">\(R(\delta_\pi) = \sup_\theta R(\theta, \delta_\pi)\)</span> with Bayes estimator <span class="math inline">\(\delta_\pi\)</span>, then:</p>
+<ol type="a">
+<li><span class="math inline">\(\delta_\pi\)</span> is minimax</li>
+<li>If <span class="math inline">\(\delta_\pi\)</span> is unique Bayes (up to <span class="math inline">\(\pi\)</span>-a.e.), it is unique minimax</li>
+<li><span class="math inline">\(\pi\)</span> is least favorable</li>
+</ol>
+<p>Proof:</p>
+<ol type="a">
+<li><p>Any other <span class="math inline">\(\delta\)</span>: <span class="math display">\[\sup_\theta R(\theta, \delta) \geq \int R(\theta, \delta) d\pi(\theta) \geq\]</span> <span class="math display">\[\int R(\theta, \delta_\pi) d\pi(\theta) = r(\pi) = \sup_\theta R(\theta, \delta_\pi)\]</span> <span class="math inline">\(r\)</span> is minimax risk, <span class="math inline">\(\delta_\pi\)</span> is minimax</p></li>
+<li><p>Replace <span class="math inline">\(\geq\)</span> with <span class="math inline">\(=\)</span> in 2nd inequality ⟹ <span class="math inline">\(\delta = \delta_\pi\)</span> <span class="math inline">\(\pi\)</span>-a.e.</p></li>
+<li><p>Any other prior <span class="math inline">\(\pi'\)</span>: <span class="math display">\[\inf_\delta r(\pi') \leq \int R(\theta, \delta_\pi) d\pi'(\theta)\]</span> <span class="math display">\[\leq \sup_\theta R(\theta, \delta_\pi) = r(\pi)\]</span></p></li>
+</ol>
+<p>The above theorem gives a checkable condition: does avg risk = sup risk?</p>
+<p>Note: If <span class="math inline">\(R(\theta, \delta_\pi)\)</span> is constant, it doesn’t prove anything.</p>
 <ol type="1">
-<li>If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{d} g(X)\)</span></li>
-<li>If <span class="math inline">\(X_n \xrightarrow{p} c\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{p} g(c)\)</span></li>
+<li><span class="math inline">\(R(\theta, \delta_\pi)\)</span> is constant</li>
+<li>Also <span class="math inline">\(R(\theta, \delta_\pi) = \sup_\theta R(\theta, \delta_\pi) = r(\pi)\)</span></li>
 </ol>
-<p>Proof: <span class="math inline">\(f\)</span> bounded continuous <span class="math inline">\(\implies f \circ g\)</span> bounded continuous If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(\mathbb{E}[f(g(X_n))] \to \mathbb{E}[f(g(X))]\)</span> <span class="math inline">\(X_n \xrightarrow{p} c\)</span> special case with <span class="math inline">\(X \equiv c\)</span></p>
 </section>
-<section id="slutskys-theorem" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</h2>
-<p>Theorem (Slutsky): Assume <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{p} c\)</span>. Then:</p>
+<section id="example-binomial" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="example-binomial"><span class="header-section-number">2.2</span> Example: Binomial</h3>
+<p><span class="math inline">\(X \sim \text{Binom}(n, \theta)\)</span>, estimate <span class="math inline">\(\theta\)</span> with squared error</p>
+<p>Try Beta(<span class="math inline">\(\alpha, \beta\)</span>), hope to get one with constant risk</p>
+<p><span class="math display">\[\delta_\pi(X) = \frac{X + \alpha}{n + \alpha + \beta}\]</span></p>
+<p><span class="math display">\[R(\theta, \delta_\pi) = \mathbb{E}[\theta^2] - \mathbb{E}[\delta_\pi(X)^2] + \text{Var}(\delta_\pi(X))\]</span></p>
+<p><span class="math display">\[= \theta - \frac{(\alpha + \beta + n + 1)(\alpha + n\theta)^2}{(\alpha + \beta + n)^2(n + \alpha + \beta + 1)} + \frac{(\alpha + n\theta)(\beta + n(1-\theta))}{(\alpha + \beta + n)^2(n + \alpha + \beta + 1)}\]</span></p>
+<p>Set <span class="math inline">\(\alpha + \beta = n + 2\)</span>, <span class="math inline">\(\alpha + \beta = \frac{n}{2}\)</span></p>
+<p><span class="math display">\[\beta = \frac{n+2}{2}, \alpha = \frac{n+2}{2}\]</span></p>
+<p>Beta(<span class="math inline">\(\frac{n+2}{2}, \frac{n+2}{2}\)</span>) is LF, <span class="math inline">\(\delta_\pi\)</span> is minimax</p>
+<p>We got lucky.</p>
+<p>Question: Why so much prior weight on <span class="math inline">\(\theta \approx \frac{1}{2}\)</span>?</p>
+</section>
+</section>
+<section id="least-favorable-sequence" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="least-favorable-sequence"><span class="header-section-number">3</span> Least Favorable Sequence</h2>
+<p>Sometimes there is no least favorable prior, e.g., if parameter space isn’t compact.</p>
+<p><span class="math inline">\(X \sim N(\theta, 1)\)</span>: LF prior should spread mass everywhere, but that is not a proper prior.</p>
+<p>Definition: A sequence <span class="math inline">\(\{\pi_n\}\)</span> is LF if <span class="math inline">\(r(\pi_n) \to \sup_\pi r(\pi)\)</span></p>
+<section id="theorem-1" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="theorem-1"><span class="header-section-number">3.1</span> Theorem</h3>
+<p>Suppose <span class="math inline">\(\{\pi_n\}\)</span> is a prior sequence and <span class="math inline">\(\delta\)</span> satisfies <span class="math inline">\(\sup_\theta R(\theta, \delta) = \lim_n r(\pi_n)\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(\delta\)</span> is minimax</li>
+<li><span class="math inline">\(\{\pi_n\}\)</span> is LF</li>
+</ol>
+<p>Proof:</p>
+<ol type="a">
+<li><p>Other est. <span class="math inline">\(\delta'\)</span>. Then <span class="math inline">\(\forall n\)</span>: <span class="math display">\[\sup_\theta R(\theta, \delta') \geq \int R(\theta, \delta') d\pi_n(\theta) \geq r(\pi_n)\]</span> <span class="math display">\[\geq \lim_n r(\pi_n) = \sup_\theta R(\theta, \delta)\]</span></p></li>
+<li><p>Prior <span class="math inline">\(\pi\)</span>: <span class="math display">\[r(\pi) = \inf_\delta \int R(\theta, \delta) d\pi(\theta) \leq \int R(\theta, \delta) d\pi(\theta)\]</span> <span class="math display">\[\leq \sup_\theta R(\theta, \delta) = \lim_n r(\pi_n)\]</span></p></li>
+</ol>
+</section>
+<section id="basic-picture" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="basic-picture"><span class="header-section-number">3.2</span> Basic Picture</h3>
+<ul>
+<li><span class="math inline">\(\sup_\theta R(\theta, \delta)\)</span> (generic <span class="math inline">\(\delta\)</span>)</li>
+<li><span class="math inline">\(\inf_\delta \sup_\theta R(\theta, \delta)\)</span> (minimax risk)</li>
+<li><span class="math inline">\(\sup_\pi r(\pi)\)</span> (if LF prior exists)</li>
+<li><span class="math inline">\(r(\pi)\)</span> (generic <span class="math inline">\(\pi\)</span>)</li>
+</ul>
+<p>If minimax est. exists: <span class="math inline">\(\inf_\delta \sup_\theta R(\theta, \delta) = \sup_\theta R(\theta, \delta^*)\)</span></p>
+<p>If LF prior exists: <span class="math inline">\(\sup_\pi r(\pi) = r(\pi^*)\)</span></p>
+</section>
+</section>
+<section id="practical-applications" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="practical-applications"><span class="header-section-number">4</span> Practical Applications</h2>
+<p>Minimax estimators are very hard to find, but minimax bounds are often used in statistical theory to characterize hardness, especially lower bounds.</p>
+<section id="approach-1-near-optimal-estimators" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="approach-1-near-optimal-estimators"><span class="header-section-number">4.1</span> Approach 1: Near-optimal Estimators</h3>
 <ol type="1">
-<li><span class="math inline">\(X_n + Y_n \xrightarrow{d} X + c\)</span></li>
-<li><span class="math inline">\(X_n Y_n \xrightarrow{d} cX\)</span></li>
-<li><span class="math inline">\(X_n / Y_n \xrightarrow{d} X/c\)</span> if <span class="math inline">\(c \neq 0\)</span></li>
+<li>Propose practical estimator <span class="math inline">\(\delta\)</span></li>
+<li>Find <span class="math inline">\(\pi\)</span> for which <span class="math inline">\(r(\pi)\)</span> close to <span class="math inline">\(\sup_\theta R(\theta, \delta)\)</span> (or same rate, or asymptotically)</li>
+<li>Conclude <span class="math inline">\(\delta\)</span> can’t be improved much</li>
 </ol>
-<p>Proof: Show <span class="math inline">\((X_n, Y_n) \xrightarrow{d} (X, c)\)</span>, apply continuous mapping.</p>
-<p>Wouldn’t normally be true that <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{d} Y\)</span> implies <span class="math inline">\(X_n + Y_n \xrightarrow{d} X + Y\)</span> without specifying joint dist.</p>
 </section>
-<section id="delta-method" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="delta-method"><span class="header-section-number">5</span> Delta Method</h2>
-<p>Theorem (Delta Method): If <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span> <span class="math inline">\(f(x)\)</span> differentiable at <span class="math inline">\(x = \mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Instant: <span class="math inline">\(X \sim N(\mu, \sigma^2/n) \implies f(X) \sim N(f(\mu), [f'(\mu)]^2 \sigma^2/n + o(1/n))\)</span></p>
-<p>Proof: <span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + o(X_n - \mu)\)</span> <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) = f'(\mu)\sqrt{n}(X_n - \mu) + \sqrt{n}o(X_n - \mu)\)</span> <span class="math inline">\(N(0, \sigma^2) + 0 \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Multivariate: <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)\)</span>, <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}^k\)</span> Derivative <span class="math inline">\(Df(\mu)\)</span> exists at <span class="math inline">\(\mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, Df(\mu) \Sigma Df(\mu)^T)\)</span></p>
-<p><span class="math inline">\(N(f(\mu), Df(\mu) \Sigma Df(\mu)^T/n + o(1/n))\)</span> if <span class="math inline">\(k=1\)</span></p>
-<section id="example-delta-method-application" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</h3>
-<p><span class="math inline">\(X_1, \ldots, X_n \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(Y_1, \ldots, Y_m \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(X, Y\)</span> independent</p>
-<p>For large <span class="math inline">\(n, m\)</span>, what is the distribution of <span class="math inline">\(T = \frac{\bar{X}}{\bar{Y}}\)</span>?</p>
-<ol type="1">
-<li><span class="math inline">\(\sqrt{n}(\bar{X} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(n \to \infty\)</span></li>
-<li><span class="math inline">\(\sqrt{m}(\bar{Y} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(m \to \infty\)</span></li>
-</ol>
-<p><span class="math inline">\(T_n = \frac{\bar{X}}{\bar{Y}} = \frac{\theta/2}{\theta/2} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></p>
-<p>Let <span class="math inline">\(f(x,y) = x/y\)</span></p>
-<p><span class="math inline">\(f_x'(\frac{\theta}{2}, \frac{\theta}{2}) = \frac{1}{\theta/2} = \frac{2}{\theta}\)</span> <span class="math inline">\(f_y'(\frac{\theta}{2}, \frac{\theta}{2}) = -\frac{\theta/2}{(\theta/2)^2} = -\frac{2}{\theta}\)</span></p>
-<p><span class="math inline">\(f'(\frac{\theta}{2}, \frac{\theta}{2}) = (\frac{2}{\theta}, -\frac{2}{\theta})\)</span></p>
-<p><span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{1}{n} + \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{n}{m})\)</span></p>
-<p><span class="math inline">\(= N(0, \frac{1}{3n} + \frac{1}{3m})\)</span></p>
-<p>More accurate: <span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{3}(1 + \frac{n}{m}))\)</span></p>
-</section>
-<section id="what-if-mu-0" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</h3>
-<ol start="3" type="1">
-<li>What if <span class="math inline">\(\mu_1 = \mu_2 = 0\)</span>? Conclusion still holds: <span class="math inline">\(T_n = \frac{1 + O_p(n^{-1/2})}{1 + O_p(m^{-1/2})} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></li>
-</ol>
-<p>Note: <span class="math inline">\(\frac{1}{1 + n^{-1/2}} \to 1\)</span> (continuous mapping) Not Slutsky</p>
-<p>So <span class="math inline">\(n(T_n - 1)^2 \xrightarrow{d} \chi^2_1\)</span> (continuous mapping) Why not delta method?</p>
-<p>In general, can do higher-order Taylor expansions for delta method if derivatives <span class="math inline">\(\neq 0\)</span>:</p>
-<p><span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + \frac{1}{2}f''(\mu)(X_n - \mu)^2 + O_p(n^{-3/2})\)</span></p>
-<p>If <span class="math inline">\(f'(\mu) = 0\)</span>, use second-order term: <span class="math inline">\(n(f(X_n) - f(\mu)) \xrightarrow{d} \frac{1}{2}f''(\mu)\chi^2_1\)</span></p>
+<section id="approach-2-problem-hardness" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="approach-2-problem-hardness"><span class="header-section-number">4.2</span> Approach 2: Problem Hardness</h3>
+<p>Quantify hardness of a problem by its minimax rate in some asymptotic regime.</p>
+<p>Caveat: A problem might be easy throughout most of parameter space but very hard in some bizarre corner we never encounter in practice.</p>
 
 
 </section>
