@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-02">
+<meta name="dcterms.date" content="2023-10-26">
 
-<title>Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</title>
+<title>t and F Distributions, Canonical and General Linear Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,22 +124,23 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-to-asymptotic-theory" id="toc-introduction-to-asymptotic-theory" class="nav-link active" data-scroll-target="#introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</a></li>
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence"><span class="header-section-number">2</span> Convergence</a>
+  <li><a href="#t-and-f-distributions" id="toc-t-and-f-distributions" class="nav-link active" data-scroll-target="#t-and-f-distributions"><span class="header-section-number">1</span> t and F Distributions</a>
   <ul class="collapse">
-  <li><a href="#convergence-in-probability" id="toc-convergence-in-probability" class="nav-link" data-scroll-target="#convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</a></li>
-  <li><a href="#convergence-in-distribution" id="toc-convergence-in-distribution" class="nav-link" data-scroll-target="#convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">2.3</span> Example</a></li>
-  <li><a href="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" id="toc-proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="nav-link" data-scroll-target="#proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></a></li>
-  <li><a href="#law-of-large-numbers-lln" id="toc-law-of-large-numbers-lln" class="nav-link" data-scroll-target="#law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</a></li>
-  <li><a href="#central-limit-theorem-clt" id="toc-central-limit-theorem-clt" class="nav-link" data-scroll-target="#central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</a></li>
+  <li><a href="#definitions-and-properties" id="toc-definitions-and-properties" class="nav-link" data-scroll-target="#definitions-and-properties"><span class="header-section-number">1.1</span> Definitions and Properties</a></li>
+  <li><a href="#geometric-interpretation" id="toc-geometric-interpretation" class="nav-link" data-scroll-target="#geometric-interpretation"><span class="header-section-number">1.2</span> Geometric Interpretation</a></li>
+  <li><a href="#geometric-interpretation-continued" id="toc-geometric-interpretation-continued" class="nav-link" data-scroll-target="#geometric-interpretation-continued"><span class="header-section-number">1.3</span> Geometric Interpretation (continued)</a></li>
   </ul></li>
-  <li><a href="#continuous-mapping-theorem" id="toc-continuous-mapping-theorem" class="nav-link" data-scroll-target="#continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</a></li>
-  <li><a href="#slutskys-theorem" id="toc-slutskys-theorem" class="nav-link" data-scroll-target="#slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</a></li>
-  <li><a href="#delta-method" id="toc-delta-method" class="nav-link" data-scroll-target="#delta-method"><span class="header-section-number">5</span> Delta Method</a>
+  <li><a href="#canonical-linear-model" id="toc-canonical-linear-model" class="nav-link" data-scroll-target="#canonical-linear-model"><span class="header-section-number">2</span> Canonical Linear Model</a>
   <ul class="collapse">
-  <li><a href="#example-delta-method-application" id="toc-example-delta-method-application" class="nav-link" data-scroll-target="#example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</a></li>
-  <li><a href="#what-if-mu-0" id="toc-what-if-mu-0" class="nav-link" data-scroll-target="#what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</a></li>
+  <li><a href="#case-1-sigma2-known" id="toc-case-1-sigma2-known" class="nav-link" data-scroll-target="#case-1-sigma2-known"><span class="header-section-number">2.1</span> Case 1: <span class="math inline">\(\sigma^2\)</span> Known</a></li>
+  <li><a href="#case-2-sigma2-unknown" id="toc-case-2-sigma2-unknown" class="nav-link" data-scroll-target="#case-2-sigma2-unknown"><span class="header-section-number">2.2</span> Case 2: <span class="math inline">\(\sigma^2\)</span> Unknown</a></li>
+  </ul></li>
+  <li><a href="#general-linear-model" id="toc-general-linear-model" class="nav-link" data-scroll-target="#general-linear-model"><span class="header-section-number">3</span> General Linear Model</a>
+  <ul class="collapse">
+  <li><a href="#basic-setup" id="toc-basic-setup" class="nav-link" data-scroll-target="#basic-setup"><span class="header-section-number">3.1</span> Basic Setup</a></li>
+  <li><a href="#example-1-linear-regression" id="toc-example-1-linear-regression" class="nav-link" data-scroll-target="#example-1-linear-regression"><span class="header-section-number">3.2</span> Example 1: Linear Regression</a></li>
+  <li><a href="#example-2-two-sample-t-test-equal-variance" id="toc-example-2-two-sample-t-test-equal-variance" class="nav-link" data-scroll-target="#example-2-two-sample-t-test-equal-variance"><span class="header-section-number">3.3</span> Example 2: Two-sample t-test (equal variance)</a></li>
+  <li><a href="#example-3-one-way-anova-fixed-effects" id="toc-example-3-one-way-anova-fixed-effects" class="nav-link" data-scroll-target="#example-3-one-way-anova-fixed-effects"><span class="header-section-number">3.4</span> Example 3: One-way ANOVA (fixed effects)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -149,7 +150,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Asymptotic Theory: Convergence, Continuous Mapping, and Delta Method</h1>
+<h1 class="title">t and F Distributions, Canonical and General Linear Models</h1>
 </div>
 
 
@@ -160,7 +161,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 2, 2023</p>
+      <p class="date">October 26, 2023</p>
     </div>
   </div>
   
@@ -194,123 +195,126 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<section id="introduction-to-asymptotic-theory" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction-to-asymptotic-theory"><span class="header-section-number">1</span> Introduction to Asymptotic Theory</h2>
-<p>So far, everything has been finite sample, often using special properties of model <span class="math inline">\(\cP\)</span> (e.g., exponential family) to do exact calculations. For generic models, exact calculations may be intractable or impossible. However, we may be able to approximate our problem with a simpler problem in which calculations are easy.</p>
-<p>Typically, we approximate by Gaussian by taking the limit as observations <span class="math inline">\(n \to \infty\)</span>. But this is only interesting if the approximation is good for reasonable sample sizes.</p>
-</section>
-<section id="convergence" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="convergence"><span class="header-section-number">2</span> Convergence</h2>
-<p>Let <span class="math inline">\(X_1, X_2, \ldots \in \mathbb{R}^d\)</span> be a sequence of random vectors. We care about two kinds of convergence:</p>
+<section id="t-and-f-distributions" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="t-and-f-distributions"><span class="header-section-number">1</span> t and F Distributions</h2>
+<section id="definitions-and-properties" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="definitions-and-properties"><span class="header-section-number">1.1</span> Definitions and Properties</h3>
 <ol type="1">
-<li>Convergence in probability: <span class="math inline">\(X_n \to\)</span> a constant</li>
-<li>Convergence in distribution: <span class="math inline">\(X_n \to N(0, I_d)\)</span> (usually)</li>
+<li><p><span class="math inline">\(\chi^2_d\)</span>: If <span class="math inline">\(X_i \sim N(0,1)\)</span> iid, then <span class="math inline">\(V = \sum_{i=1}^d X_i^2 \sim \chi^2_d\)</span></p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}[V] = d\)</span>, <span class="math inline">\(\text{Var}(V) = 2d\)</span></li>
+<li>CLT: <span class="math inline">\(V \approx N(d, 2d)\)</span> for large <span class="math inline">\(d\)</span></li>
+</ul></li>
+<li><p><span class="math inline">\(t_d\)</span>: If <span class="math inline">\(Z \sim N(0,1)\)</span> and <span class="math inline">\(V \sim \chi^2_d\)</span> independent, then <span class="math inline">\(T = \frac{Z}{\sqrt{V/d}} \sim t_d\)</span></p>
+<ul>
+<li>Informally: <span class="math inline">\(Y \sim N(\mu, 1)\)</span>, <span class="math inline">\(\hat{\sigma}^2 \sim \frac{\chi^2_d}{d}\)</span>, <span class="math inline">\(\frac{Y - \mu}{\hat{\sigma}} \sim t_d\)</span></li>
+</ul></li>
+<li><p>If <span class="math inline">\(Z \sim N(0,1)\)</span> and <span class="math inline">\(V \sim \chi^2_d\)</span>, <span class="math inline">\(Z/\sqrt{V} \sim t_d\)</span> as <span class="math inline">\(d \to \infty\)</span></p></li>
+<li><p>If <span class="math inline">\(V \sim \chi^2_d\)</span> and <span class="math inline">\(V_2 \sim \chi^2_{d_2}\)</span> independent, <span class="math inline">\(V/V_2 \sim F_{d,d_2}\)</span>, then:</p>
+<p><span class="math inline">\(\frac{V/d}{V_2/d_2} \sim F_{d,d_2}\)</span> as <span class="math inline">\(d,d_2 \to \infty\)</span></p></li>
 </ol>
-<section id="convergence-in-probability" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="convergence-in-probability"><span class="header-section-number">2.1</span> Convergence in Probability</h3>
-<p>We say the sequence converges in probability to <span class="math inline">\(c \in \mathbb{R}^d\)</span> (<span class="math inline">\(X_n \xrightarrow{p} c\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \to 0 \quad \forall \epsilon &gt; 0\]</span></p>
-<p>(Could really be any distance on any <span class="math inline">\(\cX\)</span>)</p>
-<p>Can converge to a r.v. <span class="math inline">\(X\)</span> too, but we don’t need this.</p>
+<p>Note: If <span class="math inline">\(T \sim t_d\)</span>, then <span class="math inline">\(T^2 \sim F_{1,d}\)</span></p>
+<p>Recall: <span class="math inline">\(Z \sim N_d(\mu, \Sigma)\)</span> iff <span class="math inline">\(A Z + b \sim N_d(A\mu + b, A\Sigma A^T)\)</span></p>
 </section>
-<section id="convergence-in-distribution" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="convergence-in-distribution"><span class="header-section-number">2.2</span> Convergence in Distribution</h3>
-<p>We say the sequence converges in distribution to random variable <span class="math inline">\(X\)</span> (<span class="math inline">\(X_n \xrightarrow{d} X\)</span>) if:</p>
-<p><span class="math display">\[\mathbb{E}[f(X_n)] \to \mathbb{E}[f(X)] \text{ for all bounded continuous } f: \cX \to \mathbb{R}\]</span></p>
-<p>Theorem: <span class="math inline">\(X_n, X \in \mathbb{R}\)</span>. Fix <span class="math inline">\(\mathbb{P}(X = x) = 0\)</span>. Let <span class="math inline">\(F_n(x) = \mathbb{P}(X_n \leq x)\)</span>, <span class="math inline">\(F(x) = \mathbb{P}(X \leq x)\)</span>. Then <span class="math inline">\(X_n \xrightarrow{d} X\)</span> iff <span class="math inline">\(F_n(x) \to F(x)\)</span> <span class="math inline">\(\forall x: F\)</span> is continuous at <span class="math inline">\(x\)</span>.</p>
-<p>Also known as weak convergence.</p>
+<section id="geometric-interpretation" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="geometric-interpretation"><span class="header-section-number">1.2</span> Geometric Interpretation</h3>
+<p>Let <span class="math inline">\(X \sim N_n(\mu, I_n)\)</span>, <span class="math inline">\(\mu = \alpha e_1\)</span>, where <span class="math inline">\(\{e_1, \ldots, e_n\}\)</span> is a complete orthonormal basis (e.g., via Gram-Schmidt)</p>
+<p><span class="math inline">\(X = \sum_{i=1}^n \langle X, e_i \rangle e_i = \alpha e_1 + \sum_{i=1}^n Z_i e_i\)</span>, <span class="math inline">\(Z_i \sim N(0,1)\)</span> iid</p>
+<p>New basis: <span class="math inline">\(Z = Q'X\)</span>, <span class="math inline">\(\|X\|^2 = \|Z\|^2\)</span></p>
+<p><span class="math inline">\(\begin{pmatrix} Z_1 \\ Z_{2:n} \end{pmatrix} = \begin{pmatrix} Q_1' \\ Q_{2:n}' \end{pmatrix} X \sim N\left(\begin{pmatrix} \alpha \\ 0 \end{pmatrix}, I_n\right)\)</span></p>
+<p><span class="math inline">\(Z_1 = Q_1' X \sim N(\alpha, 1)\)</span> <span class="math inline">\(Z_{2:n} = Q_{2:n}' X \sim N(0, I_{n-1})\)</span></p>
+<p><span class="math inline">\(S^2 = \|Z_{2:n}\|^2 = \sum_{i=2}^n Z_i^2\)</span> and <span class="math inline">\(Z_1\)</span> independent (we already knew from Basu)</p>
 </section>
-<section id="example" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="example"><span class="header-section-number">2.3</span> Example</h3>
-<p>If <span class="math inline">\(X_n \xrightarrow{d} X \sim g\)</span>, then <span class="math inline">\(X_n \xrightarrow{d} X\)</span>:</p>
-<p><span class="math display">\[F_n(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-1 - \frac{1}{n} &amp; \text{if } x = 0 \\
-0 &amp; \text{if } x &lt; 0
-\end{cases}\]</span></p>
-<p><span class="math display">\[F(x) = \begin{cases}
-1 &amp; \text{if } x &gt; 0 \\
-0 &amp; \text{if } x \leq 0
-\end{cases}\]</span></p>
-</section>
-<section id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="proof-x_n-xrightarrowp-c-implies-x_n-xrightarrowd-c"><span class="header-section-number">2.4</span> Proof: <span class="math inline">\(X_n \xrightarrow{p} c \implies X_n \xrightarrow{d} c\)</span></h3>
-<p>Let <span class="math inline">\(f_\epsilon(x) = \max\{1 - \frac{\|x-c\|}{\epsilon}, 0\}\)</span>. Then <span class="math inline">\(\forall \epsilon &gt; 0\)</span>:</p>
-<p><span class="math display">\[\mathbb{P}(\|X_n - c\| &gt; \epsilon) \leq \mathbb{E}[1 - f_\epsilon(X_n)] \to 0\]</span></p>
-<p><span class="math inline">\(f\)</span> bounded continuous. Note <span class="math inline">\(\mathbb{E}[f(c)] = f(c)\)</span>.</p>
-<p><span class="math inline">\(\forall \epsilon &gt; 0\)</span>, <span class="math inline">\(\exists \delta &gt; 0\)</span> s.t. <span class="math inline">\(\|x - c\| &lt; \delta \implies |f(x) - f(c)| &lt; \epsilon\)</span></p>
-<p><span class="math display">\[|\mathbb{E}[f(X_n)] - f(c)| \leq |\mathbb{E}[f(X_n) - f(c)]1_{\|X_n - c\| &lt; \delta}| + |\mathbb{E}[(f(X_n) - f(c))1_{\|X_n - c\| \geq \delta}]|\]</span> <span class="math display">\[\leq \epsilon + 2\sup |f| \cdot \mathbb{P}(\|X_n - c\| \geq \delta)\]</span></p>
-<p>For sufficiently large <span class="math inline">\(n\)</span>. <span class="math inline">\(\square\)</span></p>
-<p>In a sequence of statistical models <span class="math inline">\(\cP_n = \{P_{n,\theta}: \theta \in \Theta\}\)</span> with <span class="math inline">\(X_n \sim P_{n,\theta}\)</span>, we say <span class="math inline">\(\hat{\theta}_n\)</span> is consistent for <span class="math inline">\(g(\theta)\)</span> if <span class="math inline">\(\hat{\theta}_n \xrightarrow{p} g(\theta)\)</span>, meaning:</p>
-<p><span class="math display">\[\mathbb{P}_\theta(|\hat{\theta}_n - g(\theta)| &gt; \epsilon) \to 0\]</span></p>
-<p>Usually, we omit the index <span class="math inline">\(n\)</span>; sequence is implicit.</p>
-</section>
-<section id="law-of-large-numbers-lln" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="law-of-large-numbers-lln"><span class="header-section-number">2.5</span> Law of Large Numbers (LLN)</h3>
-<p>Let <span class="math inline">\(\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i\)</span></p>
-<p>If <span class="math inline">\(\mathbb{E}|X_i| &lt; \infty\)</span>, <span class="math inline">\(\mathbb{E}X_i = \mu\)</span>, then <span class="math inline">\(\bar{X}_n \xrightarrow{p} \mu\)</span></p>
-</section>
-<section id="central-limit-theorem-clt" class="level3" data-number="2.6">
-<h3 data-number="2.6" class="anchored" data-anchor-id="central-limit-theorem-clt"><span class="header-section-number">2.6</span> Central Limit Theorem (CLT)</h3>
-<p>If <span class="math inline">\(\text{Var}(X_i) = \sigma^2 &lt; \infty\)</span>, then <span class="math inline">\(\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span></p>
-<p>There are stronger versions of both the LLN and CLT, but this will generally be enough for us.</p>
+<section id="geometric-interpretation-continued" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="geometric-interpretation-continued"><span class="header-section-number">1.3</span> Geometric Interpretation (continued)</h3>
+<p>Independent of total magnitude under <span class="math inline">\(H_0\)</span>:</p>
+<ul>
+<li><span class="math inline">\(n\bar{X}^2 = \alpha^2 \sim \text{Gamma}(\frac{1}{2}, \frac{2}{n})\)</span></li>
+<li><span class="math inline">\(\sum_{i=1}^n (X_i - \bar{X})^2 \sim \text{Gamma}(\frac{n-1}{2}, 2)\)</span></li>
+<li><span class="math inline">\(\|X\|^2 = n\bar{X}^2 + \sum_{i=1}^n (X_i - \bar{X})^2 \sim \text{Gamma}(\frac{n}{2}, 2)\)</span></li>
+</ul>
+<p><span class="math inline">\(\frac{n\bar{X}^2}{\sum_{i=1}^n (X_i - \bar{X})^2} \sim \text{Beta}(\frac{1}{2}, \frac{n-1}{2})\)</span> independent of <span class="math inline">\(\|X\|^2\)</span></p>
+<p><span class="math inline">\(F_{1,n-1}\)</span> related to <span class="math inline">\(\text{Beta}(\frac{1}{2}, \frac{n-1}{2})\)</span>: If <span class="math inline">\(U \sim \text{Beta}(\frac{a}{2}, \frac{b}{2})\)</span>, then <span class="math inline">\(\frac{b}{a} \cdot \frac{U}{1-U} \sim F_{a,b}\)</span></p>
 </section>
 </section>
-<section id="continuous-mapping-theorem" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="continuous-mapping-theorem"><span class="header-section-number">3</span> Continuous Mapping Theorem</h2>
-<p>Theorem (Continuous Mapping): Let <span class="math inline">\(g\)</span> be continuous, <span class="math inline">\(X_n, X\)</span> r.v.’s.</p>
-<ol type="1">
-<li>If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{d} g(X)\)</span></li>
-<li>If <span class="math inline">\(X_n \xrightarrow{p} c\)</span>, then <span class="math inline">\(g(X_n) \xrightarrow{p} g(c)\)</span></li>
-</ol>
-<p>Proof: <span class="math inline">\(f\)</span> bounded continuous <span class="math inline">\(\implies f \circ g\)</span> bounded continuous If <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, then <span class="math inline">\(\mathbb{E}[f(g(X_n))] \to \mathbb{E}[f(g(X))]\)</span> <span class="math inline">\(X_n \xrightarrow{p} c\)</span> special case with <span class="math inline">\(X \equiv c\)</span></p>
+<section id="canonical-linear-model" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="canonical-linear-model"><span class="header-section-number">2</span> Canonical Linear Model</h2>
+<p>Assume <span class="math inline">\(Z = \begin{pmatrix} Z_1 \\ Z_2 \end{pmatrix} \sim N\left(\begin{pmatrix} \mu \\ 0 \end{pmatrix}, \sigma^2 I_d\right)\)</span>, <span class="math inline">\(d = d_0 + d_1\)</span>, <span class="math inline">\(\mu \in \mathbb{R}^{d_0}\)</span>, <span class="math inline">\(\sigma^2 &gt; 0\)</span></p>
+<p>Test <span class="math inline">\(H_0: \mu = 0\)</span> vs <span class="math inline">\(H_1: \mu \neq 0\)</span> (or possibly one-sided if <span class="math inline">\(d_0 = 1\)</span>)</p>
+<p>Exponential Family:</p>
+<p><span class="math display">\[f(z) = f(z_0, z_1) = \frac{1}{(2\pi\sigma^2)^{d/2}} \exp\left(-\frac{\|z_1\|^2 + \|z_0 - \mu\|^2}{2\sigma^2}\right)\]</span></p>
+<section id="case-1-sigma2-known" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="case-1-sigma2-known"><span class="header-section-number">2.1</span> Case 1: <span class="math inline">\(\sigma^2\)</span> Known</h3>
+<p>Condition on <span class="math inline">\(Z_1\)</span>, reject for large/small/extreme <span class="math inline">\(Z_0\)</span></p>
+<p><span class="math inline">\(Z_0 \sim N(\mu, \sigma^2 I_{d_0})\)</span></p>
+<p><span class="math inline">\(\chi^2\)</span> test: Reject for large <span class="math inline">\(\|Z_0\|^2\)</span></p>
+<p>t-test: If <span class="math inline">\(d_0 = 1\)</span>, reject for large <span class="math inline">\(|Z_0|\)</span></p>
 </section>
-<section id="slutskys-theorem" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="slutskys-theorem"><span class="header-section-number">4</span> Slutsky’s Theorem</h2>
-<p>Theorem (Slutsky): Assume <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{p} c\)</span>. Then:</p>
-<ol type="1">
-<li><span class="math inline">\(X_n + Y_n \xrightarrow{d} X + c\)</span></li>
-<li><span class="math inline">\(X_n Y_n \xrightarrow{d} cX\)</span></li>
-<li><span class="math inline">\(X_n / Y_n \xrightarrow{d} X/c\)</span> if <span class="math inline">\(c \neq 0\)</span></li>
-</ol>
-<p>Proof: Show <span class="math inline">\((X_n, Y_n) \xrightarrow{d} (X, c)\)</span>, apply continuous mapping.</p>
-<p>Wouldn’t normally be true that <span class="math inline">\(X_n \xrightarrow{d} X\)</span>, <span class="math inline">\(Y_n \xrightarrow{d} Y\)</span> implies <span class="math inline">\(X_n + Y_n \xrightarrow{d} X + Y\)</span> without specifying joint dist.</p>
+<section id="case-2-sigma2-unknown" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="case-2-sigma2-unknown"><span class="header-section-number">2.2</span> Case 2: <span class="math inline">\(\sigma^2\)</span> Unknown</h3>
+<p>Condition on <span class="math inline">\(Z_1\)</span>, <span class="math inline">\(\|Z_1\|^2\)</span>, <span class="math inline">\(\|Z_0\|^2\)</span> sufficient</p>
+<p>Reject for large/small/extreme <span class="math inline">\(Z_0\)</span></p>
+<p>Reject for large <span class="math inline">\(\frac{\|Z_0\|^2/d_0}{\|Z_1\|^2/d_1} \sim F_{d_0,d_1}\)</span> under <span class="math inline">\(H_0\)</span></p>
+<p>F-test: <span class="math inline">\(d_0 &gt; 1\)</span>, Reject for conditionally large <span class="math inline">\(\|Z_0\|^2\)</span></p>
+<p>Reject for large <span class="math inline">\(\frac{\|Z_0\|^2/d_0}{\|Z_1\|^2/d_1} \sim F_{d_0,d_1}\)</span></p>
+<p>t-test: <span class="math inline">\(d_0 = 1\)</span>, Reject for conditionally large <span class="math inline">\(|Z_0|\)</span></p>
+<p>Reject for large <span class="math inline">\(\frac{|Z_0|}{\sqrt{\|Z_1\|^2/d_1}} \sim t_{d_1}\)</span></p>
+<p>Here, <span class="math inline">\(\frac{\|Z_1\|^2}{d_1}\)</span> functioning as estimator of <span class="math inline">\(\sigma^2\)</span>: <span class="math inline">\(\mathbb{E}[\frac{\|Z_1\|^2}{d_1}] = \sigma^2\)</span>, <span class="math inline">\(\text{Var}(\frac{\|Z_1\|^2}{d_1}) = \frac{2\sigma^4}{d_1}\)</span></p>
+<p>General case: <span class="math inline">\(Z \sim N(\mu, \sigma^2 I_d)\)</span>, <span class="math inline">\(\mu \not\in \mathbb{R}^{d_0} \times \{0\}^{d_1}\)</span></p>
+<p>Translate problem:</p>
+<p><span class="math inline">\(Z_0 \sim N_{d_0}(\mu_0, \sigma^2 I_{d_0})\)</span> <span class="math inline">\(Z_1 \sim N_{d_1}(\mu_1, \sigma^2 I_{d_1})\)</span></p>
+<p>Can do some tests with <span class="math inline">\(Z - \mu_1\)</span> replacing <span class="math inline">\(Z\)</span></p>
+<p>Invert: <span class="math inline">\(1-\alpha\)</span> CI: <span class="math inline">\(\mu_0 \in Z_0 \pm \sigma t_{d_1,1-\alpha/2} \sqrt{\frac{\|Z_1 - \mu_1\|^2}{d_1}}\)</span></p>
+<p><span class="math inline">\(1-\alpha\)</span> confidence ellipsoid: <span class="math inline">\(\|\mu_0 - Z_0\|^2 \leq \frac{d_0}{d_1} \|Z_1 - \mu_1\|^2 F_{d_0,d_1,1-\alpha}\)</span></p>
+<p><span class="math inline">\(1-\alpha\)</span> prediction interval: <span class="math inline">\(Z_{\text{new}} \in Z_0 \pm \sigma t_{d_1,1-\alpha/2} \sqrt{1 + \frac{\|Z_1 - \mu_1\|^2}{d_1}}\)</span></p>
 </section>
-<section id="delta-method" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="delta-method"><span class="header-section-number">5</span> Delta Method</h2>
-<p>Theorem (Delta Method): If <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \sigma^2)\)</span> <span class="math inline">\(f(x)\)</span> differentiable at <span class="math inline">\(x = \mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Instant: <span class="math inline">\(X \sim N(\mu, \sigma^2/n) \implies f(X) \sim N(f(\mu), [f'(\mu)]^2 \sigma^2/n + o(1/n))\)</span></p>
-<p>Proof: <span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + o(X_n - \mu)\)</span> <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) = f'(\mu)\sqrt{n}(X_n - \mu) + \sqrt{n}o(X_n - \mu)\)</span> <span class="math inline">\(N(0, \sigma^2) + 0 \xrightarrow{d} N(0, [f'(\mu)]^2 \sigma^2)\)</span></p>
-<p>Multivariate: <span class="math inline">\(\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)\)</span>, <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}^k\)</span> Derivative <span class="math inline">\(Df(\mu)\)</span> exists at <span class="math inline">\(\mu\)</span></p>
-<p>Then <span class="math inline">\(\sqrt{n}(f(X_n) - f(\mu)) \xrightarrow{d} N(0, Df(\mu) \Sigma Df(\mu)^T)\)</span></p>
-<p><span class="math inline">\(N(f(\mu), Df(\mu) \Sigma Df(\mu)^T/n + o(1/n))\)</span> if <span class="math inline">\(k=1\)</span></p>
-<section id="example-delta-method-application" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="example-delta-method-application"><span class="header-section-number">5.1</span> Example: Delta Method Application</h3>
-<p><span class="math inline">\(X_1, \ldots, X_n \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(Y_1, \ldots, Y_m \sim \text{Unif}[0, \theta]\)</span> iid <span class="math inline">\(X, Y\)</span> independent</p>
-<p>For large <span class="math inline">\(n, m\)</span>, what is the distribution of <span class="math inline">\(T = \frac{\bar{X}}{\bar{Y}}\)</span>?</p>
-<ol type="1">
-<li><span class="math inline">\(\sqrt{n}(\bar{X} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(n \to \infty\)</span></li>
-<li><span class="math inline">\(\sqrt{m}(\bar{Y} - \frac{\theta}{2}) \xrightarrow{d} N(0, \frac{\theta^2}{12})\)</span> as <span class="math inline">\(m \to \infty\)</span></li>
-</ol>
-<p><span class="math inline">\(T_n = \frac{\bar{X}}{\bar{Y}} = \frac{\theta/2}{\theta/2} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></p>
-<p>Let <span class="math inline">\(f(x,y) = x/y\)</span></p>
-<p><span class="math inline">\(f_x'(\frac{\theta}{2}, \frac{\theta}{2}) = \frac{1}{\theta/2} = \frac{2}{\theta}\)</span> <span class="math inline">\(f_y'(\frac{\theta}{2}, \frac{\theta}{2}) = -\frac{\theta/2}{(\theta/2)^2} = -\frac{2}{\theta}\)</span></p>
-<p><span class="math inline">\(f'(\frac{\theta}{2}, \frac{\theta}{2}) = (\frac{2}{\theta}, -\frac{2}{\theta})\)</span></p>
-<p><span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{1}{n} + \frac{4}{\theta^2} \cdot \frac{\theta^2}{12} \cdot \frac{n}{m})\)</span></p>
-<p><span class="math inline">\(= N(0, \frac{1}{3n} + \frac{1}{3m})\)</span></p>
-<p>More accurate: <span class="math inline">\(\sqrt{n}(T_n - 1) \xrightarrow{d} N(0, \frac{4}{3}(1 + \frac{n}{m}))\)</span></p>
 </section>
-<section id="what-if-mu-0" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="what-if-mu-0"><span class="header-section-number">5.2</span> What if <span class="math inline">\(\mu = 0\)</span>?</h3>
-<ol start="3" type="1">
-<li>What if <span class="math inline">\(\mu_1 = \mu_2 = 0\)</span>? Conclusion still holds: <span class="math inline">\(T_n = \frac{1 + O_p(n^{-1/2})}{1 + O_p(m^{-1/2})} = 1 + O_p(n^{-1/2} + m^{-1/2})\)</span></li>
-</ol>
-<p>Note: <span class="math inline">\(\frac{1}{1 + n^{-1/2}} \to 1\)</span> (continuous mapping) Not Slutsky</p>
-<p>So <span class="math inline">\(n(T_n - 1)^2 \xrightarrow{d} \chi^2_1\)</span> (continuous mapping) Why not delta method?</p>
-<p>In general, can do higher-order Taylor expansions for delta method if derivatives <span class="math inline">\(\neq 0\)</span>:</p>
-<p><span class="math inline">\(f(X_n) = f(\mu) + f'(\mu)(X_n - \mu) + \frac{1}{2}f''(\mu)(X_n - \mu)^2 + O_p(n^{-3/2})\)</span></p>
-<p>If <span class="math inline">\(f'(\mu) = 0\)</span>, use second-order term: <span class="math inline">\(n(f(X_n) - f(\mu)) \xrightarrow{d} \frac{1}{2}f''(\mu)\chi^2_1\)</span></p>
+<section id="general-linear-model" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="general-linear-model"><span class="header-section-number">3</span> General Linear Model</h2>
+<p>Many problems can be put into canonical linear model after change of basis.</p>
+<section id="basic-setup" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="basic-setup"><span class="header-section-number">3.1</span> Basic Setup</h3>
+<p>Observe <span class="math inline">\(Y \sim N(X\beta, \sigma^2 I_n)\)</span>, <span class="math inline">\(\sigma^2\)</span> known or unknown Test <span class="math inline">\(\beta \in \Theta_0\)</span> vs <span class="math inline">\(\beta \in \Theta_1\)</span> where <span class="math inline">\(\Theta_0 \subset \Theta_1\)</span> are subspaces of <span class="math inline">\(\mathbb{R}^p\)</span> <span class="math inline">\(\text{dim}(\Theta_0) = d_0\)</span>, <span class="math inline">\(\text{dim}(\Theta_1) = d = d_0 + d_1\)</span></p>
+<p>Idea: rotate into canonical form</p>
+<p><span class="math inline">\(d_0\)</span>, <span class="math inline">\(d_1\)</span>, <span class="math inline">\(n-d\)</span> <span class="math inline">\(\Theta_0\)</span>, <span class="math inline">\(\Theta_1 \setminus \Theta_0\)</span>, <span class="math inline">\(\mathbb{R}^n \setminus \Theta_1\)</span></p>
+<p><span class="math inline">\(Q = (Q_0 | Q_1 | Q_2)\)</span> orthonormal basis for <span class="math inline">\((\Theta_0 | \Theta_1 \setminus \Theta_0 | \mathbb{R}^n \setminus \Theta_1)\)</span></p>
+<p><span class="math inline">\(Z = Q'Y \sim N_n(Q'\beta, \sigma^2 I_n)\)</span></p>
+<p><span class="math inline">\(H_0: Q_1'\beta = 0\)</span></p>
+<p>Do <span class="math inline">\(Z\)</span> <span class="math inline">\(\chi^2\)</span> or <span class="math inline">\(F\)</span> test as appropriate</p>
+</section>
+<section id="example-1-linear-regression" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="example-1-linear-regression"><span class="header-section-number">3.2</span> Example 1: Linear Regression</h3>
+<p><span class="math inline">\(Y_i = X_i'\beta + \epsilon_i\)</span>, <span class="math inline">\(\epsilon_i \sim N(0, \sigma^2)\)</span> <span class="math inline">\(Y \sim N_n(X\beta, \sigma^2 I_n)\)</span>, <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span></p>
+<p>Assume <span class="math inline">\(X\)</span> has full column rank <span class="math inline">\(\Theta = X\beta \in \Theta = \text{Span}(X_1, \ldots, X_p)\)</span></p>
+<p><span class="math inline">\(H_0: \beta = (\beta_0', 0')' \in \Theta_0 = \text{Span}(X_1, \ldots, X_q)\)</span> or <span class="math inline">\(\beta_q = 0\)</span> if <span class="math inline">\(d_1 = 1\)</span></p>
+<p><span class="math inline">\(\|\hat{\beta} - \beta\|^2 = \|Y - \text{Proj}_\Theta Y\|^2\)</span> <span class="math inline">\(\hat{\beta} = \arg\min_\beta \|Y - X\beta\|^2 = (X'X)^{-1}X'Y\)</span></p>
+<p><span class="math inline">\(\hat{Y} = X\hat{\beta}\)</span></p>
+<p>Residual sum of squares (RSS): <span class="math inline">\(\|Y - \hat{Y}\|^2 = \|Y - X\hat{\beta}\|^2\)</span> <span class="math inline">\(\text{RSS}_0 - \text{RSS}_1\)</span></p>
+<p>F-statistic is:</p>
+<p><span class="math display">\[F = \frac{(\text{RSS}_0 - \text{RSS}_1)/d_1}{\text{RSS}_1/(n-d)} \sim F_{d_1,n-d}\]</span></p>
+<p><span class="math inline">\(n-d\)</span> called residual degrees of freedom</p>
+<p>Let <span class="math inline">\(X = (X_0 | X_1)\)</span>, <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span> Let <span class="math inline">\(X_1^\perp = X_1 - \text{Proj}_{X_0} X_1\)</span> <span class="math inline">\(X = (X_0 | X_0^\perp)\)</span></p>
+<p>Reparametrize: <span class="math inline">\(X_1^\perp \beta_1 = X_1 \beta_1 - X_0 \beta_0\)</span> <span class="math inline">\(\Theta = X\beta = X_0 \beta_0 + X_1^\perp \beta_1\)</span></p>
+<p><span class="math inline">\(\hat{\beta}_1 = (X_1^{\perp'} X_1^\perp)^{-1} X_1^{\perp'} Y\)</span> <span class="math inline">\(\|\hat{\beta}_1\|^2 = \text{RSS}_0 - \text{RSS}_1\)</span> <span class="math inline">\(\text{SE}(\hat{\beta}_1) = \hat{\sigma}^2 (X_1^{\perp'} X_1^\perp)^{-1}\)</span></p>
+<p>t-statistic: <span class="math inline">\(t = \frac{\hat{\beta}_1}{\text{SE}(\hat{\beta}_1)} \sim t_{n-d}\)</span></p>
+</section>
+<section id="example-2-two-sample-t-test-equal-variance" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="example-2-two-sample-t-test-equal-variance"><span class="header-section-number">3.3</span> Example 2: Two-sample t-test (equal variance)</h3>
+<p><span class="math inline">\(Y_1, \ldots, Y_n \sim N(\mu_1, \sigma^2)\)</span>, <span class="math inline">\(Y_{n+1}, \ldots, Y_{n+m} \sim N(\mu_2, \sigma^2)\)</span></p>
+<p><span class="math inline">\(Y = (Y_1, \ldots, Y_{n+m})'\)</span>, <span class="math inline">\(\mathbb{E}[Y] = \mu_1 1_n + \mu_2 1_m\)</span> Model: <span class="math inline">\(\Theta = \text{Span}(1_{n+m}, (1_n', 0_m')')\)</span></p>
+<p><span class="math inline">\(H_0: \mu_1 = \mu_2 \implies \Theta_0 = \text{Span}(1_{n+m})\)</span></p>
+<p><span class="math inline">\(d_0 = 1\)</span>, <span class="math inline">\(d = 2\)</span>, <span class="math inline">\(d_1 = n+m-2\)</span></p>
+<p>Orthogonalize <span class="math inline">\(1_{n+m}\)</span></p>
+<p>Reject for large:</p>
+<p><span class="math display">\[t = \frac{\bar{Y}_1 - \bar{Y}_2}{\hat{\sigma}\sqrt{\frac{1}{n} + \frac{1}{m}}} \sim t_{n+m-2}\]</span></p>
+<p>where <span class="math inline">\(\hat{\sigma}^2 = \frac{\sum_{i=1}^n (Y_i - \bar{Y}_1)^2 + \sum_{i=1}^m (Y_i - \bar{Y}_2)^2}{n+m-2}\)</span></p>
+</section>
+<section id="example-3-one-way-anova-fixed-effects" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="example-3-one-way-anova-fixed-effects"><span class="header-section-number">3.4</span> Example 3: One-way ANOVA (fixed effects)</h3>
+<p><span class="math inline">\(Y_{ki} \sim N(\mu_k, \sigma^2)\)</span>, <span class="math inline">\(k=1,\ldots,m\)</span>, <span class="math inline">\(i=1,\ldots,n\)</span></p>
+<p><span class="math inline">\(H_0: \mu_1 = \cdots = \mu_m\)</span></p>
+<p><span class="math inline">\(Y_{ki} = \mu + \alpha_k + \epsilon_{ki}\)</span>, <span class="math inline">\(\sum \alpha_k = 0\)</span></p>
+<p><span class="math inline">\(\bar{Y}_{k\cdot} = \frac{1}{n} \sum_{i=1}^n Y_{ki}\)</span>, ${Y} = \frac{1}{mn</p>
 
 
 </section>
