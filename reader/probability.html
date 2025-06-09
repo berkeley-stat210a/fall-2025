@@ -424,44 +424,103 @@ P_Z(A) = \PP(Z \in A) = \int_A \phi(x)\,d x, \quad \text{ where } \;\phi(x) = \f
 \]</span></p>
 <p>For example, we could take the sequence of simple functions <span class="math display">\[f_n(x) = \sum_{k=0}^{\infty} k 2^{-n} 1_{A_{n,k}}(x),\quad \text{ where } A_{n,k} = \left\{x:\; f(x) \in \left[k 2^{-n}, (k+1) 2^{-n}\right)\right\},\]</span> as illustrated in the picture below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" data-startfrom="137" data-source-offset="-34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 136;"><span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> (x) <span class="kw">=&gt;</span> (<span class="dv">1</span> <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> x <span class="op">*</span> x)</span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="co">// Define our target function f(x) = 3*phi(x-4) + 5*phi(x-7)</span></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="dv">3</span> <span class="op">*</span> <span class="fu">phi</span>(x <span class="op">-</span> <span class="dv">4</span>) <span class="op">+</span> <span class="dv">5</span> <span class="op">*</span> <span class="fu">phi</span>(x <span class="op">-</span> <span class="dv">7</span>)</span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="co">// Create data points for the function</span></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMin <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMax <span class="op">=</span> <span class="dv">11</span><span class="op">;</span></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> numPoints <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dx <span class="op">=</span> (xMax <span class="op">-</span> xMin) <span class="op">/</span> (numPoints <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> numPoints}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> xMin <span class="op">+</span> i <span class="op">*</span> dx<span class="op">;</span></span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">f</span>(x)}<span class="op">;</span></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Target Function f(x) = 3φ(x-4) + 5φ(x-7)"</span><span class="op">,</span></span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">11</span>]<span class="op">,</span></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelFontSize</span><span class="op">:</span> <span class="dv">24</span></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)) <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"f(x)"</span><span class="op">,</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelFontSize</span><span class="op">:</span> <span class="dv">24</span></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="139" data-source-offset="-35"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 138;"><span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> (x) <span class="kw">=&gt;</span> (<span class="dv">1</span> <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> x <span class="op">*</span> x)</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="co">// Define our target function f(x) = 3*phi(x-4) + 5*phi(x-7)</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="dv">3</span> <span class="op">*</span> <span class="fu">phi</span>(x <span class="op">-</span> <span class="dv">4</span>) <span class="op">+</span> <span class="dv">5</span> <span class="op">*</span> <span class="fu">phi</span>(x <span class="op">-</span> <span class="dv">7</span>)</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="co">// Slider for n value</span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>viewof n <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"n"</span>})</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate c_n = 2^(-n)</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>c_n <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">2</span><span class="op">,</span> <span class="op">-</span>n)</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="co">// Define the simple function f_n(x) - f(x) rounded down to nearest multiple of c_n</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>f_n <span class="op">=</span> (x) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fValue <span class="op">=</span> <span class="fu">f</span>(x)<span class="op">;</span></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(fValue <span class="op">/</span> c_n) <span class="op">*</span> c_n<span class="op">;</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="co">// Create data points for both functions</span></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMin <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMax <span class="op">=</span> <span class="dv">11</span><span class="op">;</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> numPoints <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dx <span class="op">=</span> (xMax <span class="op">-</span> xMin) <span class="op">/</span> (numPoints <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> numPoints}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> xMin <span class="op">+</span> i <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> </span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>      <span class="dt">f_original</span><span class="op">:</span> <span class="fu">f</span>(x)<span class="op">,</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>      <span class="dt">f_simple</span><span class="op">:</span> <span class="fu">f_n</span>(x)</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">120</span><span class="op">,</span></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"18px"</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">11</span>]<span class="op">,</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">60</span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"f(x)"</span><span class="op">,</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">70</span></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"f_original"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"f_simple"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Approximating a smooth function from below with simple functions`</span>]<span class="op">,</span> {</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">5.5</span><span class="op">,</span> </span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">1.15</span><span class="op">,</span> </span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">18</span><span class="op">,</span> </span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">"bold"</span><span class="op">,</span></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Legend with colored lines</span></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">9.2</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">0.95</span>}<span class="op">,</span> </span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>                {<span class="dt">x</span><span class="op">:</span> <span class="fl">9.8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">0.95</span>}]<span class="op">,</span> {</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"f(x)"</span>]<span class="op">,</span> {</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> </span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">0.95</span><span class="op">,</span> </span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">9.2</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">0.88</span>}<span class="op">,</span> </span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>                {<span class="dt">x</span><span class="op">:</span> <span class="fl">9.8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">0.88</span>}]<span class="op">,</span> {</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`fₙ(x)`</span>]<span class="op">,</span> {</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> </span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">f_original</span>)) <span class="op">*</span> <span class="fl">0.88</span><span class="op">,</span> </span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -485,7 +544,28 @@ P_Z(A) = \PP(Z \in A) = \int_A \phi(x)\,d x, \quad \text{ where } \;\phi(x) = \f
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-1-4" data-nodetype="expression">
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="expression">
 
 </div>
 </div>
@@ -652,7 +732,7 @@ P(A) = \int 1_A(x) p(x)\,d\mu(x), \quad \text{ for all } A \in \cF,
 </ol>
 </section></div></main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"// Define the standard normal PDF\nphi = (x) => (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x)\n\n// Define our target function f(x) = 3*phi(x-4) + 5*phi(x-7)\nf = (x) => 3 * phi(x - 4) + 5 * phi(x - 7)\n\n// Create data points for the function\ndata = {\n  const xMin = 0;\n  const xMax = 11;\n  const numPoints = 1000;\n  const dx = (xMax - xMin) / (numPoints - 1);\n  \n  return Array.from({length: numPoints}, (_, i) => {\n    const x = xMin + i * dx;\n    return {x: x, y: f(x)};\n  });\n}\n\n// Create the plot\nPlot.plot({\n  title: \"Target Function f(x) = 3φ(x-4) + 5φ(x-7)\",\n  width: 800,\n  height: 400,\n  x: {\n    domain: [0, 11],\n    label: \"x\",\n    labelFontSize: 24\n  },\n  y: {\n    domain: [0, Math.max(...data.map(d => d.y)) * 1.1],\n    label: \"f(x)\",\n    labelFontSize: 24\n  },\n  marks: [\n    Plot.line(data, {x: \"x\", y: \"y\", stroke: \"steelblue\", strokeWidth: 2}),\n    Plot.ruleY([0])\n  ]\n})\n"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\n// Define the standard normal PDF\nphi = (x) => (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x)\n\n// Define our target function f(x) = 3*phi(x-4) + 5*phi(x-7)\nf = (x) => 3 * phi(x - 4) + 5 * phi(x - 7)\n\n// Slider for n value\nviewof n = Inputs.range([0, 5], {value: 2, step: 1, label: \"n\"})\n\n// Calculate c_n = 2^(-n)\nc_n = Math.pow(2, -n)\n\n// Define the simple function f_n(x) - f(x) rounded down to nearest multiple of c_n\nf_n = (x) => {\n  const fValue = f(x);\n  return Math.floor(fValue / c_n) * c_n;\n}\n\n// Create data points for both functions\ndata = {\n  const xMin = 0;\n  const xMax = 11;\n  const numPoints = 1000;\n  const dx = (xMax - xMin) / (numPoints - 1);\n  \n  return Array.from({length: numPoints}, (_, i) => {\n    const x = xMin + i * dx;\n    return {\n      x: x, \n      f_original: f(x),\n      f_simple: f_n(x)\n    };\n  });\n}\n\n// Create the plot\nPlot.plot({\n  width: 800,\n  height: 400,\n  marginTop: 60,\n  marginLeft: 100,\n  marginBottom: 100,\n  marginRight: 120,\n  style: {\n    fontSize: \"18px\"\n  },\n  x: {\n    domain: [0, 11],\n    label: \"x\",\n    labelAnchor: \"center\",\n    labelOffset: 60\n  },\n  y: {\n    domain: [0, Math.max(...data.map(d => d.f_original)) * 1.1],\n    label: \"f(x)\",\n    labelAnchor: \"center\",\n    labelOffset: 70\n  },\n  marks: [\n    Plot.line(data, {x: \"x\", y: \"f_original\", stroke: \"steelblue\", strokeWidth: 2}),\n    Plot.line(data, {x: \"x\", y: \"f_simple\", stroke: \"red\", strokeWidth: 2}),\n    Plot.ruleY([0]),\n    Plot.text([`Approximating a smooth function from below with simple functions`], {\n      x: 5.5, \n      y: Math.max(...data.map(d => d.f_original)) * 1.15, \n      fontSize: 18, \n      fontWeight: \"bold\",\n      textAnchor: \"middle\"\n    }),\n    // Legend with colored lines\n    Plot.lineX([{x: 9.2, y: Math.max(...data.map(d => d.f_original)) * 0.95}, \n                {x: 9.8, y: Math.max(...data.map(d => d.f_original)) * 0.95}], {\n      x: \"x\", y: \"y\",\n      stroke: \"steelblue\",\n      strokeWidth: 2\n    }),\n    Plot.text([\"f(x)\"], {\n      x: 10, \n      y: Math.max(...data.map(d => d.f_original)) * 0.95, \n      fontSize: 16,\n      fill: \"black\",\n      textAnchor: \"start\"\n    }),\n    Plot.lineX([{x: 9.2, y: Math.max(...data.map(d => d.f_original)) * 0.88}, \n                {x: 9.8, y: Math.max(...data.map(d => d.f_original)) * 0.88}], {\n      x: \"x\", y: \"y\",\n      stroke: \"red\",\n      strokeWidth: 2\n    }),\n    Plot.text([`fₙ(x)`], {\n      x: 10, \n      y: Math.max(...data.map(d => d.f_original)) * 0.88, \n      fontSize: 16,\n      fill: \"black\",\n      textAnchor: \"start\"\n    })\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('n')"}]}
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
