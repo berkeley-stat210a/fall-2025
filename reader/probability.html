@@ -424,113 +424,44 @@ P_Z(A) = \PP(Z \in A) = \int_A \phi(x)\,d x, \quad \text{ where } \;\phi(x) = \f
 \]</span></p>
 <p>For example, we could take the sequence of simple functions <span class="math display">\[f_n(x) = \sum_{k=0}^{\infty} k 2^{-n} 1_{A_{n,k}}(x),\quad \text{ where } A_{n,k} = \left\{x:\; f(x) \in \left[k 2^{-n}, (k+1) 2^{-n}\right)\right\},\]</span> as illustrated in the picture below.</p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="139" data-source-offset="-35"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 138;"><span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>Plot <span class="op">=</span> <span class="pp">require</span>(<span class="st">"@observablehq/plot"</span>)</span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>d3 <span class="op">=</span> <span class="pp">require</span>(<span class="st">"d3"</span>)</span>
+<div class="sourceCode cell-code" id="cb1" data-startfrom="137" data-source-offset="-34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 136;"><span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> (x) <span class="kw">=&gt;</span> (<span class="dv">1</span> <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> x <span class="op">*</span> x)</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="co">// Define our target function f(x) = 3*phi(x-4) + 5*phi(x-7)</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="dv">3</span> <span class="op">*</span> <span class="fu">phi</span>(x <span class="op">-</span> <span class="dv">4</span>) <span class="op">+</span> <span class="dv">5</span> <span class="op">*</span> <span class="fu">phi</span>(x <span class="op">-</span> <span class="dv">7</span>)</span>
 <span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="co">// Define the Gaussian function</span></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">gaussian</span>(x<span class="op">,</span> mu <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> sigma <span class="op">=</span> <span class="dv">1</span>) {</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (<span class="dv">1</span> <span class="op">/</span> (sigma <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>))) <span class="op">*</span> </span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>((x <span class="op">-</span> mu) <span class="op">/</span> sigma<span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="co">// Define our function f(x) = 3g(x-4) + 5g(x-7)</span></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f</span>(x) {</span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">3</span> <span class="op">*</span> <span class="fu">gaussian</span>(x <span class="op">-</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>) <span class="op">+</span> <span class="fl">4.8</span> <span class="op">*</span> <span class="fu">gaussian</span>(x <span class="op">-</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="co">// Create a slider for 'c'</span></span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>viewof c <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">4</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"n"</span>})</span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="co">// Generate x values</span></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>xValues <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">13</span><span class="op">,</span> <span class="fl">0.01</span>)</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate y values</span></span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> xValues<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">f</span>(x)}))</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate Lebesgue sets with multiple intervals</span></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">calculateLebesgueSets</span>(data<span class="op">,</span> c) {</span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> maxY <span class="op">=</span> d3<span class="op">.</span><span class="fu">max</span>(data<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)<span class="op">;</span></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sets <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">ceil</span>(maxY <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">2</span><span class="op">,</span> c)))<span class="op">.</span><span class="fu">map</span>(k <span class="kw">=&gt;</span> {</span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> lower <span class="op">=</span> k <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">2</span><span class="op">,</span> <span class="op">-</span>c)<span class="op">;</span></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> upper <span class="op">=</span> (k <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">2</span><span class="op">,</span> <span class="op">-</span>c)<span class="op">;</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> points <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span> <span class="op">&gt;</span> lower <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">y</span> <span class="op">&lt;=</span> upper)<span class="op">;</span></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (points<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Identify distinct intervals</span></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> intervals <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> currentInterval <span class="op">=</span> [points[<span class="dv">0</span>]]<span class="op">;</span></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> points<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (points[i]<span class="op">.</span><span class="at">x</span> <span class="op">-</span> points[i<span class="op">-</span><span class="dv">1</span>]<span class="op">.</span><span class="at">x</span> <span class="op">&lt;=</span> <span class="fl">0.011</span>) { <span class="co">// Allow small gaps</span></span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>          currentInterval<span class="op">.</span><span class="fu">push</span>(points[i])<span class="op">;</span></span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>          intervals<span class="op">.</span><span class="fu">push</span>(currentInterval)<span class="op">;</span></span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>          currentInterval <span class="op">=</span> [points[i]]<span class="op">;</span></span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>      intervals<span class="op">.</span><span class="fu">push</span>(currentInterval)<span class="op">;</span></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> {</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>        k<span class="op">,</span></span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>        lower<span class="op">,</span></span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>        upper<span class="op">,</span></span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>        <span class="dt">intervals</span><span class="op">:</span> intervals<span class="op">.</span><span class="fu">map</span>(interval <span class="kw">=&gt;</span> ({</span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>          <span class="dt">xMin</span><span class="op">:</span> d3<span class="op">.</span><span class="fu">min</span>(interval<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)<span class="op">,</span></span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>          <span class="dt">xMax</span><span class="op">:</span> d3<span class="op">.</span><span class="fu">max</span>(interval<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)<span class="op">,</span></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>          <span class="dt">points</span><span class="op">:</span> interval</span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>        }))</span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>      }<span class="op">;</span></span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>  })<span class="op">.</span><span class="fu">filter</span>(<span class="kw">set</span> <span class="kw">=&gt;</span> <span class="kw">set</span> <span class="op">!==</span> <span class="kw">null</span>)<span class="op">;</span></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> sets<span class="op">;</span></span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>lebesgueSets <span class="op">=</span> <span class="fu">calculateLebesgueSets</span>(data<span class="op">,</span> c)</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>plot <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">1</span>})<span class="op">,</span></span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(lebesgueSets<span class="op">.</span><span class="fu">flatMap</span>(<span class="kw">set</span> <span class="kw">=&gt;</span> <span class="kw">set</span><span class="op">.</span><span class="at">intervals</span><span class="op">.</span><span class="fu">flatMap</span>(int <span class="kw">=&gt;</span> int<span class="op">.</span><span class="at">points</span>))<span class="op">,</span> {</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> </span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="at">schemeCategory10</span>[lebesgueSets<span class="op">.</span><span class="fu">findIndex</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="at">intervals</span><span class="op">.</span><span class="fu">some</span>(int <span class="kw">=&gt;</span> int<span class="op">.</span><span class="at">points</span><span class="op">.</span><span class="fu">includes</span>(d))) <span class="op">%</span> <span class="dv">10</span>]<span class="op">,</span></span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>      <span class="dt">r</span><span class="op">:</span> <span class="dv">2</span></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">rectY</span>(lebesgueSets<span class="op">.</span><span class="fu">flatMap</span>(<span class="kw">set</span> <span class="kw">=&gt;</span> </span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>      <span class="kw">set</span><span class="op">.</span><span class="at">intervals</span><span class="op">.</span><span class="fu">map</span>(int <span class="kw">=&gt;</span> ({</span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x1</span><span class="op">:</span> int<span class="op">.</span><span class="at">xMin</span><span class="op">,</span></span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x2</span><span class="op">:</span> int<span class="op">.</span><span class="at">xMax</span><span class="op">,</span></span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y1</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y2</span><span class="op">:</span> <span class="kw">set</span><span class="op">.</span><span class="at">lower</span><span class="op">,</span></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>        <span class="dt">color</span><span class="op">:</span> <span class="kw">set</span><span class="op">.</span><span class="at">k</span></span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>      }))</span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>    )<span class="op">,</span> {</span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x1</span><span class="op">:</span> <span class="st">"x1"</span><span class="op">,</span></span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x2</span><span class="op">:</span> <span class="st">"x2"</span><span class="op">,</span></span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y1</span><span class="op">:</span> <span class="st">"y1"</span><span class="op">,</span></span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y2</span><span class="op">:</span> <span class="st">"y2"</span><span class="op">,</span></span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="at">schemeCategory10</span>[d<span class="op">.</span><span class="at">color</span> <span class="op">%</span> <span class="dv">10</span>]<span class="op">,</span></span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span><span class="op">,</span></span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> d <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="at">schemeCategory10</span>[d<span class="op">.</span><span class="at">color</span> <span class="op">%</span> <span class="dv">10</span>]<span class="op">,</span></span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.5</span></span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">max</span>(data<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>) <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"f(x)"</span></span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">13</span>]<span class="op">,</span></span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span></span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>    <span class="dt">backgroundColor</span><span class="op">:</span> <span class="st">"white"</span></span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
-<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span></span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="co">// Create data points for the function</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMin <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMax <span class="op">=</span> <span class="dv">11</span><span class="op">;</span></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> numPoints <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dx <span class="op">=</span> (xMax <span class="op">-</span> xMin) <span class="op">/</span> (numPoints <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> numPoints}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> xMin <span class="op">+</span> i <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">f</span>(x)}<span class="op">;</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Target Function f(x) = 3φ(x-4) + 5φ(x-7)"</span><span class="op">,</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">11</span>]<span class="op">,</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelFontSize</span><span class="op">:</span> <span class="dv">24</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)) <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"f(x)"</span><span class="op">,</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelFontSize</span><span class="op">:</span> <span class="dv">24</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -554,54 +485,113 @@ P_Z(A) = \PP(Z \in A) = \int_A \phi(x)\,d x, \quad \text{ where } \;\phi(x) = \f
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-1-4" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-5" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-6" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-7" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-8" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-9" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-10" data-nodetype="declaration">
+<div id="ojs-cell-1-4" data-nodetype="expression">
 
 </div>
 </div>
 </div>
 </div>
+<p>Old version:</p>
+<!-- ```{ojs} -->
+<!-- //| echo: false -->
+<!-- // Import libraries using require -->
+<!-- Plot = require("@observablehq/plot") -->
+<!-- d3 = require("d3") -->
+<!-- // Define the Gaussian function -->
+<!-- function gaussian(x, mu = 0, sigma = 1) { -->
+<!--   return (1 / (sigma * Math.sqrt(2 * Math.PI))) *  -->
+<!--     Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2)); -->
+<!-- } -->
+<!-- // Define our function f(x) = 3g(x-4) + 5g(x-7) -->
+<!-- function f(x) { -->
+<!--   return 3 * gaussian(x - 4, 0, 1) + 4.8 * gaussian(x - 7, 0, 1); -->
+<!-- } -->
+<!-- // Create a slider for 'c' -->
+<!-- viewof c = Inputs.range([0, 4], {step: 1, label: "n"}) -->
+<!-- // Generate x values -->
+<!-- xValues = d3.range(-2, 13, 0.01) -->
+<!-- // Calculate y values -->
+<!-- data = xValues.map(x => ({x, y: f(x)})) -->
+<!-- // Calculate Lebesgue sets with multiple intervals -->
+<!-- function calculateLebesgueSets(data, c) { -->
+<!--   const maxY = d3.max(data, d => d.y); -->
+<!--   const sets = d3.range(0, Math.ceil(maxY * Math.pow(2, c))).map(k => { -->
+<!--     const lower = k * Math.pow(2, -c); -->
+<!--     const upper = (k + 1) * Math.pow(2, -c); -->
+<!--     const points = data.filter(d => d.y > lower && d.y <= upper); -->
+<!--     if (points.length > 0) { -->
+<!--       // Identify distinct intervals -->
+<!--       const intervals = []; -->
+<!--       let currentInterval = [points[0]]; -->
+<!--       for (let i = 1; i < points.length; i++) { -->
+<!--         if (points[i].x - points[i-1].x <= 0.011) { // Allow small gaps -->
+<!--           currentInterval.push(points[i]); -->
+<!--         } else { -->
+<!--           intervals.push(currentInterval); -->
+<!--           currentInterval = [points[i]]; -->
+<!--         } -->
+<!--       } -->
+<!--       intervals.push(currentInterval); -->
+<!--       return { -->
+<!--         k, -->
+<!--         lower, -->
+<!--         upper, -->
+<!--         intervals: intervals.map(interval => ({ -->
+<!--           xMin: d3.min(interval, d => d.x), -->
+<!--           xMax: d3.max(interval, d => d.x), -->
+<!--           points: interval -->
+<!--         })) -->
+<!--       }; -->
+<!--     } -->
+<!--     return null; -->
+<!--   }).filter(set => set !== null); -->
+<!--   return sets; -->
+<!-- } -->
+<!-- lebesgueSets = calculateLebesgueSets(data, c) -->
+<!-- // Create the plot -->
+<!-- plot = Plot.plot({ -->
+<!--   marks: [ -->
+<!--     Plot.line(data, {x: "x", y: "y", stroke: "gray", strokeWidth: 1}), -->
+<!--     Plot.dot(lebesgueSets.flatMap(set => set.intervals.flatMap(int => int.points)), { -->
+<!--       x: "x",  -->
+<!--       y: "y",  -->
+<!--       fill: d => d3.schemeCategory10[lebesgueSets.findIndex(s => s.intervals.some(int => int.points.includes(d))) % 10], -->
+<!--       r: 2 -->
+<!--     }), -->
+<!--     Plot.rectY(lebesgueSets.flatMap(set =>  -->
+<!--       set.intervals.map(int => ({ -->
+<!--         x1: int.xMin, -->
+<!--         x2: int.xMax, -->
+<!--         y1: 0, -->
+<!--         y2: set.lower, -->
+<!--         color: set.k -->
+<!--       })) -->
+<!--     ), { -->
+<!--       x1: "x1", -->
+<!--       x2: "x2", -->
+<!--       y1: "y1", -->
+<!--       y2: "y2", -->
+<!--       fill: d => d3.schemeCategory10[d.color % 10], -->
+<!--       fillOpacity: 0.2, -->
+<!--       stroke: d => d3.schemeCategory10[d.color % 10], -->
+<!--       strokeOpacity: 0.5 -->
+<!--     }) -->
+<!--   ], -->
+<!--   y: { -->
+<!--     domain: [0, d3.max(data, d => d.y) * 1.1], -->
+<!--     label: "f(x)" -->
+<!--   }, -->
+<!--   x: { -->
+<!--     domain: [-2, 13], -->
+<!--     label: "x" -->
+<!--   }, -->
+<!--   style: { -->
+<!--     backgroundColor: "white" -->
+<!--   }, -->
+<!--   width: 800, -->
+<!--   height: 500 -->
+<!-- }) -->
+<!-- ``` -->
 <p>Finally, we can write any real-valued function as the sum of its positive and negative parts, <span class="math inline">\(f(x) = f^+(x) - f^-(x)\)</span>, where <span class="math inline">\(f^+(x) = \max\{f(x), 0\}\)</span> and <span class="math inline">\(f^-(x) = \max\{-f(x), 0\}\)</span>. Then both <span class="math inline">\(f^+\)</span> and <span class="math inline">\(f^-\)</span> have non-negative (possibly infinite) integrals. Then we simply take</p>
 <p><span class="math display">\[
 \int f\,d\mu = \int f^+\,d\mu - \int f^-\,d\mu \in [-\infty, \infty],
@@ -662,7 +652,7 @@ P(A) = \int 1_A(x) p(x)\,d\mu(x), \quad \text{ for all } A \in \cF,
 </ol>
 </section></div></main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\n// Import libraries using require\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3\")\n\n// Define the Gaussian function\nfunction gaussian(x, mu = 0, sigma = 1) {\n  return (1 / (sigma * Math.sqrt(2 * Math.PI))) * \n    Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));\n}\n\n// Define our function f(x) = 3g(x-4) + 5g(x-7)\nfunction f(x) {\n  return 3 * gaussian(x - 4, 0, 1) + 4.8 * gaussian(x - 7, 0, 1);\n}\n\n// Create a slider for 'c'\nviewof c = Inputs.range([0, 4], {step: 1, label: \"n\"})\n\n// Generate x values\nxValues = d3.range(-2, 13, 0.01)\n\n// Calculate y values\ndata = xValues.map(x => ({x, y: f(x)}))\n\n// Calculate Lebesgue sets with multiple intervals\nfunction calculateLebesgueSets(data, c) {\n  const maxY = d3.max(data, d => d.y);\n  const sets = d3.range(0, Math.ceil(maxY * Math.pow(2, c))).map(k => {\n    const lower = k * Math.pow(2, -c);\n    const upper = (k + 1) * Math.pow(2, -c);\n    const points = data.filter(d => d.y > lower && d.y <= upper);\n    \n    if (points.length > 0) {\n      // Identify distinct intervals\n      const intervals = [];\n      let currentInterval = [points[0]];\n      for (let i = 1; i < points.length; i++) {\n        if (points[i].x - points[i-1].x <= 0.011) { // Allow small gaps\n          currentInterval.push(points[i]);\n        } else {\n          intervals.push(currentInterval);\n          currentInterval = [points[i]];\n        }\n      }\n      intervals.push(currentInterval);\n\n      return {\n        k,\n        lower,\n        upper,\n        intervals: intervals.map(interval => ({\n          xMin: d3.min(interval, d => d.x),\n          xMax: d3.max(interval, d => d.x),\n          points: interval\n        }))\n      };\n    }\n    return null;\n  }).filter(set => set !== null);\n  \n  return sets;\n}\n\nlebesgueSets = calculateLebesgueSets(data, c)\n\n// Create the plot\nplot = Plot.plot({\n  marks: [\n    Plot.line(data, {x: \"x\", y: \"y\", stroke: \"gray\", strokeWidth: 1}),\n    Plot.dot(lebesgueSets.flatMap(set => set.intervals.flatMap(int => int.points)), {\n      x: \"x\", \n      y: \"y\", \n      fill: d => d3.schemeCategory10[lebesgueSets.findIndex(s => s.intervals.some(int => int.points.includes(d))) % 10],\n      r: 2\n    }),\n    Plot.rectY(lebesgueSets.flatMap(set => \n      set.intervals.map(int => ({\n        x1: int.xMin,\n        x2: int.xMax,\n        y1: 0,\n        y2: set.lower,\n        color: set.k\n      }))\n    ), {\n      x1: \"x1\",\n      x2: \"x2\",\n      y1: \"y1\",\n      y2: \"y2\",\n      fill: d => d3.schemeCategory10[d.color % 10],\n      fillOpacity: 0.2,\n      stroke: d => d3.schemeCategory10[d.color % 10],\n      strokeOpacity: 0.5\n    })\n  ],\n  y: {\n    domain: [0, d3.max(data, d => d.y) * 1.1],\n    label: \"f(x)\"\n  },\n  x: {\n    domain: [-2, 13],\n    label: \"x\"\n  },\n  style: {\n    backgroundColor: \"white\"\n  },\n  width: 800,\n  height: 500\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('c')"}]}
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"// Define the standard normal PDF\nphi = (x) => (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x)\n\n// Define our target function f(x) = 3*phi(x-4) + 5*phi(x-7)\nf = (x) => 3 * phi(x - 4) + 5 * phi(x - 7)\n\n// Create data points for the function\ndata = {\n  const xMin = 0;\n  const xMax = 11;\n  const numPoints = 1000;\n  const dx = (xMax - xMin) / (numPoints - 1);\n  \n  return Array.from({length: numPoints}, (_, i) => {\n    const x = xMin + i * dx;\n    return {x: x, y: f(x)};\n  });\n}\n\n// Create the plot\nPlot.plot({\n  title: \"Target Function f(x) = 3φ(x-4) + 5φ(x-7)\",\n  width: 800,\n  height: 400,\n  x: {\n    domain: [0, 11],\n    label: \"x\",\n    labelFontSize: 24\n  },\n  y: {\n    domain: [0, Math.max(...data.map(d => d.y)) * 1.1],\n    label: \"f(x)\",\n    labelFontSize: 24\n  },\n  marks: [\n    Plot.line(data, {x: \"x\", y: \"y\", stroke: \"steelblue\", strokeWidth: 2}),\n    Plot.ruleY([0])\n  ]\n})\n"}]}
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
