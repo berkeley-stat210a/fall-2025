@@ -89,34 +89,6 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-buttons .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-button','listing-link','listing-color',{ data: ['index'] },{ data: ['categories'] }],
-      
-      searchColumns: ["listing-button","listing-link","listing-color"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-buttons'] = new List('listing-buttons', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
   </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-B8G2041HSB"></script>
 
@@ -308,7 +280,8 @@ gtag('config', 'G-B8G2041HSB', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#schedule" id="toc-schedule" class="nav-link active" data-scroll-target="#schedule">Schedule</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link active" data-scroll-target="#resources">Resources</a></li>
+  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
   </ul>
 </nav>
     </div>
@@ -343,20 +316,18 @@ Course enrollment for undergraduates
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you are an undergraduate who wants to take this course, please fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLScn2Uw0Wl5ARzoSqL-MWXW2dC_0gFHisxj0Et94JMdABm7YRg">permission code request form</a> to let me know about your background. Anyone considering taking the course is encouraged to read the <a href="./faq.html">frequently asked questions</a> regarding preparation and review materials.</p>
+<p>If you are an undergraduate who wants to take this course, please fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLScn2Uw0Wl5ARzoSqL-MWXW2dC_0gFHisxj0Et94JMdABm7YRg">permission code request form</a> to let me know about your background. If you are unsure of your background, you can check the <a href="./faq.html">frequently asked questions</a> regarding preparation and review materials.</p>
 </div>
 </div>
-<div id="listing-buttons" class="quarto-listing quarto-listing-container-custom">
-  <button style="background-color: blue;"><a href="https://bcourses.berkeley.edu" bcourses="">bCourses</a></button>
-  <button style="background-color: purple;"><a href="https://edstem.org/us/courses/61763/">Ed</a></button>
-  <button style="background-color: orange;"><a href="https://www.gradescope.com/courses/816848">Gradescope</a></button>
-  <button style="background-color: blue;"><a href="https://bcourses.berkeley.edu" bcourses="">bCourses</a></button>
-  <button style="background-color: purple;"><a href="https://edstem.org/us/courses/61763/">Ed</a></button>
-  <button style="background-color: orange;"><a href="https://www.gradescope.com/courses/816848">Gradescope</a></button>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<ul>
+<li><a href="./syllabus.html">Syllabus</a> for basic course information</li>
+<li><a href="https://www.gradescope.com/courses/1052658">Gradescope</a> for turning in homework</li>
+<li><a href="https://edstem.org/us/courses/79667/">EdStem</a> for announcements and technical discussion (no homework spoilers!)</li>
+<li><a href="https://bcourses.berkeley.edu/courses/1545213">bCourses</a> for lecture videos and homework solutions</li>
+</ul>
+</section>
 <section id="schedule" class="level2">
 <h2 class="anchored" data-anchor-id="schedule">Schedule</h2>
 <div id="listing-schedule" class="quarto-listing quarto-listing-container-custom">

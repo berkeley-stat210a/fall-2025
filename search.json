@@ -81,7 +81,7 @@
     "href": "units/unit3.html#evaluated-python-code-chunk-with-a-plot",
     "title": "Unit 3: More",
     "section": "Evaluated Python code chunk, with a plot",
-    "text": "Evaluated Python code chunk, with a plot\n\n\nCode\nimport numpy as np\nx = np.random.normal(size=100)\nimport matplotlib.pyplot as plt\nplt.hist(x)\nplt.show()\nnp.mean(x)\n\n\n\n\n\n-0.10332502146096814"
+    "text": "Evaluated Python code chunk, with a plot\n\n\nCode\nimport numpy as np\nx = np.random.normal(size=100)\nimport matplotlib.pyplot as plt\nplt.hist(x)\nplt.show()\nnp.mean(x)\n\n\n\n\n\n0.07198847294539083"
   },
   {
     "objectID": "units/unit3.html#latex",
@@ -613,7 +613,14 @@
     "href": "index.html",
     "title": "Statistics 210a: Theoretical Statistics",
     "section": "",
-    "text": "Course enrollment for undergraduates\n\n\n\nIf you are an undergraduate who wants to take this course, please fill out the permission code request form to let me know about your background. Anyone considering taking the course is encouraged to read the frequently asked questions regarding preparation and review materials."
+    "text": "Course enrollment for undergraduates\n\n\n\nIf you are an undergraduate who wants to take this course, please fill out the permission code request form to let me know about your background. If you are unsure of your background, you can check the frequently asked questions regarding preparation and review materials."
+  },
+  {
+    "objectID": "index.html#resources",
+    "href": "index.html#resources",
+    "title": "Statistics 210a: Theoretical Statistics",
+    "section": "Resources",
+    "text": "Resources\n\nSyllabus for basic course information\nGradescope for turning in homework\nEdStem for announcements and technical discussion (no homework spoilers!)\nbCourses for lecture videos and homework solutions"
   },
   {
     "objectID": "index.html#schedule",
@@ -2230,7 +2237,7 @@
     "href": "units/unit1.html#evaluated-python-code-chunk-with-a-plot",
     "title": "Unit 1: Intro",
     "section": "Evaluated Python code chunk, with a plot",
-    "text": "Evaluated Python code chunk, with a plot\n\n\nCode\nimport numpy as np\nx = np.random.normal(size=100)\nimport matplotlib.pyplot as plt\nplt.hist(x)\nplt.show()\nnp.mean(x)\n\n\n\n\n\n0.065843614056097"
+    "text": "Evaluated Python code chunk, with a plot\n\n\nCode\nimport numpy as np\nx = np.random.normal(size=100)\nimport matplotlib.pyplot as plt\nplt.hist(x)\nplt.show()\nnp.mean(x)\n\n\n\n\n\n-0.05294518623362288"
   },
   {
     "objectID": "units/unit1.html#latex",
