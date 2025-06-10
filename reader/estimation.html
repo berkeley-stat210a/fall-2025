@@ -102,6 +102,8 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-B8G2041HSB', { 'anonymize_ip': true});
 </script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -431,6 +433,200 @@ R(\theta; \delta(\cdot)) = \EE_\theta [\, L(\theta, \delta(X)) \,] = \int L(\the
 <p><img src="estimation_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="131" data-source-offset="-34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 130;"><span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>viewof n <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"n"</span>})</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>viewof alpha <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"α"</span>})</span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>viewof beta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"β"</span>})</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a><span class="co">// Risk function for X/n (sample proportion)</span></span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>riskSampleProp <span class="op">=</span> (theta<span class="op">,</span> n) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> theta <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">/</span> n<span class="op">;</span></span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a><span class="co">// Risk function for (X + alpha)/(n + alpha + beta) (Beta-binomial conjugate prior)</span></span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>riskBayesian <span class="op">=</span> (theta<span class="op">,</span> n<span class="op">,</span> alpha<span class="op">,</span> beta) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bias <span class="op">=</span> (alpha <span class="op">-</span> theta <span class="op">*</span> (alpha <span class="op">+</span> beta)) <span class="op">/</span> (n <span class="op">+</span> alpha <span class="op">+</span> beta)<span class="op">;</span></span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> variance <span class="op">=</span> theta <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">/</span> n <span class="op">*</span> (n <span class="op">/</span> (n <span class="op">+</span> alpha <span class="op">+</span> beta))<span class="op">**</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> bias <span class="op">*</span> bias <span class="op">+</span> variance<span class="op">;</span></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="co">// Risk function for (X + 1)/n (add-one estimator)</span></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>riskAddOne <span class="op">=</span> (theta<span class="op">,</span> n) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bias <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> n<span class="op">;</span></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> variance <span class="op">=</span> theta <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">/</span> n<span class="op">;</span></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> bias <span class="op">*</span> bias <span class="op">+</span> variance<span class="op">;</span></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a><span class="co">// Generate data points</span></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thetaMin <span class="op">=</span> <span class="fl">0.001</span><span class="op">;</span></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thetaMax <span class="op">=</span> <span class="fl">0.999</span><span class="op">;</span></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> numPoints <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dTheta <span class="op">=</span> (thetaMax <span class="op">-</span> thetaMin) <span class="op">/</span> (numPoints <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> numPoints}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> theta <span class="op">=</span> thetaMin <span class="op">+</span> i <span class="op">*</span> dTheta<span class="op">;</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a>      <span class="dt">theta</span><span class="op">:</span> theta<span class="op">,</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>      <span class="dt">sampleProp</span><span class="op">:</span> <span class="fu">riskSampleProp</span>(theta<span class="op">,</span> n)<span class="op">,</span></span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>      <span class="dt">bayesian</span><span class="op">:</span> <span class="fu">riskBayesian</span>(theta<span class="op">,</span> n<span class="op">,</span> alpha<span class="op">,</span> beta)<span class="op">,</span></span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a>      <span class="dt">addOne</span><span class="op">:</span> <span class="fu">riskAddOne</span>(theta<span class="op">,</span> n)</span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate maximum MSE for y-axis domain</span></span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a>maxMSE <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(d<span class="op">.</span><span class="at">sampleProp</span><span class="op">,</span> d<span class="op">.</span><span class="at">bayesian</span><span class="op">,</span> d<span class="op">.</span><span class="at">addOne</span>)))</span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">120</span><span class="op">,</span></span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">180</span><span class="op">,</span></span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"18px"</span></span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span></span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">60</span></span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> maxMSE <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
+<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"MSE"</span><span class="op">,</span></span>
+<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">90</span></span>
+<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"sampleProp"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"bayesian"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"addOne"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Title</span></span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"Risk Functions for Binomial Parameter Estimators"</span>]<span class="op">,</span> {</span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> </span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">1.15</span><span class="op">,</span> </span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">18</span><span class="op">,</span> </span>
+<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">"bold"</span><span class="op">,</span></span>
+<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span></span>
+<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Legend background rectangle</span></span>
+<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">rect</span>([{<span class="dt">x1</span><span class="op">:</span> <span class="fl">0.7</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.76</span><span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">1.0</span>}]<span class="op">,</span> {</span>
+<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x1</span><span class="op">:</span> <span class="st">"x1"</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> <span class="st">"x2"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="st">"y1"</span><span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> <span class="st">"y2"</span><span class="op">,</span></span>
+<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"white"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.9</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"lightgray"</span></span>
+<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Legend with colored lines</span></span>
+<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.95</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.95</span>}]<span class="op">,</span> {</span>
+<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span></span>
+<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"X/n"</span>]<span class="op">,</span> {</span>
+<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
+<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.95</span><span class="op">,</span> </span>
+<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.88</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.88</span>}]<span class="op">,</span> {</span>
+<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span></span>
+<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`(X+α)/(n+α+β)`</span>]<span class="op">,</span> {</span>
+<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
+<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.88</span><span class="op">,</span> </span>
+<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.81</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.81</span>}]<span class="op">,</span> {</span>
+<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span></span>
+<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="st">"(X+1)/n"</span>]<span class="op">,</span> {</span>
+<span id="cb2-252"><a href="#cb2-252" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
+<span id="cb2-253"><a href="#cb2-253" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxMSE <span class="op">*</span> <span class="fl">0.81</span><span class="op">,</span> </span>
+<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb2-258"><a href="#cb2-258" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb2-259"><a href="#cb2-259" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-9" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
 <p>If we look at the vertical axis, the MSE may appear to be very small, especially considering we only have 16 flips. But recall that an MSE of <span class="math inline">\(0.01\)</span> means that we are typically missing by about <span class="math inline">\(0.1\)</span>, while estimating a parameter that is between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.</p>
 <section id="comparing-estimators" class="level3">
 <h3 class="anchored" data-anchor-id="comparing-estimators">Comparing estimators</h3>
@@ -485,6 +681,17 @@ R(\theta; \delta(\cdot)) = \EE_\theta [\, L(\theta, \delta(X)) \,] = \int L(\the
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\n// Input controls for parameters\nviewof n = Inputs.range([1, 100], {value: 20, step: 1, label: \"n\"})\nviewof alpha = Inputs.range([0.1, 5], {value: 1, step: 0.1, label: \"α\"})\nviewof beta = Inputs.range([0.1, 5], {value: 1, step: 0.1, label: \"β\"})\n\n// Risk function for X/n (sample proportion)\nriskSampleProp = (theta, n) => {\n  return theta * (1 - theta) / n;\n}\n\n// Risk function for (X + alpha)/(n + alpha + beta) (Beta-binomial conjugate prior)\nriskBayesian = (theta, n, alpha, beta) => {\n  const bias = (alpha - theta * (alpha + beta)) / (n + alpha + beta);\n  const variance = theta * (1 - theta) / n * (n / (n + alpha + beta))**2;\n  return bias * bias + variance;\n}\n\n// Risk function for (X + 1)/n (add-one estimator)\nriskAddOne = (theta, n) => {\n  const bias = 1 / n;\n  const variance = theta * (1 - theta) / n;\n  return bias * bias + variance;\n}\n\n// Generate data points\ndata = {\n  const thetaMin = 0.001;\n  const thetaMax = 0.999;\n  const numPoints = 1000;\n  const dTheta = (thetaMax - thetaMin) / (numPoints - 1);\n  \n  return Array.from({length: numPoints}, (_, i) => {\n    const theta = thetaMin + i * dTheta;\n    return {\n      theta: theta,\n      sampleProp: riskSampleProp(theta, n),\n      bayesian: riskBayesian(theta, n, alpha, beta),\n      addOne: riskAddOne(theta, n)\n    };\n  });\n}\n\n// Calculate maximum MSE for y-axis domain\nmaxMSE = Math.max(...data.map(d => Math.max(d.sampleProp, d.bayesian, d.addOne)))\n\n// Create the plot\nPlot.plot({\n  width: 800,\n  height: 400,\n  marginTop: 60,\n  marginLeft: 120,\n  marginBottom: 100,\n  marginRight: 180,\n  style: {\n    fontSize: \"18px\"\n  },\n  x: {\n    domain: [0, 1],\n    label: \"θ\",\n    labelAnchor: \"center\",\n    labelOffset: 60\n  },\n  y: {\n    domain: [0, maxMSE * 1.1],\n    label: \"MSE\",\n    labelAnchor: \"center\",\n    labelOffset: 90\n  },\n  marks: [\n    Plot.line(data, {x: \"theta\", y: \"sampleProp\", stroke: \"steelblue\", strokeWidth: 2}),\n    Plot.line(data, {x: \"theta\", y: \"bayesian\", stroke: \"red\", strokeWidth: 2}),\n    Plot.line(data, {x: \"theta\", y: \"addOne\", stroke: \"green\", strokeWidth: 2}),\n    Plot.ruleY([0]),\n    \n    // Title\n    Plot.text([\"Risk Functions for Binomial Parameter Estimators\"], {\n      x: 0.5, \n      y: maxMSE * 1.15, \n      fontSize: 18, \n      fontWeight: \"bold\",\n      textAnchor: \"middle\"\n    }),\n    \n    // Legend background rectangle\n    Plot.rect([{x1: 0.7, x2: 1, y1: maxMSE * 0.76, y2: maxMSE * 1.0}], {\n      x1: \"x1\", x2: \"x2\", y1: \"y1\", y2: \"y2\",\n      fill: \"white\", fillOpacity: 0.9, stroke: \"lightgray\"\n    }),\n    \n    // Legend with colored lines\n    Plot.lineX([{x: 0.72, y: maxMSE * 0.95}, {x: 0.78, y: maxMSE * 0.95}], {\n      x: \"x\", y: \"y\",\n      stroke: \"steelblue\",\n      strokeWidth: 2\n    }),\n    Plot.text([\"X/n\"], {\n      x: 0.8, \n      y: maxMSE * 0.95, \n      fontSize: 16,\n      fill: \"black\",\n      textAnchor: \"start\"\n    }),\n    \n    Plot.lineX([{x: 0.72, y: maxMSE * 0.88}, {x: 0.78, y: maxMSE * 0.88}], {\n      x: \"x\", y: \"y\",\n      stroke: \"red\",\n      strokeWidth: 2\n    }),\n    Plot.text([`(X+α)/(n+α+β)`], {\n      x: 0.8, \n      y: maxMSE * 0.88, \n      fontSize: 16,\n      fill: \"black\",\n      textAnchor: \"start\"\n    }),\n    \n    Plot.lineX([{x: 0.72, y: maxMSE * 0.81}, {x: 0.78, y: maxMSE * 0.81}], {\n      x: \"x\", y: \"y\",\n      stroke: \"green\",\n      strokeWidth: 2\n    }),\n    Plot.text([\"(X+1)/n\"], {\n      x: 0.8, \n      y: maxMSE * 0.81, \n      fontSize: 16,\n      fill: \"black\",\n      textAnchor: \"start\"\n    })\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('n')"},{"methodName":"interpretQuiet","source":"shinyInput('alpha')"},{"methodName":"interpretQuiet","source":"shinyInput('beta')"}]}
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../reader";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
