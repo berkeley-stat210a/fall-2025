@@ -1,7 +1,5 @@
 ---
-title: "Statistical decision theory"
-author: Will Fithian
-date: 08-29-2023
+title: "Statistical models and estimation"
 format: html
 editor: visual
 ---
@@ -123,6 +121,142 @@ curve(binom.mse(x, n, 2, 4), add=TRUE, col=palette[3], lwd=2)
 curve(binom.mse(x, n, 1, 0), add=TRUE, col=palette[4], lwd=2) 
 legend("topright", col=palette, lwd=2,bty="n",
        legend=c(expression(delta[0]), expression(delta[1]), expression(delta[2]), expression(delta[3])))
+```
+
+
+```{ojs}
+//| echo: false
+
+// Input controls for parameters
+viewof n = Inputs.range([1, 100], {value: 20, step: 1, label: "n"})
+viewof alpha = Inputs.range([0.1, 5], {value: 1, step: 0.1, label: "α"})
+viewof beta = Inputs.range([0.1, 5], {value: 1, step: 0.1, label: "β"})
+
+// Risk function for X/n (sample proportion)
+riskSampleProp = (theta, n) => {
+  return theta * (1 - theta) / n;
+}
+
+// Risk function for (X + alpha)/(n + alpha + beta) (Beta-binomial conjugate prior)
+riskBayesian = (theta, n, alpha, beta) => {
+  const bias = (alpha - theta * (alpha + beta)) / (n + alpha + beta);
+  const variance = theta * (1 - theta) / n * (n / (n + alpha + beta))**2;
+  return bias * bias + variance;
+}
+
+// Risk function for (X + 1)/n (add-one estimator)
+riskAddOne = (theta, n) => {
+  const bias = 1 / n;
+  const variance = theta * (1 - theta) / n;
+  return bias * bias + variance;
+}
+
+// Generate data points
+data = {
+  const thetaMin = 0.001;
+  const thetaMax = 0.999;
+  const numPoints = 1000;
+  const dTheta = (thetaMax - thetaMin) / (numPoints - 1);
+  
+  return Array.from({length: numPoints}, (_, i) => {
+    const theta = thetaMin + i * dTheta;
+    return {
+      theta: theta,
+      sampleProp: riskSampleProp(theta, n),
+      bayesian: riskBayesian(theta, n, alpha, beta),
+      addOne: riskAddOne(theta, n)
+    };
+  });
+}
+
+// Calculate maximum MSE for y-axis domain
+maxMSE = Math.max(...data.map(d => Math.max(d.sampleProp, d.bayesian, d.addOne)))
+
+// Create the plot
+Plot.plot({
+  width: 800,
+  height: 400,
+  marginTop: 60,
+  marginLeft: 120,
+  marginBottom: 100,
+  marginRight: 180,
+  style: {
+    fontSize: "18px"
+  },
+  x: {
+    domain: [0, 1],
+    label: "θ",
+    labelAnchor: "center",
+    labelOffset: 60
+  },
+  y: {
+    domain: [0, maxMSE * 1.1],
+    label: "MSE",
+    labelAnchor: "center",
+    labelOffset: 90
+  },
+  marks: [
+    Plot.line(data, {x: "theta", y: "sampleProp", stroke: "steelblue", strokeWidth: 2}),
+    Plot.line(data, {x: "theta", y: "bayesian", stroke: "red", strokeWidth: 2}),
+    Plot.line(data, {x: "theta", y: "addOne", stroke: "green", strokeWidth: 2}),
+    Plot.ruleY([0]),
+    
+    // Title
+    Plot.text(["Risk Functions for Binomial Parameter Estimators"], {
+      x: 0.5, 
+      y: maxMSE * 1.15, 
+      fontSize: 18, 
+      fontWeight: "bold",
+      textAnchor: "middle"
+    }),
+    
+    // Legend background rectangle
+    Plot.rect([{x1: 0.7, x2: 1, y1: maxMSE * 0.76, y2: maxMSE * 1.0}], {
+      x1: "x1", x2: "x2", y1: "y1", y2: "y2",
+      fill: "white", fillOpacity: 0.9, stroke: "lightgray"
+    }),
+    
+    // Legend with colored lines
+    Plot.lineX([{x: 0.72, y: maxMSE * 0.95}, {x: 0.78, y: maxMSE * 0.95}], {
+      x: "x", y: "y",
+      stroke: "steelblue",
+      strokeWidth: 2
+    }),
+    Plot.text(["X/n"], {
+      x: 0.8, 
+      y: maxMSE * 0.95, 
+      fontSize: 16,
+      fill: "black",
+      textAnchor: "start"
+    }),
+    
+    Plot.lineX([{x: 0.72, y: maxMSE * 0.88}, {x: 0.78, y: maxMSE * 0.88}], {
+      x: "x", y: "y",
+      stroke: "red",
+      strokeWidth: 2
+    }),
+    Plot.text([`(X+α)/(n+α+β)`], {
+      x: 0.8, 
+      y: maxMSE * 0.88, 
+      fontSize: 16,
+      fill: "black",
+      textAnchor: "start"
+    }),
+    
+    Plot.lineX([{x: 0.72, y: maxMSE * 0.81}, {x: 0.78, y: maxMSE * 0.81}], {
+      x: "x", y: "y",
+      stroke: "green",
+      strokeWidth: 2
+    }),
+    Plot.text(["(X+1)/n"], {
+      x: 0.8, 
+      y: maxMSE * 0.81, 
+      fontSize: 16,
+      fill: "black",
+      textAnchor: "start"
+    })
+  ]
+})
 ```
 
 If we look at the vertical axis, the MSE may appear to be very small, especially considering we only have 16 flips. But recall that an MSE of $0.01$ means that we are typically missing by about $0.1$, while estimating a parameter that is between $0$ and $1$.

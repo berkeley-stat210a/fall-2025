@@ -1,6 +1,6 @@
 - week: 1
   days:
-    - date: "Aug 29"
+    - date: "Aug 28"
       items:
         - type: "Lecture"
           id: "1"
@@ -11,7 +11,7 @@
               href: handwritten/lecture01-intro.pdf
 - week: 2
   days:
-    - date: "Sep 3"
+    - date: "Sep 2"
       items:
         - type: "Lecture"
           id: "2"
@@ -20,7 +20,7 @@
           auxil:
             - id: "Handwritten notes"
               href: handwritten/lecture02-probability.pdf
-    - date: "Sep 5"
+    - date: "Sep 4"
       items:
         - type: "Lecture"
           id: "3"
@@ -29,7 +29,7 @@
           auxil:
             - id: "Handwritten notes"
               href: handwritten/lecture03-estimation.pdf
-    - date: "Sep 6"
+    - date: "Sep 5"
       items:
         - type: "Recitation"
           id: "1"
@@ -37,7 +37,7 @@
           href: recitation/recitation1-probability.pdf
 - week: 3
   days:
-    - date: "Sep 11"
+    - date: "Sep 10"
       items:
         - type: "Homework"
           id: "1"
@@ -48,8 +48,8 @@
               href: homework/homework1.tex
 - week: 17
   days:
-    - date: "Dec 18"
+    - date: "Dec 16"
       items:
         - type: "Exam"
-          name: "Final Exam, 8-11am"
+          name: "Final Exam, 3-6pm"
           href: old-exams.qmd
