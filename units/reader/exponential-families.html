@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,6 +23,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -66,22 +67,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7b1b06e26e1e2798ccde3208f86b5bbd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +98,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -108,181 +117,45 @@ gtag('config', 'G-B8G2041HSB', { 'anonymize_ip': true});
 <link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../assets/styles.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body class="quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      Stat 210a
-      </li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
-</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/stat_bear.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Stat 210a</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/berkeley-stat210a/fall-2025" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-</div>
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Home / Schedule</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Course Logistics</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../faq.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Frequently Asked Questions</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../syllabus.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Syllabus</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../calendar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Calendar</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Course Materials</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../handwritten-notes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Handwritten notes</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../homework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Homework</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../old-exams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Old exams</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Course Reader</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/introduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/probability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Probability</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/estimation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Statistical models and estimation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/exponential-families.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exponential Families</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/sufficiency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Sufficiency</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/completeness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Completeness, Ancillarity, and Basu’s Theorem</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../reader/unbiased-estimation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Unbiased Estimation</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../license.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">License</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -333,7 +206,9 @@ gtag('config', 'G-B8G2041HSB', { 'anonymize_ip': true});
   </div>
   
 
+
 </header>
+
 
 <p><span class="math display">\[
 \newcommand{\cB}{\mathcal{B}}
@@ -370,7 +245,7 @@ gtag('config', 'G-B8G2041HSB', { 'anonymize_ip': true});
 p_\eta(x) = e^{\eta'T(x) - A(\eta)}h(x),
 \tag{1}\]</span></span></p>
 <p>all with respect to a common <em>dominating measure</em> <span class="math inline">\(\mu\)</span>, i.e.&nbsp;a measure <span class="math inline">\(\mu\)</span> such that <span class="math inline">\(P_\eta \ll \mu\)</span> for all <span class="math inline">\(\eta\in \Xi\)</span>.</p>
-<p>The different parts of the expression in <a href="#eq-expo-fam">Equation&nbsp;1</a> have distinct names referring to the role they play in defining the density:</p>
+<p>The different parts of the expression in <a href="#eq-expo-fam" class="quarto-xref">Equation&nbsp;1</a> have distinct names referring to the role they play in defining the density:</p>
 <p><span class="math display">\[
 \begin{aligned}
 T&amp;:\; \cX \to \RR^s &amp;\qquad &amp;\text{ is called the {\it sufficient statistic}}\\
@@ -389,7 +264,7 @@ A(\eta) = \log\left( \int_\cX e^{\eta'T(x)}h(x)\td\mu(x)\right) \leq \infty
 \]</span></p>
 <p>We will show in Homework 1 that <span class="math inline">\(A(\eta)\)</span> is a convex function, so <span class="math inline">\(\Xi_1\)</span> is a convex set.</p>
 <p>Note that, because <span class="math inline">\(\mu\)</span> is allowed to be an arbitrary measure, <span class="math inline">\(h(x)\)</span> also plays an inessential role since we could always absorb it into the base measure <span class="math inline">\(\mu\)</span>. More precisely, suppose we define a new dominating measure <span class="math inline">\(\nu\)</span> whose density with respect to <span class="math inline">\(\mu\)</span> is <span class="math inline">\(h\)</span> (informally we can write <span class="math inline">\(\td\nu = h\td\mu\)</span>). Then <span class="math inline">\(P_\eta\)</span>, which had density <span class="math inline">\(e^{\eta'T(x)}h(x)\)</span> with respect to <span class="math inline">\(\mu\)</span>, now has density <span class="math inline">\(e^{\eta'T(x)}\)</span> with respect to <span class="math inline">\(\nu\)</span>.</p>
-<p>As a result, if we were aiming for maximal parsimony we could assume without loss of generality that <span class="math inline">\(h(x) = 1\)</span>, removing it from the definition <a href="#eq-expo-fam">Equation&nbsp;1</a> and replacing <span class="math inline">\(\mu\)</span> with our new, bespoke measure <span class="math inline">\(\nu\)</span>. However, it is convenient to leave <a href="#eq-expo-fam">Equation&nbsp;1</a> as is if it allows us to take <span class="math inline">\(\mu\)</span> to be some simple default measure like a counting measure or Lebesgue measure. In that case, <span class="math inline">\(p_\eta\)</span> will be a standard pmf or pdf, so we can discuss it without going over the head of anyone who lacks a background in measure theory.</p>
+<p>As a result, if we were aiming for maximal parsimony we could assume without loss of generality that <span class="math inline">\(h(x) = 1\)</span>, removing it from the definition <a href="#eq-expo-fam" class="quarto-xref">Equation&nbsp;1</a> and replacing <span class="math inline">\(\mu\)</span> with our new, bespoke measure <span class="math inline">\(\nu\)</span>. However, it is convenient to leave <a href="#eq-expo-fam" class="quarto-xref">Equation&nbsp;1</a> as is if it allows us to take <span class="math inline">\(\mu\)</span> to be some simple default measure like a counting measure or Lebesgue measure. In that case, <span class="math inline">\(p_\eta\)</span> will be a standard pmf or pdf, so we can discuss it without going over the head of anyone who lacks a background in measure theory.</p>
 <p><strong>Example (Poisson):</strong> The Poisson distribution <span class="math inline">\(\textrm{Pois}(\lambda)\)</span> has probability mass function</p>
 <p><span class="math display">\[
 p_\lambda(x) = \frac{\lambda^x e^{-\lambda}}{x!}, \quad \textrm{ on } x = 0, 1, 2, \ldots.
@@ -404,18 +279,18 @@ p_\lambda(x) = \exp\{(\log \lambda) x - \lambda\}\frac{1}{x!}.
 p_\eta(x) = \exp\{\eta x - e^\eta\} \frac{1}{x!}.
 \]</span> At this point, we immediately recognize <span class="math inline">\(p_\eta\)</span> as an exponential family with sufficient statistic <span class="math inline">\(T(x) = x\)</span>, and base density <span class="math inline">\(h(x) = \frac{1}{x!}\)</span>, and log-partition function <span class="math inline">\(A(\eta) = e^{\eta}\)</span>.</p>
 <p>Note that this is not the only way to decompose the Poisson distribution as an exponential family. For example, we could just as well take <span class="math inline">\(T(x) = x/2\)</span>; then we would have <span class="math inline">\(\eta = 2\log\lambda\)</span> and <span class="math inline">\(A(\eta) = e^{\eta/2}\)</span>. Or, we could take <span class="math inline">\(T(x) = x + 1\)</span> and <span class="math inline">\(A(\eta) = e^{\eta} + \eta\)</span>.</p>
-<p>This is not just a property of the Poisson distribution; the decomposition is generally non-unique for exponential families. For any exponential family of the form <a href="#eq-expo-fam">Equation&nbsp;1</a> , if <span class="math inline">\(U \in \RR^{s\times s}\)</span> is invertible and <span class="math inline">\(v \in \RR^s\)</span> then we can write the same density as <span class="math inline">\(e^{\zeta'S(x) - B(\zeta)}h(x)\)</span>, for new sufficient statistic <span class="math inline">\(S(x) = U T(x) + v\)</span>, new natural parameter <span class="math inline">\(\zeta = (U^{-1})'\eta\)</span>, and and new log-partition function <span class="math inline">\(B(\zeta) = A(U'\zeta) + \zeta'U^{-1}v\)</span>. So “the” sufficient statistic of an exponential family is defined only up to invertible affine transformations.</p>
+<p>This is not just a property of the Poisson distribution; the decomposition is generally non-unique for exponential families. For any exponential family of the form <a href="#eq-expo-fam" class="quarto-xref">Equation&nbsp;1</a> , if <span class="math inline">\(U \in \RR^{s\times s}\)</span> is invertible and <span class="math inline">\(v \in \RR^s\)</span> then we can write the same density as <span class="math inline">\(e^{\zeta'S(x) - B(\zeta)}h(x)\)</span>, for new sufficient statistic <span class="math inline">\(S(x) = U T(x) + v\)</span>, new natural parameter <span class="math inline">\(\zeta = (U^{-1})'\eta\)</span>, and and new log-partition function <span class="math inline">\(B(\zeta) = A(U'\zeta) + \zeta'U^{-1}v\)</span>. So “the” sufficient statistic of an exponential family is defined only up to invertible affine transformations.</p>
 </section>
 <section id="differential-identities" class="level2">
 <h2 class="anchored" data-anchor-id="differential-identities">Differential identities</h2>
-<p>Exponentiating <a href="#eq-log-partition">Equation&nbsp;2</a>, we obtain the equation</p>
+<p>Exponentiating <a href="#eq-log-partition" class="quarto-xref">Equation&nbsp;2</a>, we obtain the equation</p>
 <p><span id="eq-partition"><span class="math display">\[
 e^{A(\eta)} = \int_\cX e^{\eta'T(x)}h(x)\td\mu(x)
 \tag{3}\]</span></span></p>
 <p>We can derive many interesting identities by differentiating this function, and related functions, with respect to <span class="math inline">\(\eta\)</span>. We will always evaluate derivatives by differentiating under the integral sign. This is not always a correct operation, but by Theorem 2.4 in Keener, it is correct on the interior of the natural parameter space <span class="math inline">\(\Xi_1\)</span>. We refer the reader to Keener for details.</p>
 <section id="mean-of-tx" class="level3">
 <h3 class="anchored" data-anchor-id="mean-of-tx">Mean of <span class="math inline">\(T(X)\)</span></h3>
-<p>Partially differentiating <a href="#eq-partition">Equation&nbsp;3</a> once with respect to a generic coordinate <span class="math inline">\(\eta_j\)</span>, for <span class="math inline">\(j =1, \ldots, s\)</span>, we obtain</p>
+<p>Partially differentiating <a href="#eq-partition" class="quarto-xref">Equation&nbsp;3</a> once with respect to a generic coordinate <span class="math inline">\(\eta_j\)</span>, for <span class="math inline">\(j =1, \ldots, s\)</span>, we obtain</p>
 <p><span class="math display">\[
 \begin{aligned}
 \frac{\partial}{\partial \eta_j} e^{A(\eta)} &amp;= \int_\cX \frac{\partial}{\partial \eta_j} e^{\eta'T(x)}h(x)\td\mu(x)\\[7pt]
@@ -678,7 +553,7 @@ p_\eta(x)
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"\n// Import libraries\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3\")\n\nkatex = require(\"https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js\")\n\n// Function to render LaTeX\nfunction tex(string) {\n  let span = document.createElement('span');\n  katex.render(string, span, {output: \"mathml\", throwOnError: false});\n  return span;\n}\n\n// Create sliders for mean and standard deviation\nviewof eta1 = Inputs.range([-5, 5], {step: 0.1, label: tex(\"\\\\eta_1\"), value: 0})\nviewof eta2 = Inputs.range([-5, 5], {step: 0.1, label: tex(\"\\\\eta_2\"), value: 0})\nviewof eta3 = Inputs.range([-0.3, 0.3], {step: 0.01, label: tex(\"\\\\eta_3\"), value: 0})\n\n// Function to generate normal distribution data\nfunction explDistribution(eta1, eta2, eta3, n = 2000) {\n  const x = d3.range(-1, 1, 2/n);\n  const unnorm = x.map(x => ({\n    x: x,\n    y: Math.exp(eta1 * x + eta2 * x * x + eta3 * Math.cos(30 * x * Math.PI)) * (1 - Math.abs(x))\n  }));\n  const normConst = d3.sum(unnorm, point => point.y) * 2 / n;\n  return unnorm.map(point => ({\n    x: point.x,\n    y: point.y / normConst\n  }));\n}\n\n// Create the plot\nPlot.plot({\n  width: 640,\n  height: 400,\n  x: {label: \"X\"},\n  y: {label: \"Density\"},\n  marks: [\n    Plot.line(explDistribution(eta1, eta2, eta3), {x: \"x\", y: \"y\", stroke: \"steelblue\"}),\n    Plot.ruleY([0])\n  ]\n})\n"},{"methodName":"interpretQuiet","source":"shinyInput('eta1')"},{"methodName":"interpretQuiet","source":"shinyInput('eta2')"},{"methodName":"interpretQuiet","source":"shinyInput('eta3')"}]}
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuLy8gSW1wb3J0IGxpYnJhcmllc1xuUGxvdCA9IHJlcXVpcmUoXCJAb2JzZXJ2YWJsZWhxL3Bsb3RcIilcbmQzID0gcmVxdWlyZShcImQzXCIpXG5cbmthdGV4ID0gcmVxdWlyZShcImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0va2F0ZXhAMC4xNi43L2Rpc3Qva2F0ZXgubWluLmpzXCIpXG5cbi8vIEZ1bmN0aW9uIHRvIHJlbmRlciBMYVRlWFxuZnVuY3Rpb24gdGV4KHN0cmluZykge1xuICBsZXQgc3BhbiA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3NwYW4nKTtcbiAga2F0ZXgucmVuZGVyKHN0cmluZywgc3Bhbiwge291dHB1dDogXCJtYXRobWxcIiwgdGhyb3dPbkVycm9yOiBmYWxzZX0pO1xuICByZXR1cm4gc3Bhbjtcbn1cblxuLy8gQ3JlYXRlIHNsaWRlcnMgZm9yIG1lYW4gYW5kIHN0YW5kYXJkIGRldmlhdGlvblxudmlld29mIGV0YTEgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3N0ZXA6IDAuMSwgbGFiZWw6IHRleChcIlxcXFxldGFfMVwiKSwgdmFsdWU6IDB9KVxudmlld29mIGV0YTIgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3N0ZXA6IDAuMSwgbGFiZWw6IHRleChcIlxcXFxldGFfMlwiKSwgdmFsdWU6IDB9KVxudmlld29mIGV0YTMgPSBJbnB1dHMucmFuZ2UoWy0wLjMsIDAuM10sIHtzdGVwOiAwLjAxLCBsYWJlbDogdGV4KFwiXFxcXGV0YV8zXCIpLCB2YWx1ZTogMH0pXG5cbi8vIEZ1bmN0aW9uIHRvIGdlbmVyYXRlIG5vcm1hbCBkaXN0cmlidXRpb24gZGF0YVxuZnVuY3Rpb24gZXhwbERpc3RyaWJ1dGlvbihldGExLCBldGEyLCBldGEzLCBuID0gMjAwMCkge1xuICBjb25zdCB4ID0gZDMucmFuZ2UoLTEsIDEsIDIvbik7XG4gIGNvbnN0IHVubm9ybSA9IHgubWFwKHggPT4gKHtcbiAgICB4OiB4LFxuICAgIHk6IE1hdGguZXhwKGV0YTEgKiB4ICsgZXRhMiAqIHggKiB4ICsgZXRhMyAqIE1hdGguY29zKDMwICogeCAqIE1hdGguUEkpKSAqICgxIC0gTWF0aC5hYnMoeCkpXG4gIH0pKTtcbiAgY29uc3Qgbm9ybUNvbnN0ID0gZDMuc3VtKHVubm9ybSwgcG9pbnQgPT4gcG9pbnQueSkgKiAyIC8gbjtcbiAgcmV0dXJuIHVubm9ybS5tYXAocG9pbnQgPT4gKHtcbiAgICB4OiBwb2ludC54LFxuICAgIHk6IHBvaW50LnkgLyBub3JtQ29uc3RcbiAgfSkpO1xufVxuXG4vLyBDcmVhdGUgdGhlIHBsb3RcblBsb3QucGxvdCh7XG4gIHdpZHRoOiA2NDAsXG4gIGhlaWdodDogNDAwLFxuICB4OiB7bGFiZWw6IFwiWFwifSxcbiAgeToge2xhYmVsOiBcIkRlbnNpdHlcIn0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5saW5lKGV4cGxEaXN0cmlidXRpb24oZXRhMSwgZXRhMiwgZXRhMyksIHt4OiBcInhcIiwgeTogXCJ5XCIsIHN0cm9rZTogXCJzdGVlbGJsdWVcIn0pLFxuICAgIFBsb3QucnVsZVkoWzBdKVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdldGExJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2V0YTInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZXRhMycpIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -689,239 +564,406 @@ window._ojs.selfContained = false;
 window._ojs.runtime.interpretFromScriptTags();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
+      return false;
     }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/stat210a\.berkeley\.edu\/fall-2025\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
       });
     }
-  }
-});
-</script>
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
+
 
 
 
