@@ -42,14 +42,19 @@ $$
 
 Since the conditional distribution does not depend on $\theta$, $T(X)$ is sufficient for the model $\cP$.
 
-## Visualization of sufficiency for two binomials
+## Visualization of sufficiency
 
-We now illustrate the concept of sufficiency with a visualization for a closely related example where now the initial data set is a pair of independent binomial random variables $X_1, X_2 \simiid \text{Binom}(n, \theta)$. We can make a similar calculation to show that $T(X) = X_1 + X_2$ is sufficient:
-
+The applet below illustrates the concept of sufficiency for a pair of random variables $X_1,X_2 \simiid p_\theta(x)$, where $p_\theta(x)$ is a univariate probability mass function on $\{0,\ldots,n\}$. We illustrate two cases, first the case where $p_\theta(x)$ is the binomial 
 $$
-p_\theta(x) = \binom{n}{x_1} \theta^{x_1}(1-\theta)^{n-x_1} \cdot \binom{n}{x_2} \theta^{x_2}(1-\theta)^{n-x_2} = \theta^{T(x)}(1-\theta)^{2n-T(x)} \binom{n}{x_1}\binom{n}{x_2}.
+p_\theta(x) = \binom{n}{x}\theta^x(1-\theta)^{n-x},
 $$
+and second the case where $p_\theta(x)$ is a simple pmf we can call the "discrete Laplace" on $\{0,\ldots,n\}$ that decays exponentially with $|x-n \theta|$:
+$$
+p_\theta(x) \propto e^{-|x-n\theta|}.
+$$
+As we will see shortly, $T(X) = X_1+X_2$ is a sufficient statistic in the binomial case, but it is not sufficient in the discrete Laplace case. To see this directly, select a value of $n$ and $t$, and observe how the conditional distribution of $X$ given $T(X)=t$ does or does not change as you adjust the value of $\theta$.
 
+In either case, changing $\theta$ has a major effect on the joint probability distribution of $X = (X_1,X_2)$; that is precisely why observing $X$ is informative about $\theta$. But in the binomial case, having already observed $T(X)$, $\theta$ has *no effect* on the conditional distribution of $X$; that is why observing $X$ gives us no additional information about $\theta$, once we've already seen $T(X)$. In the discrete Laplace case, $T(X)$ is not sufficient: if $\theta = 0.3$, $X = (1,2)$ is much more likely than 
 
 ```{ojs}
 //| echo: false
@@ -59,6 +64,21 @@ binomPMF = (k, n, p) => {
   if (k < 0 || k > n) return 0;
   const binomCoeff = factorial(n) / (factorial(k) * factorial(n - k));
   return binomCoeff * Math.pow(p, k) * Math.pow(1 - p, n - k);
+}
+
+// Exponential-based probability mass function
+expPMF = (k, n, theta) => {
+  if (k < 0 || k > n) return 0;
+  // Calculate unnormalized probabilities
+  const unnormalized = [];
+  let sum = 0;
+  for (let i = 0; i <= n; i++) {
+    const val = Math.exp(-Math.abs(i - n * theta));
+    unnormalized.push(val);
+    sum += val;
+  }
+  // Return normalized probability
+  return unnormalized[k] / sum;
 }
 
 // Factorial function with memoization
@@ -75,13 +95,17 @@ factorial = (n) => {
 viewof n = Inputs.range([1, 8], {value: 4, step: 1, label: "n"})
 viewof theta = Inputs.range([0.01, 0.99], {value: 0.30, step: 0.01, label: "θ"})
 viewof t_select = Inputs.range([0, 2*n], {value: Math.min(3, 2*n), step: 1, label: "T = t"})
+viewof distributionType = Inputs.radio(["Binomial", "Discrete Laplace"], {value: "Binomial", label: "Distribution"})
+
+// Select which PMF to use based on dropdown selection
+pmf = distributionType === "Binomial" ? binomPMF : expPMF
 
 // Generate joint distribution data
 jointData = {
   const data = [];
   for (let x1 = 0; x1 <= n; x1++) {
     for (let x2 = 0; x2 <= n; x2++) {
-      const prob = binomPMF(x1, n, theta) * binomPMF(x2, n, theta);
+      const prob = pmf(x1, n, theta) * pmf(x2, n, theta);
       const t = x1 + x2;
       data.push({
         x1: x1,
@@ -98,22 +122,24 @@ jointData = {
 // Generate conditional distribution data (X given T = t)
 conditionalData = {
   const data = [];
-  const totalT = Math.min(t_select, 2 * n);
-  
-  // Find all (x1, x2) pairs where x1 + x2 = t
-  const validPairs = jointData.filter(d => d.t === totalT);
-  const totalCondProb = validPairs.reduce((sum, d) => sum + d.prob, 0);
-  
-  validPairs.forEach(d => {
-    if (totalCondProb > 0) {
-      data.push({
-        x1: d.x1,
-        x2: d.x2,
-        condProb: d.prob / totalCondProb,
-        t: d.t
-      });
-    }
-  });
+
+  // Only process if t_select is valid
+  if (t_select <= 2 * n) {
+    // Find all (x1, x2) pairs where x1 + x2 = t
+    const validPairs = jointData.filter(d => d.t === t_select);
+    const totalCondProb = validPairs.reduce((sum, d) => sum + d.prob, 0);
+    
+    validPairs.forEach(d => {
+      if (totalCondProb > 0) {
+        data.push({
+          x1: d.x1,
+          x2: d.x2,
+          condProb: d.prob / totalCondProb,
+          t: d.t
+        });
+      }
+    });
+  }
   
   return data;
 }
@@ -128,7 +154,7 @@ marginalX1 = {
   for (let x1 = 0; x1 <= n; x1++) {
     data.push({
       x1: x1,
-      prob: binomPMF(x1, n, theta)
+      prob: pmf(x1, n, theta)
     });
   }
   return data;
@@ -139,7 +165,7 @@ marginalX2 = {
   for (let x2 = 0; x2 <= n; x2++) {
     data.push({
       x2: x2,
-      prob: binomPMF(x2, n, theta)
+      prob: pmf(x2, n, theta)
     });
   }
   return data;
@@ -150,23 +176,26 @@ conditionalMarginalX1 = {
   const data = [];
   const totalT = Math.min(t_select, 2 * n);
   
-  // Calculate total probability for normalization
-  let totalProb = 0;
-  for (let x1 = Math.max(0, totalT - n); x1 <= Math.min(n, totalT); x1++) {
-    const x2 = totalT - x1;
-    if (x2 >= 0 && x2 <= n) {
-      totalProb += binomPMF(x1, n, theta) * binomPMF(x2, n, theta);
+  // Only process if t_select is valid
+  if (t_select <= 2 * n) {
+    // Calculate total probability for normalization
+    let totalProb = 0;
+    for (let x1 = Math.max(0, totalT - n); x1 <= Math.min(n, totalT); x1++) {
+      const x2 = totalT - x1;
+      if (x2 >= 0 && x2 <= n) {
+        totalProb += pmf(x1, n, theta) * pmf(x2, n, theta);
+      }
     }
-  }
-  
-  for (let x1 = 0; x1 <= n; x1++) {
-    const x2 = totalT - x1;
-    if (x2 >= 0 && x2 <= n && totalProb > 0) {
-      const jointProb = binomPMF(x1, n, theta) * binomPMF(x2, n, theta);
-      data.push({
-        x1: x1,
-        prob: jointProb / totalProb
-      });
+    
+    for (let x1 = 0; x1 <= n; x1++) {
+      const x2 = totalT - x1;
+      if (x2 >= 0 && x2 <= n && totalProb > 0) {
+        const jointProb = pmf(x1, n, theta) * pmf(x2, n, theta);
+        data.push({
+          x1: x1,
+          prob: jointProb / totalProb
+        });
+      }
     }
   }
   return data;
@@ -176,27 +205,32 @@ conditionalMarginalX2 = {
   const data = [];
   const totalT = Math.min(t_select, 2 * n);
   
-  // Calculate total probability for normalization
-  let totalProb = 0;
-  for (let x2 = Math.max(0, totalT - n); x2 <= Math.min(n, totalT); x2++) {
-    const x1 = totalT - x2;
-    if (x1 >= 0 && x1 <= n) {
-      totalProb += binomPMF(x1, n, theta) * binomPMF(x2, n, theta);
+  // Only process if t_select is valid  
+  if (t_select <= 2 * n) {
+    // Calculate total probability for normalization
+    let totalProb = 0;
+    for (let x2 = Math.max(0, totalT - n); x2 <= Math.min(n, totalT); x2++) {
+      const x1 = totalT - x2;
+      if (x1 >= 0 && x1 <= n) {
+        totalProb += pmf(x1, n, theta) * pmf(x2, n, theta);
+      }
     }
-  }
-  
-  for (let x2 = 0; x2 <= n; x2++) {
-    const x1 = totalT - x2;
-    if (x1 >= 0 && x1 <= n && totalProb > 0) {
-      const jointProb = binomPMF(x1, n, theta) * binomPMF(x2, n, theta);
-      data.push({
-        x2: x2,
-        prob: jointProb / totalProb
-      });
+    
+    for (let x2 = 0; x2 <= n; x2++) {
+      const x1 = totalT - x2;
+      if (x1 >= 0 && x1 <= n && totalProb > 0) {
+        const jointProb = pmf(x1, n, theta) * pmf(x2, n, theta);
+        data.push({
+          x2: x2,
+          prob: jointProb / totalProb
+        });
+      }
     }
   }
   return data;
 }
+
+maxRad = 15 * 5 / (n + 1)
 
 maxMarginalProb = Math.max(...marginalX1.map(d => d.prob), ...marginalX2.map(d => d.prob))
 maxCondMarginalProb = conditionalMarginalX1.length > 0 && conditionalMarginalX2.length > 0 ? 
@@ -210,12 +244,13 @@ jointPlot = Plot.plot({
   marginLeft: 80,
   marginBottom: 80,
   marginRight: 120,
-  style: { fontSize: "16px" },
+  style: { fontSize: "20px" },
   
   r: {
-    domain: [0, 20],  // Fixed domain from 0 to 20
-    range: [0, 20],   // Maps directly to pixel sizes
-    clamp: true       // Prevents values outside domain
+    type: "linear",
+    domain: [0, maxRad],  // Fixed domain from 0 to maxRad
+    range: [0, maxRad],   // Maps directly to pixel sizes
+    clamp: false       // Prevents values outside domain
   },
 
   
@@ -225,7 +260,8 @@ jointPlot = Plot.plot({
     tickFormat: d => d.toString(),
     label: "X₁",
     labelAnchor: "center",
-    labelOffset: 50
+    labelOffset: 50,
+    labelArrow: "none"
   },
   y: {
     domain: [-0.5, n + 0.5],
@@ -233,7 +269,8 @@ jointPlot = Plot.plot({
     tickFormat: d => d.toString(),
     label: "X₂",
     labelAnchor: "center",
-    labelOffset: 50
+    labelOffset: 50,
+    labelArrow: "none"
   },
   
   marks: [
@@ -245,7 +282,7 @@ jointPlot = Plot.plot({
     Plot.dot(jointData, {
       x: "x1", 
       y: "x2", 
-      r: d => Math.sqrt(d.prob / maxProb) * 15,   
+      r: d => Math.sqrt(d.prob / maxProb) * maxRad,   
       fill: d => d.selected ? "red" : "steelblue",
       fillOpacity: 0.7,
       stroke: "black",
@@ -257,7 +294,7 @@ jointPlot = Plot.plot({
       x1: d => d.x1 - 0.3,
       x2: d => d.x1 + 0.3,
       y1: n + 0.56 + n * .06,
-      y2: d => n + 0.56 + n * .06 + (d.prob / maxMarginalProb) * n * 0.3,
+      y2: d => n + 0.56 + n * .06 + (d.prob / maxMarginalProb) * (n + 1) * 0.3,
       fill: "steelblue",
       fillOpacity: 0.7,
       stroke: "black",
@@ -267,7 +304,7 @@ jointPlot = Plot.plot({
     // Right marginal histogram (X₂)
     Plot.rect(marginalX2, {
       x1: n + 0.56 + n * .06,
-      x2: d => n + 0.56 + n * .06 + (d.prob / maxMarginalProb) * n * 0.3,
+      x2: d => n + 0.56 + n * .06 + (d.prob / maxMarginalProb) * (n + 1) * 0.3,
       y1: d => d.x2 - 0.3,
       y2: d => d.x2 + 0.3,
       fill: "steelblue",
@@ -279,7 +316,7 @@ jointPlot = Plot.plot({
     // Title
     Plot.text(["Joint Distribution of X = (X₁, X₂)"], {
       x: n/2, 
-      y: n + 0.56 + n * .5, 
+      y: n + 0.5 + (n + 1) * .45, 
       fontSize: 24, 
       fontWeight: "bold",
       textAnchor: "middle"
@@ -295,12 +332,13 @@ conditionalPlot = Plot.plot({
   marginLeft: 80,
   marginBottom: 80,
   marginRight: 120,
-  style: { fontSize: "16px" },
+  style: { fontSize: "20px" },
   
   r: {
-    domain: [0, 20],  // Fixed domain from 0 to 20
-    range: [0, 20],   // Maps directly to pixel sizes
-    clamp: true       // Prevents values outside domain
+    type: "linear",
+    domain: [0, maxRad],  // Fixed domain from 0 to 20
+    range: [0, maxRad],   // Maps directly to pixel   sizes  
+    clamp: false       // Prevents values outside domain
   },
   x: {
     domain: [-0.5, n + 0.5],
@@ -308,7 +346,8 @@ conditionalPlot = Plot.plot({
     tickFormat: d => d.toString(),
     label: "X₁",
     labelAnchor: "center",
-    labelOffset: 50
+    labelOffset: 50,
+    labelArrow: "none"
   },
   y: {
     domain: [-0.5, n + 0.5],
@@ -316,7 +355,8 @@ conditionalPlot = Plot.plot({
     tickFormat: d => d.toString(),
     label: "X₂",
     labelAnchor: "center",
-    labelOffset: 50
+    labelOffset: 50,
+    labelArrow: "none"
   },
   
   marks: [
@@ -337,7 +377,7 @@ conditionalPlot = Plot.plot({
     Plot.dot(conditionalData, {
       x: "x1", 
       y: "x2", 
-      r: d => conditionalData.length > 0 ? Math.sqrt(d.condProb / maxCondProb) * 15 : 5,
+      r: d => conditionalData.length > 0 ? Math.sqrt(d.condProb / maxCondProb) * maxRad : 5,
       fill: "red",
       fillOpacity: 0.8,
       stroke: "black",
@@ -349,7 +389,7 @@ conditionalPlot = Plot.plot({
       x1: d => d.x1 - 0.3,
       x2: d => d.x1 + 0.3,
       y1: n + 0.56 + n * .06,
-      y2: d => n + 0.56 + n * .06 + (d.prob / maxCondMarginalProb) * n * 0.3,
+      y2: d => n + 0.56 + n * .06 + (d.prob / maxCondMarginalProb) * (n + 1) * 0.3,
       fill: "red",
       fillOpacity: 0.7,
       stroke: "black",
@@ -359,7 +399,7 @@ conditionalPlot = Plot.plot({
     // Right conditional marginal histogram (X₂ | T = t)
     Plot.rect(conditionalMarginalX2, {
       x1: n + 0.56 + n * .06,
-      x2: d => n + 0.56 + n * .06 + (d.prob / maxCondMarginalProb) * n * 0.3,
+      x2: d => n + 0.56 + n * .06 + (d.prob / maxCondMarginalProb) * (n + 1) * 0.3,
       y1: d => d.x2 - 0.3,
       y2: d => d.x2 + 0.3,
       fill: "red",
@@ -371,7 +411,7 @@ conditionalPlot = Plot.plot({
     // Title
     Plot.text([`Conditional Distribution P(X | T = ${t_select})`], {
       x: n/2, 
-      y: n + 0.56 + n * .5, 
+      y: n + 0.5 + (n + 1) * .45, 
       fontSize: 24, 
       fontWeight: "bold",
       textAnchor: "middle"
@@ -386,13 +426,31 @@ html`<div style="display: flex; gap: 20px; align-items: center; justify-content:
 </div>`
 ```
 
+To understand why $T(X)$ is sufficient in the binomial case, we can make a simple calculation on the joint pmf of the random vector $X = (X_1,X_2)$:
+$$
+\begin{aligned}
+\PP_\theta(X = x) &= \binom{n}{x_1} \theta^{x_1}(1-\theta)^{n-x_1} \cdot \binom{n}{x_2} \theta^{x_2}(1-\theta)^{n-x_2}\\[7pt]
+&= \theta^{T(x)}(1-\theta)^{2n-T(x)} \binom{n}{x_1}\binom{n}{x_2},
+\end{aligned}
+$$
 
+When we calculate the conditional distribution of $X$ given $T(X) = t$ by Bayes' rule, the factor that depends on $\theta$ drops out as before:
+$$
+\begin{aligned}
+\PP_\theta(X = x \mid T(X) = t) &= \frac{\theta^{t}(1-\theta)^{2n-t} \binom{n}{x_1}\binom{n}{x_2}1\{x_1+x_2=t\} }{\sum_{k=0}^t \theta^t(1-\theta)^{2n-t} \binom{n}{k}\binom{n}{t-k}}\cdot\\[7pt] 
+&= \frac{\binom{n}{x_1}\binom{n}{x_2}1\{x_1+x_2=t\}}{\sum_{k=0}^t \binom{n}{k}\binom{n}{t-k}},
+\end{aligned}
+$$
+giving a conditional distribution with no dependence on $\theta$. Applying the combinatorial identity $\sum_{k=0}^t \binom{n}{k}\binom{n}{t-k} = \binom{2n}{t}$, we obtain a hypergeometric distribution for $x_1$ (or for $x_2$):
+$$
+\PP_\theta(X_1 = x_1 \mid T(X) = t) = \frac{\binom{n}{x_1}\binom{n}{t-x_1}}{\binom{2n}{t}} = \text{Hypergeom}(2n,n,t).
+$$
+
+The next section generalizes this calculation to any density that can be factorized in a similar way, giving us an easy way to recognize sufficient statistics just by inspecting the joint density.
 
 ## Factorization theorem
 
-As we will see next, we didn't really need to go to the trouble of calculating the conditional distribution in the first example. Once we noticed that the density depends on $x$ only through $T(x)$, we could have concluded that $T(X)$ was sufficient.
-
-The easiest way to verify that a statistic is sufficient is to show that the density $p_\theta$ factorizes into a part that involves only $\theta$ and $T(x)$, and a part that involves only $h(x)$.
+We didn't really need to go to the trouble of calculating the conditional distribution in the previous examples. The easiest way to verify that a statistic is sufficient is to show that the density $p_\theta$ factorizes into a part that involves only $\theta$ and $T(x)$, and a part that involves only $x$.
 
 **Factorization Theorem:** Let $\cP$ be a model having densities $p_\theta(x)$ with respect to a common dominating measure $\mu$. Then $T(X)$ is sufficient for $\cP$ if and only if there exist non-negative functions $g_\theta$ and $h$ for which
 
@@ -440,7 +498,7 @@ $$
 \PP_\theta(X = x) = \PP_\theta(T(X) = T(x)) \;\cdot\;\PP_\theta(X = x \mid T(X) = T(x)) = g_\theta(T(x)) h(x),
 $$ so $g_\theta(T(x))h(x)$ is indeed the pmf $p_\theta(x)$.
 
-## Statement for general $\cX$
+## Statement for general $\mathcal{X}$
 
 ## Examples
 
@@ -488,6 +546,437 @@ $$ so $T(X) = (\min_i X_i, \max_i X_i)$ is sufficient.
 
 ## Sufficient statistics under i.i.d. sampling
 
+
+
+```{ojs}
+//| echo: false
+
+function matchInputSpacing(customElement, referenceInput = Inputs.range([0, 1])) {
+  // Temporarily add reference to DOM to compute styles
+  document.body.appendChild(referenceInput);
+  
+  const computedStyle = window.getComputedStyle(referenceInput);
+  
+  // Extract relevant spacing properties
+  customElement.style.marginTop = computedStyle.marginTop;
+  customElement.style.marginBottom = computedStyle.marginBottom;
+  customElement.style.marginLeft = computedStyle.marginLeft;
+  customElement.style.marginRight = computedStyle.marginRight;
+  
+  // Clean up
+  document.body.removeChild(referenceInput);
+  
+  return customElement;
+}
+
+
+// Interactive controls
+viewof n2 = Inputs.range([1, 8], {value: 4, step: 1, label: "n"})
+viewof theta2 = Inputs.range([0.01, 0.99], {value: 0.30, step: 0.01, label: "θ"})
+// Method 3: Using a single combined input
+viewof S = {
+  const form = html`<form style="font: 13px / var(--sans-serif); display: flex; flex-direction: column; gap: 8px;">
+    <div style="display: flex; align-items: center; padding: 3px 0px 0px 0px; ">
+      <label style="display: flex; align-items: center; gap: 0.43em; min-width: 180px;">
+        <span style="width: 7em;">S₁ = s₁</span>
+        <input id="s1-text" type="number" min="0" max="${n2}" step="1" value="1" 
+               style="width: 5.37em;  height: 25px; font: inherit;">
+        <input name="s1" type="range" min="0" max="${n2}" step="1" value="1" 
+               style="width: 8em; flex: 1">
+      </label>
+    </div>
+    <div style="display: flex; align-items: center; padding: 0px 0px 10px 0px; ">
+      <label style="display: flex; align-items: center; gap: 0.43em; min-width: 180px;">
+        <span style="width: 7em;">S₂ = s₂</span>
+        <input id="s2-text" type="number" min="0" max="${n2}" step="1" value="3" 
+               style="width: 5.37em; height: 25px; font: inherit;">
+        <input name="s2" type="range" min="0" max="${n2}" step="1" value="3" 
+               style="width: 8em; flex: 1">
+      </label>
+    </div>
+  </form>`;
+  
+  const s1Input = form.querySelector('input[name="s1"]');
+  const s2Input = form.querySelector('input[name="s2"]');
+  const s1TextInput = form.querySelector('#s1-text');
+  const s2TextInput = form.querySelector('#s2-text');
+  
+  function updateConstraints(changedInput) {
+    const s1Val = parseFloat(s1Input.value);
+    const s2Val = parseFloat(s2Input.value);
+    
+    // Enforce s1 <= s2 by adjusting the input that wasn't changed
+    if (s1Val > s2Val) {
+      if (changedInput === 's1') {
+        // s1 was changed and went above s2, so adjust s2 up
+        s2Input.value = s1Val;
+        s2TextInput.value = s1Val;
+      } else {
+        // s2 was changed and went below s1, so adjust s1 down
+        s1Input.value = s2Val;
+        s1TextInput.value = s2Val;
+      }
+    }
+    
+    // Update text displays to match sliders
+    s1TextInput.value = s1Input.value;
+    s2TextInput.value = s2Input.value;
+    
+    // Update the form's value property for Observable
+    form.value = {
+      s1: parseFloat(s1Input.value),
+      s2: parseFloat(s2Input.value)
+    };
+    
+    // Dispatch input event
+    form.dispatchEvent(new CustomEvent("input"));
+  }
+  
+  function updateFromText(changedInput) {
+    // Update slider from text input
+    if (changedInput === 's1') {
+      s1Input.value = s1TextInput.value;
+    } else {
+      s2Input.value = s2TextInput.value;
+    }
+    // Then apply constraints
+    updateConstraints(changedInput);
+  }
+  
+  // Listen to slider changes
+  s1Input.addEventListener("input", () => updateConstraints('s1'));
+  s2Input.addEventListener("input", () => updateConstraints('s2'));
+  
+  // Listen to text input changes
+  s1TextInput.addEventListener("input", () => updateFromText('s1'));
+  s2TextInput.addEventListener("input", () => updateFromText('s2'));
+  
+  updateConstraints('s1'); // Initialize
+  
+  matchInputSpacing(form);
+  
+  return form;
+}
+
+// Extract x and y from range
+s1_select = S.s1
+s2_select = S.s2
+viewof distributionType2 = Inputs.radio(["Binomial", "Discrete Laplace"], {value: "Binomial", label: "Distribution"})
+
+// Select which PMF to use based on dropdown selection
+pmf2 = distributionType2 === "Binomial" ? binomPMF : expPMF
+
+// Generate joint distribution data
+jointData2 = {
+  const data = [];
+  for (let x1 = 0; x1 <= n2; x1++) {
+    for (let x2 = 0; x2 <= n2; x2++) {
+      const prob = pmf(x1, n2, theta2) * pmf(x2, n2, theta2);
+      const x_min = Math.min(x1, x2);
+      const x_max = Math.max(x1, x2);
+      data.push({
+        x1: x1,
+        x2: x2,
+        prob: prob,
+        x_min: x_min,
+        x_max: x_max,
+        selected: x_min === s1_select && x_max === s2_select
+      });
+    }
+  }
+  return data;
+}
+
+// Generate conditional distribution data (X given T = t)
+conditionalData2 = {
+  const data = [];
+  const validPairs = jointData2.filter(d => d.x_min === s1_select && d.x_max === s2_select);
+  const totalCondProb = validPairs.reduce((sum, d) => sum + d.prob, 0);
+    
+  validPairs.forEach(d => {
+    if (totalCondProb > 0) {
+      data.push({
+        x1: d.x1,
+        x2: d.x2,
+        condProb: d.prob / totalCondProb,
+        x_min: d.x_min,
+        x_max: d.x_max
+      });
+    }
+  });
+
+  return data;
+}
+
+// Calculate maximum probability for scaling
+maxProb2 = Math.max(...jointData2.map(d => d.prob))
+maxCondProb2 = conditionalData2.length > 0 ? Math.max(...conditionalData2.map(d => d.condProb)) : 1
+
+// Generate marginal distributions
+marginalX12 = {
+  const data = [];
+  for (let x1 = 0; x1 <= n2; x1++) {
+    data.push({
+      x1: x1,
+      prob: pmf(x1, n2, theta2)
+    });
+  }
+  return data;
+}
+
+marginalX22 = {
+  const data = [];
+  for (let x2 = 0; x2 <= n2; x2++) {
+    data.push({
+      x2: x2,
+      prob: pmf(x2, n2, theta2)
+    });
+  }
+  return data;
+}
+
+// Generate conditional marginal distributions
+conditionalMarginalX12 = {
+  const data = [];
+  
+  if (conditionalData2.length > 0) {
+    // Group by x1 and sum probabilities
+    const x1Probs = new Map();
+    conditionalData2.forEach(d => {
+      x1Probs.set(d.x1, (x1Probs.get(d.x1) || 0) + d.condProb);
+    });
+    
+    for (let x1 = 0; x1 <= n2; x1++) {
+      if (x1Probs.has(x1)) {
+        data.push({
+          x1: x1,
+          prob: x1Probs.get(x1)
+        });
+      }
+    }
+  }
+  
+  return data;
+}
+
+conditionalMarginalX22 = {
+  const data = [];
+  
+  if (conditionalData2.length > 0) {
+    // Group by x2 and sum probabilities
+    const x2Probs = new Map();
+    conditionalData2.forEach(d => {
+      x2Probs.set(d.x2, (x2Probs.get(d.x2) || 0) + d.condProb);
+    });
+    
+    for (let x2 = 0; x2 <= n2; x2++) {
+      if (x2Probs.has(x2)) {
+        data.push({
+          x2: x2,
+          prob: x2Probs.get(x2)
+        });
+      }
+    }
+  }
+  
+  return data;
+}
+
+maxRad2 = 20 * 5 / (n2 + 1)
+
+maxMarginalProb2 = Math.max(...marginalX12.map(d => d.prob), ...marginalX22.map(d => d.prob))
+maxCondMarginalProb2 = conditionalMarginalX12.length > 0 && conditionalMarginalX22.length > 0 ? 
+  Math.max(...conditionalMarginalX12.map(d => d.prob), ...conditionalMarginalX22.map(d => d.prob)) : 1
+
+
+jointPlot2 = Plot.plot({
+  width: 480,
+  height: 480,
+  marginTop: 140,
+  marginLeft: 80,
+  marginBottom: 80,
+  marginRight: 120,
+  style: { fontSize: "20px" },
+  
+  r: {
+    type: "linear",
+    domain: [0, maxRad2],  // Fixed domain from 0 to 20
+    range: [0, maxRad2],   // Maps directly to pixel sizes
+    clamp: true       // Prevents values outside domain
+  },
+
+  
+  x: {
+    domain: [-0.5, n2 + 0.5],
+    ticks: Array.from({length: n2 + 1}, (_, i) => i),
+    tickFormat: d => d.toString(),
+    label: "X₁",
+    labelAnchor: "center",
+    labelOffset: 50,
+    labelArrow: "none"
+  },
+  y: {
+    domain: [-0.5, n2 + 0.5],
+    ticks: Array.from({length: n2 + 1}, (_, i) => i),
+    tickFormat: d => d.toString(),
+    label: "X₂",
+    labelAnchor: "center",
+    labelOffset: 50,
+    labelArrow: "none"
+  },
+  
+  marks: [
+    // Grid lines
+    Plot.ruleX(Array.from({length: n2 + 1}, (_, i) => i), {stroke: "#f0f0f0"}),
+    Plot.ruleY(Array.from({length: n2 + 1}, (_, i) => i), {stroke: "#f0f0f0"}),
+    
+    // Probability circles
+    Plot.dot(jointData2, {
+      x: "x1", 
+      y: "x2", 
+      r: d => Math.sqrt(d.prob / maxProb2) * maxRad2,   
+      fill: d => d.selected ? "red" : "steelblue",
+      fillOpacity: 0.7,
+      stroke: "black",
+      strokeWidth: 0.5
+    }),
+    
+    // Top marginal histogram (X₁)
+    Plot.rect(marginalX12, {
+      x1: d => d.x1 - 0.3,
+      x2: d => d.x1 + 0.3,
+      y1: n2 + 0.56 + n2 * .06,
+      y2: d => n2 + 0.56 + n2 * .06 + (d.prob / maxMarginalProb2) * (n2 + 1) * 0.3,
+      fill: "steelblue",
+      fillOpacity: 0.7,
+      stroke: "black",
+      strokeWidth: 0.5
+    }),
+    
+    // Right marginal histogram (X₂)
+    Plot.rect(marginalX22, {
+      x1: n2 + 0.56 + n2 * .06,
+      x2: d => n2 + 0.56 + n2 * .06 + (d.prob / maxMarginalProb2) * (n2 + 1) * 0.3,
+      y1: d => d.x2 - 0.3,
+      y2: d => d.x2 + 0.3,
+      fill: "steelblue",
+      fillOpacity: 0.7,
+      stroke: "black",
+      strokeWidth: 0.5
+    }),
+    
+    // Title
+    Plot.text(["Joint Distribution of X = (X₁, X₂)"], {
+      x: n2/2, 
+      y: n2 + 0.5 + (n2 + 1) * .45, 
+      fontSize: 24, 
+      fontWeight: "bold",
+      textAnchor: "middle"
+    })
+  ]
+})
+
+conditionalPlot2 = Plot.plot({
+  width: 480,
+  height: 480,
+  marginTop: 140,
+  marginLeft: 80,
+  marginBottom: 80,
+  marginRight: 120,
+  style: { fontSize: "20px" },
+  
+  r: {
+    type: "linear",
+    domain: [0, maxRad2],  // Fixed domain from 0 to 20
+    range: [0, maxRad2],   // Maps directly to pixel   sizes  
+    clamp: false       // Prevents values outside domain
+  },
+  x: {
+    domain: [-0.5, n2 + 0.5],
+    ticks: Array.from({length: n2 + 1}, (_, i) => i),
+    tickFormat: d => d.toString(),
+    label: "X₁",
+    labelAnchor: "center",
+    labelOffset: 50,
+    labelArrow: "none"
+  },
+  y: {
+    domain: [-0.5, n2 + 0.5],
+    ticks: Array.from({length: n2 + 1}, (_, i) => i),
+    tickFormat: d => d.toString(),
+    label: "X₂",
+    labelAnchor: "center",
+    labelOffset: 50,
+    labelArrow: "none"
+  },
+  
+  marks: [
+    // Grid lines
+    Plot.ruleX(Array.from({length: n2 + 1}, (_, i) => i), {stroke: "#f0f0f0"}),
+    Plot.ruleY(Array.from({length: n2 + 1}, (_, i) => i), {stroke: "#f0f0f0"}),
+    
+    // All possible points (faded)
+    Plot.dot(jointData2, {
+      x: "x1", 
+      y: "x2", 
+      r: 3,
+      fill: "lightgray",
+      fillOpacity: 0.3
+    }),
+    
+    // Conditional probability circles
+    Plot.dot(conditionalData2, {
+      x: "x1", 
+      y: "x2", 
+      r: d => conditionalData2.length > 0 ? Math.sqrt(d.condProb / maxCondProb2) * maxRad2 : 5,
+      fill: "red",
+      fillOpacity: 0.8,
+      stroke: "black",
+      strokeWidth: 1
+    }),
+    
+    // Top conditional marginal histogram (X₁ | T = t)
+    Plot.rect(conditionalMarginalX12, {
+      x1: d => d.x1 - 0.3,
+      x2: d => d.x1 + 0.3,
+      y1: n2 + 0.56 + n2 * .06,
+      y2: d => n2 + 0.56 + n2 * .06 + (d.prob / maxCondMarginalProb2) * (n2 + 1) * 0.3,
+      fill: "red",
+      fillOpacity: 0.7,
+      stroke: "black",
+      strokeWidth: 0.5
+    }),
+    
+    // Right conditional marginal histogram (X₂ | S = s)
+    Plot.rect(conditionalMarginalX22, {
+      x1: n2 + 0.56 + n2 * .06,
+      x2: d => n2 + 0.56 + n2 * .06 + (d.prob / maxCondMarginalProb2) * (n2 + 1) * 0.3,
+      y1: d => d.x2 - 0.3,
+      y2: d => d.x2 + 0.3,
+      fill: "red",
+      fillOpacity: 0.7,
+      stroke: "black",
+      strokeWidth: 0.5
+    }),
+    
+    // Title
+    Plot.text([`Conditional Distribution P(X | S = (${s1_select}, ${s2_select}))`], {
+      x: n2/2, 
+      y: n2 + 0.5 + (n2 + 1) * .45, 
+      fontSize: 24, 
+      fontWeight: "bold",
+      textAnchor: "middle"
+    })
+  ]
+})
+
+// Display plots side by side
+html`<div style="display: flex; gap: 20px; align-items: center; justify-content: center;">
+  ${jointPlot2}
+  ${conditionalPlot2}
+</div>`
+```
+
 ## Minimal sufficiency
 
 Consider again the example with $X_1,\ldots,X_n \simiid N(\theta,1)$. We have shown that $\sum_i X_i$ is sufficient. It follows that $\overline{X} = \frac{1}{n}\sum_i X_i$ is also sufficient. But we have also shown that the vector of order statistics $S(X) = (X_{(1)}, \ldots, X_{(n)})$ is another sufficient statistic. Finally, the full data set $X$ is always a sufficient statistic, by definition.
@@ -523,3 +1012,140 @@ $$
 $$ which does not depend on $\theta$ because all of the values $z$ that we sum over in the denominator map to the same $t$, and are therefore equivalent to $x$ by assumption.
 
 Next, assume $S(X)$ is any other sufficient statistic. If $S(x) = S(y) = s$, then $x \equiv_{\cP} y$, by the argument above the theorem, and consequently $T(x) = T(y)$ by assumption. Then we can set $f(s) = T(x)$. For any other value $z$ with $S(z) = s$, we must also have $x \equiv_{\cP} z$ so $T(z) = T(x) = f(S(z))$. Since $s$ was arbitrary, we have the result.
+
+```{ojs}
+//| echo: false
+
+// Parameters
+nMax = 50
+thetaMax = Math.log(10 * nMax)
+
+// Generate random Laplace samples with specified location parameter
+generateLaplaceData = (theta) => {
+  const data = [];
+  for (let i = 0; i < nMax; i++) {
+    // Generate Laplace(theta, 1) using inverse transform method
+    const u = Math.random() - 0.5;
+    const x = u > 0 ? theta - Math.log(1 - 2*u) : theta + Math.log(1 + 2*u);
+    data.push(x);
+  }
+  return data;
+}
+
+// Slider for sample size n
+viewof nLaplace = Inputs.range([1, nMax], {value: 5, step: 1, label: "n"})
+
+// Slider for true theta value
+viewof theta0 = Inputs.range([Math.ceil(-thetaMax), Math.floor(thetaMax)], {value: 0, step: 0.1, label: "θ₀"})
+
+// Button to generate new data
+viewof generateButton = html`<button style="
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+" onmouseover="this.style.backgroundColor='#1976D2'" 
+   onmouseout="this.style.backgroundColor='#2196F3'"
+   onclick="this.value = this.value + 1; this.dispatchEvent(new CustomEvent('input'))">
+Generate data
+</button>`
+
+// Current data - updates when button is pressed
+currentData = generateButton ? generateLaplaceData(theta0) : generateLaplaceData(0)
+
+// Calculate log-likelihood function
+logLikelihood = (theta, data, sampleSize) => {
+  const subset = data.slice(0, sampleSize);
+  return -sampleSize * Math.log(2) - subset.reduce((sum, x) => sum + Math.abs(x - theta), 0);
+}
+
+// Create data for plotting - only evaluate at knots and endpoints
+data = {
+  const subset = currentData.slice(0, nLaplace);
+  const sortedData = [...subset].sort((a, b) => a - b);
+  
+  // Create evaluation points: -thetaMax, sorted data points, +thetaMax
+  const evalPoints = [-thetaMax, ...sortedData, thetaMax];
+  
+  return evalPoints.map(theta => ({
+    theta: theta,
+    loglik: logLikelihood(theta, currentData, nLaplace),
+    isDataPoint: sortedData.includes(theta)
+  }));
+}
+
+// Find y-axis limits to show all knots
+yLimits = {
+  const dataPoints = currentData.slice(0, nLaplace);
+  const loglikAtData = dataPoints.map(x => logLikelihood(x, currentData, nLaplace));
+  const minLoglik = Math.min(...loglikAtData);
+  const maxLoglik = Math.max(...loglikAtData);
+  const range = maxLoglik - minLoglik;
+  return {
+    min: minLoglik - 0.1 * range - Math.log(2),
+    max: maxLoglik + 0.1 * range + 0.1 * Math.log(2)
+  };
+}
+
+// Create the plot
+Plot.plot({
+  width: 800,
+  height: 400,
+  marginTop: 60,
+  marginLeft: 100,
+  marginBottom: 100,
+  marginRight: 40,
+  style: {
+    fontSize: "18px"
+  },
+  x: {
+    domain: [-thetaMax, thetaMax],
+    label: "θ",
+    labelAnchor: "center",
+    labelOffset: 60
+  },
+  y: {
+    domain: [yLimits.min, yLimits.max],
+    label: "Log-likelihood",
+    labelAnchor: "center",
+    labelOffset: 70
+  },
+  marks: [
+    // Main log-likelihood curve
+    Plot.line(data, {
+      x: "theta", 
+      y: "loglik", 
+      stroke: "steelblue", 
+      strokeWidth: 2
+    }),
+    
+    // Mark data points as knots
+    Plot.dot(data.filter(d => d.isDataPoint), {
+      x: "theta",
+      y: "loglik",
+      fill: "steelblue",
+      r: 4
+    }),
+    
+    // Vertical reference line at theta = 0
+    Plot.ruleX([0], {stroke: "gray", strokeDasharray: "3,3", opacity: 0.5}),
+    
+    // Title
+    Plot.text([`Log-likelihood for ${nLaplace} i.i.d. Laplace observations`], {
+      x: 0, 
+      y: yLimits.max + 0.05 * (yLimits.max - yLimits.min), 
+      fontSize: 18, 
+      fontWeight: "bold",
+      textAnchor: "middle"
+    })
+  ]
+})
+```
