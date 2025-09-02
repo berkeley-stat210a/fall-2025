@@ -284,8 +284,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#standing-homework-instructions" id="toc-standing-homework-instructions" class="nav-link active" data-scroll-target="#standing-homework-instructions">Standing homework instructions</a></li>
-  <li><a href="#assignments" id="toc-assignments" class="nav-link" data-scroll-target="#assignments">Assignments</a></li>
+  <li><a href="#assignments" id="toc-assignments" class="nav-link active" data-scroll-target="#assignments">Assignments</a></li>
+  <li><a href="#standing-homework-instructions" id="toc-standing-homework-instructions" class="nav-link" data-scroll-target="#standing-homework-instructions">Standing homework instructions</a></li>
   </ul>
 </nav>
     </div>
@@ -311,13 +311,6 @@ window.Quarto = {
 </header>
 
 
-<section id="standing-homework-instructions" class="level2">
-<h2 class="anchored" data-anchor-id="standing-homework-instructions">Standing homework instructions</h2>
-<p>You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs.&nbsp;actual equality, “all functions” vs.&nbsp;“all measurable functions,” etc. (unless the problem is explicitly asking about such issues).</p>
-<p>If you need to write code to answer a question, show your code. If you need to include a plot, make sure the plot is readable, with appropriate axis labels and a legend if necessary. Points will be deducted for very hard-to-read code or plots.</p>
-<p>Anytime I ask you to calculate things numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.</p>
-<p>Unless otherwise stated, assume asymptotic limits are taken as <span class="math inline">\(n\to \infty\)</span>. If I ask for a “limiting distribution,” I mean do an appropriate centering and scaling to find a limiting distribution that is non-degenerate (not converging in probability to a constant). That is, find sequences <span class="math inline">\(a_n\)</span> and <span class="math inline">\(b_n\)</span> such that <span class="math inline">\(b_n(X_n−a_n)\)</span> converges to a non-degenerate limiting distribution.</p>
-</section>
 <section id="assignments" class="level2">
 <h2 class="anchored" data-anchor-id="assignments">Assignments</h2>
 <ul>
@@ -333,6 +326,13 @@ window.Quarto = {
 <!-- -   [Homework 9](homework/homework9.pdf) ([LaTeX source](homework/homework9.tex)) -->
 <!-- -   [Homework 10](homework/homework10.pdf) ([Data for Problem 3](homework/confbands.csv)) ([LaTeX source](homework/homework10.tex)) -->
 <!-- -   [Homework 11](homework/homework11.pdf) ([LaTeX source](homework/homework11.tex)) -->
+</section>
+<section id="standing-homework-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="standing-homework-instructions">Standing homework instructions</h2>
+<p>You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs.&nbsp;actual equality, “all functions” vs.&nbsp;“all measurable functions,” etc. (unless the problem is explicitly asking about such issues).</p>
+<p>If you need to write code to answer a question, show your code. If you need to include a plot, make sure the plot is readable, with appropriate axis labels and a legend if necessary. Points will be deducted for very hard-to-read code or plots.</p>
+<p>Anytime I ask you to calculate things numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.</p>
+<p>Unless otherwise stated, assume asymptotic limits are taken as <span class="math inline">\(n\to \infty\)</span>. If I ask for a “limiting distribution,” I mean do an appropriate centering and scaling to find a limiting distribution that is non-degenerate (not converging in probability to a constant). That is, find sequences <span class="math inline">\(a_n\)</span> and <span class="math inline">\(b_n\)</span> such that <span class="math inline">\(b_n(X_n−a_n)\)</span> converges to a non-degenerate limiting distribution.</p>
 
 
 </section>

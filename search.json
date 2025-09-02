@@ -1261,18 +1261,7 @@
     "href": "homework.html",
     "title": "Homework",
     "section": "",
-    "text": "You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs. actual equality, “all functions” vs. “all measurable functions,” etc. (unless the problem is explicitly asking about such issues).\nIf you need to write code to answer a question, show your code. If you need to include a plot, make sure the plot is readable, with appropriate axis labels and a legend if necessary. Points will be deducted for very hard-to-read code or plots.\nAnytime I ask you to calculate things numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.\nUnless otherwise stated, assume asymptotic limits are taken as \\(n\\to \\infty\\). If I ask for a “limiting distribution,” I mean do an appropriate centering and scaling to find a limiting distribution that is non-degenerate (not converging in probability to a constant). That is, find sequences \\(a_n\\) and \\(b_n\\) such that \\(b_n(X_n−a_n)\\) converges to a non-degenerate limiting distribution.",
-    "crumbs": [
-      "Course Materials",
-      "Homework"
-    ]
-  },
-  {
-    "objectID": "homework.html#standing-homework-instructions",
-    "href": "homework.html#standing-homework-instructions",
-    "title": "Homework",
-    "section": "",
-    "text": "You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs. actual equality, “all functions” vs. “all measurable functions,” etc. (unless the problem is explicitly asking about such issues).\nIf you need to write code to answer a question, show your code. If you need to include a plot, make sure the plot is readable, with appropriate axis labels and a legend if necessary. Points will be deducted for very hard-to-read code or plots.\nAnytime I ask you to calculate things numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.\nUnless otherwise stated, assume asymptotic limits are taken as \\(n\\to \\infty\\). If I ask for a “limiting distribution,” I mean do an appropriate centering and scaling to find a limiting distribution that is non-degenerate (not converging in probability to a constant). That is, find sequences \\(a_n\\) and \\(b_n\\) such that \\(b_n(X_n−a_n)\\) converges to a non-degenerate limiting distribution.",
+    "text": "Homework 1 (LaTeX source)",
     "crumbs": [
       "Course Materials",
       "Homework"
@@ -1282,8 +1271,19 @@
     "objectID": "homework.html#assignments",
     "href": "homework.html#assignments",
     "title": "Homework",
-    "section": "Assignments",
-    "text": "Assignments\n\nHomework 1 (LaTeX source)",
+    "section": "",
+    "text": "Homework 1 (LaTeX source)",
+    "crumbs": [
+      "Course Materials",
+      "Homework"
+    ]
+  },
+  {
+    "objectID": "homework.html#standing-homework-instructions",
+    "href": "homework.html#standing-homework-instructions",
+    "title": "Homework",
+    "section": "Standing homework instructions",
+    "text": "Standing homework instructions\nYou may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs. actual equality, “all functions” vs. “all measurable functions,” etc. (unless the problem is explicitly asking about such issues).\nIf you need to write code to answer a question, show your code. If you need to include a plot, make sure the plot is readable, with appropriate axis labels and a legend if necessary. Points will be deducted for very hard-to-read code or plots.\nAnytime I ask you to calculate things numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.\nUnless otherwise stated, assume asymptotic limits are taken as \\(n\\to \\infty\\). If I ask for a “limiting distribution,” I mean do an appropriate centering and scaling to find a limiting distribution that is non-degenerate (not converging in probability to a constant). That is, find sequences \\(a_n\\) and \\(b_n\\) such that \\(b_n(X_n−a_n)\\) converges to a non-degenerate limiting distribution.",
     "crumbs": [
       "Course Materials",
       "Homework"
