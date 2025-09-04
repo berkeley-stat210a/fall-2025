@@ -285,7 +285,12 @@ window.Quarto = {
    
   <ul>
   <li><a href="#assignments" id="toc-assignments" class="nav-link active" data-scroll-target="#assignments">Assignments</a></li>
-  <li><a href="#standing-homework-instructions" id="toc-standing-homework-instructions" class="nav-link" data-scroll-target="#standing-homework-instructions">Standing homework instructions</a></li>
+  <li><a href="#standing-homework-instructions" id="toc-standing-homework-instructions" class="nav-link" data-scroll-target="#standing-homework-instructions">Standing homework instructions</a>
+  <ul class="collapse">
+  <li><a href="#submission-format" id="toc-submission-format" class="nav-link" data-scroll-target="#submission-format">Submission format</a></li>
+  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods">Monte Carlo methods</a></li>
+  <li><a href="#other-conventions" id="toc-other-conventions" class="nav-link" data-scroll-target="#other-conventions">Other conventions</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -329,12 +334,22 @@ window.Quarto = {
 </section>
 <section id="standing-homework-instructions" class="level2">
 <h2 class="anchored" data-anchor-id="standing-homework-instructions">Standing homework instructions</h2>
-<p>You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs.&nbsp;actual equality, “all functions” vs.&nbsp;“all measurable functions,” etc. (unless the problem is explicitly asking about such issues).</p>
+<section id="submission-format" class="level3">
+<h3 class="anchored" data-anchor-id="submission-format">Submission format</h3>
+<p>All homework will be submitted electronically, on Gradescope. Homework submissions do not need to be typeset in LaTeX, and they can be handwritten unless code or figures are required, so long as they are legible; points may be deducted for solutions that are difficult to read. Code can be written in any common programming language: R, Python, and Matlab are all acceptable, but if you want to use something more exotic, check with the GSI first.</p>
 <p>If you need to write code to answer a question, show your code. If you need to include a plot, make sure the plot is readable, with appropriate axis labels and a legend if necessary. Points will be deducted for very hard-to-read code or plots.</p>
-<p>Anytime I ask you to calculate things numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.</p>
+</section>
+<section id="monte-carlo-methods" class="level3">
+<h3 class="anchored" data-anchor-id="monte-carlo-methods">Monte Carlo methods</h3>
+<p>Anytime I ask you to calculate something numerically, it is implicit that Monte Carlo integration (calculating an expectation by repeatedly sampling data from an appropriate distribution and taking the average) is a valid numerical method. There is no need to ask permission, but please use good judgment about how many samples to take so that your numerical error is not too high: if you report a number it should be correct to a few significant digits; if you are comparing two numbers, the precision of your calculation should be high enough for the difference to be meaningful; and plots of smooth functions should appear smooth enough for the plot to be readable.</p>
+</section>
+<section id="other-conventions" class="level3">
+<h3 class="anchored" data-anchor-id="other-conventions">Other conventions</h3>
+<p>You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs.&nbsp;actual equality, “all functions” vs.&nbsp;“all measurable functions,” etc. (unless the problem is explicitly asking about such issues).</p>
 <p>Unless otherwise stated, assume asymptotic limits are taken as <span class="math inline">\(n\to \infty\)</span>. If I ask for a “limiting distribution,” I mean do an appropriate centering and scaling to find a limiting distribution that is non-degenerate (not converging in probability to a constant). That is, find sequences <span class="math inline">\(a_n\)</span> and <span class="math inline">\(b_n\)</span> such that <span class="math inline">\(b_n(X_n−a_n)\)</span> converges to a non-degenerate limiting distribution.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
