@@ -66,7 +66,7 @@
     "href": "index.html#schedule",
     "title": "Statistics 210a: Theoretical Statistics",
     "section": "Schedule",
-    "text": "Schedule\n\nWeek 1\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Aug 28:\n           \n           Lecture 1 Introduction\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n   \n   \n  \n\n   Week 2\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Sep 2:\n           \n           Lecture 2 Probability\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n\n        \n\n           \n           \n           Sep 4:\n           \n           Lecture 3 Estimation\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n\n        \n\n           \n           \n           Sep 5:\n           \n           Recitation 1 Probability review\n           \n                \n           \n                \n           \n        \n   \n   \n   \n  \n\n   Week 3\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Sep 10:\n           \n           Homework 1 Problems\n           \n                \n                \n                  LaTeX source\n                  \n                \n           \n                \n           \n        \n   \n   \n   \n  \n\n   Week 17\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Dec 16:\n           \n           Exam  Final Exam, 3-6pm\n           \n                \n           \n                \n           \n        \n   \n   \n   \nNo matching items",
+    "text": "Schedule\n\nWeek 1\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Aug 28:\n           \n           Lecture 1 Introduction\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n   \n   \n  \n\n   Week 2\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Sep 2:\n           \n           Lecture 2 Probability\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n\n        \n\n           \n           \n           Sep 4:\n           \n           Lecture 3 Estimation\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n\n        \n\n           \n           \n           Sep 5:\n           \n           Recitation 1 Probability review\n           \n                \n           \n                \n           \n        \n   \n   \n   \n  \n\n   Week 3\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Sep 9:\n           \n           Lecture 4 Sufficiency\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n\n        \n\n           \n           \n           Sep 10:\n           \n           Homework 1 Problems\n           \n                \n                \n                  LaTeX source\n                  \n                \n           \n                \n           \n        \n   \n\n        \n\n           \n           \n           Sep 11:\n           \n           Lecture 5 Exponential Families\n           \n                \n                \n                  Handwritten notes\n                  \n                \n           \n                \n           \n        \n   \n   \n   \n  \n\n   Week 17\n\n   \n   \n   \n   \n   \n   \n\n        \n\n           \n           \n           Dec 16:\n           \n           Exam  Final Exam, 3-6pm\n           \n                \n           \n                \n           \n        \n   \n   \n   \nNo matching items",
     "crumbs": [
       "Home / Schedule"
     ]
@@ -1294,10 +1294,10 @@
     "href": "recitation.html",
     "title": "Recitation",
     "section": "",
-    "text": "Recitation 1: probability review\nRecitation 2: more on probability\nRecitation 1: matrix algebra\nRecitation 1: projection matrices\nRecitation 1: normal theory distributions",
+    "text": "Recitation 1: probability review\nRecitation 2: more on probability\nRecitation 3: matrix algebra\nRecitation 4: projection matrices\nRecitation 5: normal theory distributions\n\nMaterials created by Dohyeong Ki (Fall 2021 GSI)",
     "crumbs": [
       "Course Materials",
-      "Recitation"
+      "recitation"
     ]
   },
   {
@@ -1305,10 +1305,10 @@
     "href": "recitation.html#recitation-handouts",
     "title": "Recitation",
     "section": "",
-    "text": "Recitation 1: probability review\nRecitation 2: more on probability\nRecitation 1: matrix algebra\nRecitation 1: projection matrices\nRecitation 1: normal theory distributions",
+    "text": "Recitation 1: probability review\nRecitation 2: more on probability\nRecitation 3: matrix algebra\nRecitation 4: projection matrices\nRecitation 5: normal theory distributions\n\nMaterials created by Dohyeong Ki (Fall 2021 GSI)",
     "crumbs": [
       "Course Materials",
-      "Recitation"
+      "recitation"
     ]
   },
   {
@@ -1338,7 +1338,7 @@
     "href": "syllabus.html",
     "title": "Syllabus",
     "section": "",
-    "text": "Primary Instructor Will Fithian\n\nOffice Hours: Monday 4:15-5:15pm on Zoom, Thursday 1-2pm in Evans 301\nEmail: wfithian@berkeley.edu\n\nGSI Zhexiao Lin\n\nOffice Hours: Wednesday 1:30-2:30 in Evans 444, Friday 3-4pm on Zoom\nEmail: zhexiaolin@berkeley.edu\n\n\n\n\n\n\nLectures: Tuesday and Thursday 9:30-11am, Evans 60\nRecitation sections: Every second Friday 2-3pm, starting September 5, Evans 332\nVeterans Day: No class on Tuesday, November 11 (quiz held Thursday, November 13)\nThanksgiving week:\n\nTuesday November 25: lecture 9:30-11am on Zoom\nThursday November 27: no lecture\nAll OH canceled, no homework or quiz\n\nFinal exam review: (last recitation section) Friday, December 12\nFinal exam: Tuesday December 16, 3-6pm\n\n\n\n\n\nLecture videos and homework solutions at [https://bcourses.berkeley.edu bCourses]\nEmail policy: You can email course staff about administrative questions, with “[Stat 210A]” in the subject line. No math over email, please.\nEd page for announcements and technical discussion (no homework spoilers!)\nGradescope for turning in homework",
+    "text": "Primary Instructor Will Fithian\n\nOffice Hours: Monday 4:15-5:15pm on Zoom, Thursday 1-2pm in Evans 301\nEmail: wfithian@berkeley.edu\n\nGSI Zhexiao Lin\n\nOffice Hours: Wednesday 1:30-2:30 in Evans 444, Friday 3-4pm on Zoom\nEmail: zhexiaolin@berkeley.edu\n\n\n\n\n\n\nLectures: Tuesday and Thursday 9:30-11am, Evans 60\nRecitation sections: Every second Friday 2-3pm, starting September 5, Evans 332 (handouts)\nVeterans Day: No class on Tuesday, November 11 (quiz held Thursday, November 13)\nThanksgiving week:\n\nTuesday November 25: lecture 9:30-11am on Zoom\nThursday November 27: no lecture\nAll OH canceled, no homework or quiz\n\nFinal exam review: (last recitation section) Friday, December 12\nFinal exam: Tuesday December 16, 3-6pm\n\n\n\n\n\nLecture videos and homework solutions at [https://bcourses.berkeley.edu bCourses]\nEmail policy: You can email course staff about administrative questions, with “[Stat 210A]” in the subject line. No math over email, please.\nEd page for announcements and technical discussion (no homework spoilers!)\nGradescope for turning in homework",
     "crumbs": [
       "Course Logistics",
       "Syllabus"
@@ -1349,7 +1349,7 @@
     "href": "syllabus.html#course-information",
     "title": "Syllabus",
     "section": "",
-    "text": "Primary Instructor Will Fithian\n\nOffice Hours: Monday 4:15-5:15pm on Zoom, Thursday 1-2pm in Evans 301\nEmail: wfithian@berkeley.edu\n\nGSI Zhexiao Lin\n\nOffice Hours: Wednesday 1:30-2:30 in Evans 444, Friday 3-4pm on Zoom\nEmail: zhexiaolin@berkeley.edu\n\n\n\n\n\n\nLectures: Tuesday and Thursday 9:30-11am, Evans 60\nRecitation sections: Every second Friday 2-3pm, starting September 5, Evans 332\nVeterans Day: No class on Tuesday, November 11 (quiz held Thursday, November 13)\nThanksgiving week:\n\nTuesday November 25: lecture 9:30-11am on Zoom\nThursday November 27: no lecture\nAll OH canceled, no homework or quiz\n\nFinal exam review: (last recitation section) Friday, December 12\nFinal exam: Tuesday December 16, 3-6pm\n\n\n\n\n\nLecture videos and homework solutions at [https://bcourses.berkeley.edu bCourses]\nEmail policy: You can email course staff about administrative questions, with “[Stat 210A]” in the subject line. No math over email, please.\nEd page for announcements and technical discussion (no homework spoilers!)\nGradescope for turning in homework",
+    "text": "Primary Instructor Will Fithian\n\nOffice Hours: Monday 4:15-5:15pm on Zoom, Thursday 1-2pm in Evans 301\nEmail: wfithian@berkeley.edu\n\nGSI Zhexiao Lin\n\nOffice Hours: Wednesday 1:30-2:30 in Evans 444, Friday 3-4pm on Zoom\nEmail: zhexiaolin@berkeley.edu\n\n\n\n\n\n\nLectures: Tuesday and Thursday 9:30-11am, Evans 60\nRecitation sections: Every second Friday 2-3pm, starting September 5, Evans 332 (handouts)\nVeterans Day: No class on Tuesday, November 11 (quiz held Thursday, November 13)\nThanksgiving week:\n\nTuesday November 25: lecture 9:30-11am on Zoom\nThursday November 27: no lecture\nAll OH canceled, no homework or quiz\n\nFinal exam review: (last recitation section) Friday, December 12\nFinal exam: Tuesday December 16, 3-6pm\n\n\n\n\n\nLecture videos and homework solutions at [https://bcourses.berkeley.edu bCourses]\nEmail policy: You can email course staff about administrative questions, with “[Stat 210A]” in the subject line. No math over email, please.\nEd page for announcements and technical discussion (no homework spoilers!)\nGradescope for turning in homework",
     "crumbs": [
       "Course Logistics",
       "Syllabus"
