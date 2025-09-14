@@ -1021,7 +1021,7 @@ X_1,\ldots,X_n \simiid \text{Pois}(\theta) = \frac{\theta^x e^{-\theta}}{x!}, \q
 <p><span class="math display">\[
 \begin{aligned}
 p_\theta(x) &amp;= \prod_{i=1}^n \frac{\theta^{x_i}e^{-\theta}}{x_i!}\\[7pt]
-&amp;= \underbrace{e^{\theta \left(\sum_i x_i\right) -n\theta}}_{g_\theta\left(\sum_i x_i\right)}\cdot \underbrace{\left(\prod_{i=1}^n x_i!\right)^{-1}}_{h(x)},
+&amp;= \underbrace{e^{\log \theta \left(\sum_i x_i\right) -n\theta}}_{g_\theta\left(\sum_i x_i\right)}\cdot \underbrace{\left(\prod_{i=1}^n x_i!\right)^{-1}}_{h(x)},
 \end{aligned}
 \]</span> Showing once again that <span class="math inline">\(T(X) = \sum_i X_i\)</span> is sufficient. As we’ll find out in the next lecture, there is a good reason why these calculations turned out so similarly: both of these models have what is called an <em>exponential family</em> structure.</p>
 <p><strong>Example: Uniform location family</strong> As a third example, suppose we observe an i.i.d. sample from a uniform distribution on the interval <span class="math inline">\([\theta, \theta + 1]\)</span>:</p>
