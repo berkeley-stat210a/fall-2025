@@ -41,14 +41,17 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 3 \\
-  {\large {\bf Due on}: Wednesday, Sep. 25}}
+  {\large {\bf Due on}: Wednesday, Sep. 24}}
 \date{}
 
 \maketitle
 
+\paragraph{Instructions:} You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs. actual equality, ``all functions'' vs. ``all measurable functions,'' etc. (unless the problem is explicitly asking about such issues).
+
 \begin{problem}[Multinomial subfamilies]
+  \label{prob:multinomial-subfamilies}
 
   The multinomial family is a multi-category version of the binomial, it measures the number of times each category comes up if we sample a $d$-category random variable with distribution $\pi$ on $n$ independent trials. Throughout this problem assume $d \geq 3$.
 
@@ -85,7 +88,10 @@
     \pi(\gamma) = \gamma\pi^{(1)} + (1-\gamma)\pi^{(2)}, \quad \text{ for } \pi^{(k)} = (\theta_k^2, 2\theta_k(1-\theta_k), (1-\theta_k)^2), \;\;k=1,2.
     \]
 
-    Now suppose that we again sample $n$ individuals form our unknown mixture, giving another one-parameter subfamily $\cQ$ indexed by $\gamma$. Can $\cQ$ be written as a one-parameter exponential family? Find a minimal sufficient statistic for $\cQ$, and show whether or not it is complete.
+    Now suppose that we again sample $n$ individuals from our unknown mixture, giving another one-parameter subfamily $\cQ$ indexed by $\gamma$. Can $\cQ$ be written as a one-parameter exponential family? Find a minimal sufficient statistic for $\cQ$, and show whether or not it is complete.
+
+  
+
   \end{enumerate}
 
   \paragraph{Moral:} The structure of the families and subfamilies determines the properties of the sufficient statistic.
@@ -94,6 +100,7 @@
 
 
 \begin{problem}[Gamma family]
+\label{prob:gamma-family}
 
 The gamma family is a two-parameter family of distributions on $\RR_+ = [0,\infty)$, with density
 \[
@@ -138,6 +145,7 @@ If $Y$ and $Z$ are two random variables whose MGFs coincide in a neighborhood of
 
 
 \begin{problem}[Interpretation of completeness]
+\label{prob:interp-completeness}
 
 The concept of {\em completeness} for a family of measures was introduced in \citet{lehmann1950completeness} as a precursor to their definition, in the same paper, of a complete statistic. The definition of a complete family did not stick, and lives on only in the (consequently confusingly named) idea of complete statistic (in particular it has nothing to do with the definition of a {\em complete measure} that you can find on Wikipedia).
 
@@ -184,14 +192,15 @@ Let $p_\theta(x) = \PP_\theta(X = x) \geq 0$, and $v^\theta = (p_\theta(x_1),\ld
 
 \end{enumerate}
 
-{\bf Moral 1:} The definition of a complete statistic is easier to remember if we recall its interpretation as saying that the set of distributions $P_\theta^T$ ``spans'' a certain vector space, so that only the zero function is orthogonal to all $P_\theta^T$.
+\paragraph{Moral 1:} The definition of a complete statistic is easier to remember if we recall its interpretation as saying that the set of distributions $P_\theta^T$ ``spans'' a certain vector space, so that only the zero function is orthogonal to all $P_\theta^T$.
 
-{\bf Moral 2:} If $\cP = \{P_\eta:\; \eta \in \Xi\}$ is a full-rank exponential family with natural parameter $\eta$, meaning $\Xi$ contains an open set, our result from class allows us to prove completeness of $T(X)$. But the converse is far from true: it is possible for $T$ to be complete if $\Xi$ is discrete, or even finite.
+\paragraph{Moral 2:} If $\cP = \{P_\eta:\; \eta \in \Xi\}$ is a full-rank exponential family with natural parameter $\eta$, meaning $\Xi$ contains an open set, our result from class allows us to prove completeness of $T(X)$. But the converse is far from true: it is possible for $T$ to be complete if $\Xi$ is discrete, or even finite.
 \end{problem}
 
 
 
 \begin{problem}[Ancillarity in location-scale families]
+\label{prob:ancillary-locscale}
 
 In a parameterized family where $\theta = (\zeta, \lambda)$, we say a statistic $T$ is {\em ancillary for $\zeta$} if its distribution is independent of $\zeta$; that is, if $T(X)$ is ancillary in the subfamily where $\lambda$ is known, for each possible value of $\lambda$.
 
@@ -212,57 +221,11 @@ Suppose that $X_1,\ldots,X_n\in \cX=\RR$ are an i.i.d. sample from a {\em locati
 
 \end{enumerate}
 
-{\bf Moral:} Location-scale families have common structure that we can exploit in some problems.
+\paragraph{Moral:} Location-scale families have common structure that we can exploit to derive a wide variety of results.
 \end{problem}
 
 
 
-\begin{problem}[Complete sufficient statistic for a nonparametric family]
-
-Consider an i.i.d. sample from the nonparametric family of {\em all} distributions on $\RR$:
-\[
-X_1,\ldots,X_n \simiid P,
-\]
-Formally we can write this model as $\cP = \left\{P^n:\; P \text{ is a probability measure on } \RR\right\}$. Let $T(X) = (X_{(1)},\ldots,X_{(n)})$ denote the vector of order statistics.
-
-\begin{enumerate}[(a)]
-
-\item For a finite set of size $m$, $\cY = \{y_1,\ldots,y_m\} \subseteq \RR$, consider the subfamily $\cP_\cY$ of distributions supported on $\cY$:
-  \[
-  \cP_\cY = \{P^n:\; P(\cY) = 1\} \subseteq \cP.
-  \]
-  Show that $T(X)$ is complete sufficient for this family.
-
-{\bf Hint:}  It may help to review different ways to parameterize the multinomial family.
-
-
-
-\item Show that the vector of order statistics $T(X) = (X_{(1)},\ldots,X_{(n)})$ is a complete sufficient statistic for $\cP$.
-
-
-
-\item Next, consider the restricted subfamily 
-\[
-\cQ_k = \{P^n:\; \EE_P[|X_1|^k] < \infty\} \subseteq \cP,
-\]
-and define the sample mean and variance respectively as
-\[
-\overline X = \frac{1}{n}\sum_{i=1}^n X_i, \quad S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline X)^2.
-\]
-Show that $\overline X$ is the UMVU estimator of $\EE_P X_1$ in $\cQ_1$, and $S^2$ is the UMVU estimator of $\text{Var}_P(X_1)$ in $\cQ_2$.
-
-
-
-% \item \optional Define the cumulative distribution function $F(x) = \PP(X \leq x)$. In the original family $\cP$, find the UMVU estimator of $F(x)$ for a fixed value of $x \in \RR$.
-
-% {\bf Note:} If we come up with an estimator $\widehat{F}(x)$ for each $x$ we can regard the function $\widehat{F}$ as an unbiased estimator for $F$.
-
-% 
-
-\end{enumerate}
-
-{\bf Moral:} Without any restrictions on the family $\cP$, we can't do much better than estimating population quantities with sample quantities (when the sample quantities are unbiased). In the case of the mean, for examples, $\overline X$ is always available as an unbiased estimator of $\EE X$, but if we impose additional assumptions on the family then we might be able to do better.
-\end{problem}
 
 \bibliography{biblio}
 \bibliographystyle{plainnat}
