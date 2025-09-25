@@ -2,28 +2,26 @@
 title: "Syllabus"
 ---
 
-Stat 210A is an introductory Ph.D.-level course in theoretical statistics. It is a fast-paced and demanding course intended to prepare students for research careers in statistics.
-
 ## Course information
 
 ### Instructors
 
 -   **Primary Instructor** [Will Fithian](http://www.stat.berkeley.edu/~wfithian/)
-    -   **Office Hours:** Tuesday 3:30-4:30pm [on Zoom](https://berkeley.zoom.us/j/96319412431?pwd=2OYujkSXdsNuTD1QQ25UGV1bL4CJI0.1), Thursday 9:30-10:30am in Evans 301
+    -   **Office Hours:** Monday 4:15-5:15pm [on Zoom](https://berkeley.zoom.us/j/95090701556?pwd=wM8sndDjvZLoNqy8EYWGqTnHbsON3s.1&jst=2), Thursday 1-2pm in Evans 301
     -   **Email:** [wfithian\@berkeley.edu](mailto:wfithian@berkeley.edu)
--   **GSI** TBD
-    -   **Office Hours:** TBD
-    -   **Email:** TBD
+-   **GSI** Zhexiao Lin
+    -   **Office Hours:** Wednesday 1:30-2:30 in Evans 444, Friday 3-4pm [on Zoom](https://berkeley.zoom.us/j/95484674743?pwd=zlavmezJBEYMjFvBUAhLKLQ980a5JP.1&jst=2)
+    -   **Email:** [zhexiaolin\@berkeley.edu](mailto:zhexiaolin@berkeley.edu)
 
 ### Course schedule
 
--   **Lectures:** Tuesday and Thursday 9:30-11:00am, Evans 60
--   **Recitation sections:** TBD, starting September 5
+-   **Lectures:** Tuesday and Thursday 9:30-11am, Evans 60
+-   **Recitation sections:** Every second Friday 2-3pm, starting September 5, Evans 332 ([handouts](recitation.qmd))
 -   **Veterans Day:** No class on Tuesday, November 11 (quiz held Thursday, November 13)
 -   **Thanksgiving week:**
-    -   Tuesday November 25: lecture 9:30-11am on Zoom, 3:30-4:30 OH on Zoom
-    -   Thursday November 27: no lecture or OH
-    -   All other OH canceled
+    -   Tuesday November 25: lecture 9:30-11am on Zoom
+    -   Thursday November 27: no lecture
+    -   All OH canceled, no homework or quiz
 -   **Final exam review:** (last recitation section) Friday, December 12
 -   **Final exam:** Tuesday December 16, 3-6pm
 
@@ -90,7 +88,7 @@ Your final grade is based on:
 
 -   Final exam: 40%
 
-**Drop policy:** We will drop your lowest two homework grades and your lowest three quiz grades. It is assumed that You are meant to use drops when you have a good reason: 
+**Drop policy:** We will drop your lowest two homework grades and your lowest three quiz grades. These drops are intended to cover eventualities like excused absences, medical issues, and emergencies, but there is no need to justify to us why you are taking them; they are unrestricted. If you need to drop an additional homework or quiz for some reason, after you have used up your allotted ones, it may be possible as long as you have documented your need for the additional drop as well as the drops you have already used.
 
 **Lateness policy:** Homework must be submitted to Gradescope at 11:59pm on Wednesday nights, and solutions will be released after they are due. Late problem sets will not be accepted.
 
@@ -120,4 +118,4 @@ While the final exam is nominally 40\% of the grade, it typically accounts for m
 
 **Scheduling conflicts:** Please notify me in writing by the second week of the semester about any known or potential extracurricular conflicts (such as religious observances, graduate or medical school interviews, or team activities). I will try my best to help you with making accommodations, but cannot promise them in all cases. In the event there is no mutually-workable solution, you may be dropped from the class.
 
-**Exam accommodations:** If you need accommodations on the final exam due to disability, or unavoidable travel or time conflict, please fill out the exam [exam accommodation form](https://docs.google.com/forms/d/e/1FAIpQLSeI-PQ37jW441pWW8wfXvRXcvYQdImXhe_8AzK-xqdsMWwLKw/) **by Friday, October 3** so that I can make arrangements. To ensure exam integrity I much prefer for all students to take the exam in Berkeley at the regularly scheduled time, but will try to work with you if you have a conflict.
+**Exam accommodations:** If you need accommodations on the final exam due to disability, or unavoidable travel or time conflict, please fill out the exam [exam accommodation form](https://docs.google.com/forms/d/e/1FAIpQLSeI-PQ37jW441pWW8wfXvRXcvYQdImXhe_8AzK-xqdsMWwLKw/viewform?usp=header) **by Friday, October 3** so that I can make arrangements. To ensure exam integrity I much prefer for all students to take the exam in Berkeley at the regularly scheduled time, but will try to work with you if you have a conflict.

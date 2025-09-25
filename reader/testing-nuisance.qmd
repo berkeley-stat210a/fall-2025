@@ -238,7 +238,7 @@ jointPlot = Plot.plot({
   
   x: {
     domain: [-0.5, n + 0.5],
-    ticks: Array.from({length: n + 1}, (_, i) => i),
+    ticks: Array.from({length: Math.floor(n/2) + 1}, (_, i) => 2 * i),
     tickFormat: d => d.toString(),
     label: "X₁",
     labelAnchor: "center",
@@ -247,7 +247,7 @@ jointPlot = Plot.plot({
   },
   y: {
     domain: [-0.5, n + 0.5],
-    ticks: Array.from({length: n + 1}, (_, i) => i),
+    ticks: Array.from({length: Math.floor(n/2) + 1}, (_, i) => 2 * i),
     tickFormat: d => d.toString(),
     label: "X₂",
     labelAnchor: "center",
@@ -324,7 +324,7 @@ conditionalPlot = Plot.plot({
   },
   x: {
     domain: [-0.5, n + 0.5],
-    ticks: Array.from({length: n + 1}, (_, i) => i),
+    ticks: Array.from({length: Math.floor(n/2) + 1}, (_, i) => 2 * i),
     tickFormat: d => d.toString(),
     label: "X₁",
     labelAnchor: "center",
@@ -333,7 +333,7 @@ conditionalPlot = Plot.plot({
   },
   y: {
     domain: [-0.5, n + 0.5],
-    ticks: Array.from({length: n + 1}, (_, i) => i),
+    ticks: Array.from({length: Math.floor(n/2) + 1}, (_, i) => 2 * i),
     tickFormat: d => d.toString(),
     label: "X₂",
     labelAnchor: "center",

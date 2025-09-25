@@ -7,6 +7,7 @@ listing:
     contents: schedule.yml
 ---
 
+Stat 210A is an introductory Ph.D.-level course in theoretical statistics. It is a fast-paced and demanding course intended to prepare students for research careers in statistics.
 
 ::: callout-important
 ## Course enrollment for undergraduates

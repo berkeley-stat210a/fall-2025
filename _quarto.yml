@@ -23,6 +23,7 @@ website:
         contents:
           - handwritten-notes.qmd
           - homework.qmd
+          - recitation.qmd
           - old-exams.qmd
       - section: "Course Reader"
         contents:

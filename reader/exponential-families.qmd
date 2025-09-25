@@ -73,7 +73,7 @@ $$ At this point, we immediately recognize $p_\eta$ as an exponential family wit
 
 Note that this is not the only way to decompose the Poisson distribution as an exponential family. For example, we could just as well take $T(x) = x/2$; then we would have $\eta = 2\log\lambda$ and $A(\eta) = e^{\eta/2}$. Or, we could take $T(x) = x + 1$ and $A(\eta) = e^{\eta} + \eta$.
 
-This is not just a property of the Poisson distribution; the decomposition is generally non-unique for exponential families. For any exponential family of the form @eq-expo-fam , if $U \in \RR^{s\times s}$ is invertible and $v \in \RR^s$ then we can write the same density as $e^{\zeta'S(x) - B(\zeta)}h(x)$, for new sufficient statistic $S(x) = U T(x) + v$, new natural parameter $\zeta = (U^{-1})'\eta$, and and new log-partition function $B(\zeta) = A(U'\zeta) + \zeta'U^{-1}v$. So "the" sufficient statistic of an exponential family is defined only up to invertible affine transformations.
+This is not just a property of the Poisson distribution; the decomposition is generally non-unique for exponential families. For any exponential family of the form @eq-expo-fam , if $U \in \RR^{s\times s}$ is invertible and $v \in \RR^s$ then we can write the same density as $e^{\zeta'S(x) - B(\zeta)}h(x)$, for new sufficient statistic $S(x) = U T(x) + v$, new natural parameter $\zeta = (U^{-1})'\eta$, and and new log-partition function $B(\zeta) = A(U'\zeta) + \zeta'v$. So "the" sufficient statistic of an exponential family is defined only up to invertible affine transformations.
 
 ## Differential identities
 
@@ -267,7 +267,12 @@ This is easiest to understand in a one-parameter family with sufficient statisti
 
 ## Visualization of exponential tilting
 
-Below we visualize an exponential family with `triangular'' base density $h(x) = \max\{0, 1-|x|\}$ and three sufficient statistics $T_1(X) = X, T_2(X) = X^2, and T_3(X) = \cos(100 X)$. Use the dials to`tilt'' the density toward each statistic, and see how the density changes.
+Below we visualize an exponential family on $[-1,1]$ with "triangular" base density $h(x) = 1-|x|$ and three sufficient statistics $T_1(X) = X, T_2(X) = X^2,$ and $T_3(X) = \cos(100 X)$. That is,
+$$
+p_\eta(x) \propto e^{\eta_1 x + \eta_2 x^2 + \eta_3 \cos(100 x)} \cdot (1-|x|)
+$$
+
+Use the sliders to "tilt" the density toward each statistic, and see how the density changes.
 
 ```{ojs}
 //| echo: false

@@ -35,41 +35,14 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 2 \\
-  {\large {\bf Due on}: Wednesday, Sep. 18}}
+  {\large {\bf Due on}: Wednesday, Sep. 17}}
 \date{}
 
 \maketitle
 
 \paragraph{Instructions:} You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs. actual equality, ``all functions'' vs. ``all measurable functions,'' etc. (unless the problem is explicitly asking about such issues).
-
-\begin{problem}[Bayesian interpretation of sufficiency]
-  Assume we have a family $\cP$ defined by densities $p_{\theta}(x)$ with respect to a common measure $\mu$ on $\cX$, for $\theta\in \Theta \subseteq \RR^n$. Additionally, assume the parameter $\theta$ is itself random, following {\em prior density} $q(\theta)$ with respect to the Lebesgue measure on $\Theta$. 
-
-  Then, we can write the {\em posterior density} (distribution of $\theta$ given $X=x$) as
-  \[
-  q_{\text{post}}(\theta \mid x) = \frac{p_\theta(x)q(\theta)}{\int_{\Theta} p_\zeta(x)q(\zeta) \,d \zeta}.
-  \]
-  {\bf Note:} this manipulation of the densities generally works even though we might worry about conditioning on a measure zero set. Feel free to make similar manipulations yourself in the problem.
-
-  \begin{enumerate}[(a)]
-    %%% 
-  \item Suppose a statistic $T(X)$ has the property that, for any prior distribution $q(\theta)$, the posterior distribution $q_{\text{post}}(\theta \mid x)$ depends on $x$ only through $T(x)$. Show that $T(X)$ is sufficient for $\cP$.
-
-    
-    
-    %%% 
-  \item Conversely, show that, if $T(X)$ is sufficient for $\cP$ then, for any prior $q$, the posterior depends on $x$ only through $T(x)$.
-    
-    
-
-  \end{enumerate}
-
-\paragraph{Moral:} If we have a prior opinion about $\theta$ in the form of a distribution, and then we update our opinion using Bayes' rule after observing $X$, then we will naturally adhere to the sufficiency principle. This gives an alternative epistemological motivation for the principle. Another interpretation of the result of this exercise is that, in the Bayesian model, $\theta$ is conditionally independent of $X$ given $T(X)$ if and only if $T(X)$ is sufficient.
-
-\end{problem}
-
 
 
 \begin{problem}[Uniform location-scale family]
@@ -140,6 +113,7 @@ independently of $U_{(n)}$.
 
 
 \begin{problem}[Convexity of $A(\eta)$ and $\Xi_1$]
+\label{prob:convexity-expfam}
 Let $\cP=\{p_\eta:\; \eta \in \Xi_1\}$ denote an $s$-parameter exponential family in canonical form
 \[
 p_\eta(x) = e^{\eta'T(x) - A(\eta)}h(x), \qquad A(\eta) = \log\int_{\cX} e^{\eta'T(x)}h(x)\,d \mu(x),
@@ -177,6 +151,7 @@ Recall H\"{o}lder's inequality: if $q_1,q_2\geq 1$ with $q_1^{-1} + q_2^{-1} = 1
 \end{problem}
 
 \begin{problem}[Expectation of an increasing function]
+\label{prob:expectation-increasing}
 \begin{enumerate}[(a)]
 \item Assume $X\sim P$ is a real-valued random variable. Show that if $f(x)$ and $g(x)$ are non-decreasing functions of $x$, then 
 \[
@@ -207,6 +182,7 @@ Let $\psi(x)$ be any non-decreasing bounded function. Show that, for $\eta\in\Xi
 
 
 \begin{problem}[Mean parameterization of an exponential family]
+\label{prob:mean-param}
 
   Consider the $s$-parameter exponential family $\cP = \{P_\eta:\; \eta \in \Xi\}$ on $\cX$ with densities $p_\eta(x) = e^{\eta'T(x) - A(\eta)}h(x)$ with respect to a common dominating measure $\nu$. Assume $\Xi=\Xi_1^{\circ}$, the interior of the full natural parameter space, and that $\text{Var}_\eta(a'T(X))>0$ for all $a \neq 0$ and $\eta\in \Xi$.
 

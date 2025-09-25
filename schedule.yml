@@ -37,6 +37,15 @@
           href: recitation/recitation1-probability.pdf
 - week: 3
   days:
+    - date: "Sep 9"
+      items:
+        - type: "Lecture"
+          id: "4"
+          name: "Sufficiency"
+          href: reader/sufficiency.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture04-sufficiency.pdf
     - date: "Sep 10"
       items:
         - type: "Homework"
@@ -46,6 +55,102 @@
           auxil:
             - id: "LaTeX source"
               href: homework/homework1.tex
+    - date: "Sep 11"
+      items:
+        - type: "Lecture"
+          id: "5"
+          name: "Exponential Families"
+          href: reader/exponential-families.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture05-exponentialfamilies.pdf
+- week: 4
+  days:
+    - date: "Sep 16"
+      items:
+        - type: "Lecture"
+          id: "6"
+          name: "Exponential Families (2nd lecture)"
+          href: reader/exponential-families.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture05-exponentialfamilies.pdf
+    - date: "Sep 17"
+      items:
+        - type: "Homework"
+          id: "2"
+          name: "Problems"
+          href: homework/homework2.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework2.tex
+    - date: "Sep 18"
+      items:
+        - type: "Lecture"
+          id: "7"
+          name: "Completeness"
+          href: reader/completeness.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture06-completeness.pdf
+- week: 5
+  days:
+    - date: "Sep 23"
+      items:
+        - type: "Lecture"
+          id: "8"
+          name: "Unbiased Estimation"
+          href: reader/unbiased-estimation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture07-unbiased.pdf
+    - date: "Sep 24"
+      items:
+        - type: "Homework"
+          id: "3"
+          name: "Problems"
+          href: homework/homework3.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework3.tex
+    - date: "Sep 25"
+      items:
+        - type: "Lecture"
+          id: "9"
+          name: "Score and Fisher Information"
+          href: reader/score-fisher.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture08-fisherinfo.pdf
+- week: 6
+  days:
+    - date: "Sep 30"
+      items:
+        - type: "Lecture"
+          id: "10"
+          name: "Unbiased Estimation"
+          href: reader/bayes-estimation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture09-bayesestimation.pdf
+    # - date: "Oct 1"
+    #   items:
+    #     - type: "Homework"
+    #       id: "4"
+    #       name: "Problems"
+    #       href: homework/homework4.pdf
+    #       auxil:
+    #         - id: "LaTeX source"
+    #           href: homework/homework4.tex
+    - date: "Oct 2"
+      items:
+        - type: "Lecture"
+          id: "11"
+          name: "Score and Fisher Information"
+          href: reader/bayes-interpretation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture10-bayesinterp.pdf
 - week: 17
   days:
     - date: "Dec 16"

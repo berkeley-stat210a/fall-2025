@@ -9,13 +9,13 @@ editor: visual
 
 ## Sufficiency
 
-Sufficiency is a central concept in statistics that allows us to focus on the essential aspects of the data set while ignoring details that are irrelevant to the inference problem. If $X\sim P_\theta$ represents the entire data set, drawn from a model $\cP = \{P_\theta:\; \theta \in \Theta\}$, then this lecture will concern the idea of a *sufficient statistic* $T(X)$ that carries all of the information in the data that can help us learn about $\theta$.
+Sufficiency is a central concept in statistics that allows us to focus on the essential aspects of the data set while ignoring details that are irrelevant to the inference problem. As we will see, in many problems we can find a more stripped-down representation of the data that carries all of the relevant information for a statistical problem.
 
-A *statistic* $T(X)$ is any random variable which is a function of the data $X$, and which does **not** depend on the unknown parameter $\theta$. We say the statistic $T(X)$ is *sufficient* for the model $\cP$ if $P_\theta(X \mid T)$ does not depend on $\theta$. This lecture will be devoted to interpreting this definition and giving examples.
+Let $X\sim P_\theta$ represent a data set drawn from a model $\cP = \{P_\theta:\; \theta \in \Theta\}$. A *statistic* $T(X)$ is any random variable that is a function of the data $X$ (and which does not depend on the unknown parameter $\theta$). We say the statistic $T(X)$ is *sufficient* for the model $\cP$ if $P_\theta(X \mid T)$ does not depend on $\theta$. This lecture will be devoted to interpreting this definition and giving examples.
 
-**Example (Independent Bernoulli sequence):** We introduced the binomial example from Lecture 2 by telling a story about an investigator who flips a biased coin $n$ times and records the total number of heads, which has a binomial distribution. All of the estimators we considered were functions only of the (binomially-distributed) count of heads.
+**Example (Independent Bernoulli sequence):** We can introduce a binomial model by telling a story about an investigator who flips a biased coin $n$ times and records the total number of heads, which has a binomial distribution if we assume the flips are independent and share a common probability $\theta$ of landing heads. All of the estimators we considered in the last lecture were functions only of the count.
 
-But if the investigator had actually performed this experiment, they would have observed more than just the total number of heads: they would have observed the entire sequence of $n$ heads and tails. If we let $X_i$ denote a binary indicator of whether the $i$th throw is heads, for $i=1,\ldots,n$, then we have assumed that these indicators are i.i.d. Bernoulli random variables:
+But if the investigator had actually performed this experiment, they would have observed not only the total number of heads, but the entire sequence of $n$ heads and tails. If we let $X_i$ denote a binary indicator of whether the $i$th throw is heads, for $i=1,\ldots,n$, then we have assumed that these indicators are i.i.d. Bernoulli random variables:
 
 $$
 X_1,\ldots,X_n \simiid \text{Bern}(\theta).
@@ -54,7 +54,7 @@ p_\theta(x) \propto e^{-|x-n\theta|}.
 $$
 As we will see shortly, $T(X) = X_1+X_2$ is a sufficient statistic in the binomial case, but it is not sufficient in the discrete Laplace case. To see this directly, select a value of $n$ and $t$, and observe how the conditional distribution of $X$ given $T(X)=t$ does or does not change as you adjust the value of $\theta$.
 
-In either case, changing $\theta$ has a major effect on the joint probability distribution of $X = (X_1,X_2)$; that is precisely why observing $X$ is informative about $\theta$. But in the binomial case, having already observed $T(X)$, $\theta$ has *no effect* on the conditional distribution of $X$; that is why observing $X$ gives us no additional information about $\theta$, once we've already seen $T(X)$. In the discrete Laplace case, $T(X)$ is not sufficient: if $\theta = 0.3$, $X = (1,2)$ is much more likely than 
+In either case, changing $\theta$ has a major effect on the joint probability distribution of $X = (X_1,X_2)$; that is precisely why observing $X$ is informative about $\theta$. But in the binomial case, having already observed $T(X)$, $\theta$ has *no effect* on the conditional distribution of $X$; that is why observing $X$ gives us no additional information about $\theta$, once we've already seen $T(X)$. In the discrete Laplace case, $T(X)$ is not sufficient: if $\theta = 0.3$, $X = (1,2)$ is much more likely than $X=(0,3)$; but as $\theta$ approaches $0$ or $1$ they become equally likely. 
 
 ```{ojs}
 //| echo: false
@@ -528,7 +528,7 @@ $$ The joint pmf for the full data set $X = (X_1,\ldots,X_n)$ over $\{0,1,\ldots
 $$
 \begin{aligned}
 p_\theta(x) &= \prod_{i=1}^n \frac{\theta^{x_i}e^{-\theta}}{x_i!}\\[7pt]
-&= \underbrace{e^{\theta \left(\sum_i x_i\right) -n\theta}}_{g_\theta\left(\sum_i x_i\right)}\cdot \underbrace{\left(\prod_{i=1}^n x_i!\right)^{-1}}_{h(x)},
+&= \underbrace{e^{\log \theta \left(\sum_i x_i\right) -n\theta}}_{g_\theta\left(\sum_i x_i\right)}\cdot \underbrace{\left(\prod_{i=1}^n x_i!\right)^{-1}}_{h(x)},
 \end{aligned}
 $$ Showing once again that $T(X) = \sum_i X_i$ is sufficient. As we'll find out in the next lecture, there is a good reason why these calculations turned out so similarly: both of these models have what is called an *exponential family* structure.
 
@@ -539,10 +539,10 @@ X_1,\ldots, X_n \simiid U[\theta, \theta+1] = 1\{\theta \leq x \leq \theta + 1\}
 $$ The joint density function for the full data set is
 
 $$
-p_\theta(x) = \prod_{i=1}^n 1\{\theta \leq x \leq \theta + 1} = 1\{\theta \leq \min_i x_i\} 1\{\max_i x_i \leq \theta + 1\},
-$$ so $T(X) = (\min_i X_i, \max_i X_i)$ is sufficient.
+p_\theta(x) = \prod_{i=1}^n 1\{\theta \leq x \leq \theta + 1\} = 1\{\theta \leq \min_i x_i\} 1\{\max_i x_i \leq \theta + 1\},
+$$ 
 
-## Interpretations of sufficiency
+so $T(X) = (\min_i X_i, \max_i X_i)$ is sufficient.
 
 ## Sufficient statistics under i.i.d. sampling
 
