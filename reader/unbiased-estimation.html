@@ -347,19 +347,6 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Under construction
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Need to finish fixing transcription starting in Section 6 (marked where the gobbledegook starts)</p>
-</div>
-</div>
 <section id="unbiased-estimation" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="unbiased-estimation"><span class="header-section-number">1</span> Unbiased Estimation</h2>
 <p>Recall from <a href="../reader/estimation.html">Lecture 2</a> that we had two primary strategies to choose an estimator:</p>
@@ -507,22 +494,35 @@ X_1,\ldots,X_{n-1} \mid \max_{i\leq n} X_i \leq t, X_n =t \simiid \text{Unif}[0,
 <section id="doubts-about-unbiasedness" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="doubts-about-unbiasedness"><span class="header-section-number">6</span> Doubts about unbiasedness</h2>
 <p>The last example raises the question: why should we require zero bias? There can be good reasons for this: it’s nice to be able to say your estimator is correct on average, especially if the estimand is strongly contested by different parties. But we shouldn’t take this constraint too seriously because in some cases the UMVUE can be inadmissible, or even ridiculous in cases where other approaches work well.</p>
-<p><strong>Example:</strong> Suppose we observe <span class="math inline">\(X \sim \text{Bin}(1000, \theta)\)</span>, and want to estimate <span class="math inline">\(g(\theta) = \PP_\theta(X &gt; 500)\)</span>. What is the UMVU estimator?</p>
-<p><strong>Edited up to here. Everything below here is a gibberish transcript of a recorded lecture; pay no attention to it -WF</strong></p>
-<p>UMVUE is <span class="math inline">\(1\{X &gt; 500\}\)</span></p>
-<p>UMVUE is <span class="math inline">\(I(X &gt; 500)\)</span>. Why?</p>
-<ul>
-<li><span class="math inline">\(X = 500\)</span>: Conclude <span class="math inline">\(g(\theta) = 1\)</span></li>
-<li><span class="math inline">\(X = 499\)</span>: Conclude <span class="math inline">\(g(\theta) = 0\)</span></li>
-</ul>
-<p>This is not epistemically reasonable. Could do much better with e.g.&nbsp;MLE or a Bayes estimator.</p>
-<p>In fact, our theorem should make us suspicious of UMVUEs: every idiotic function of <span class="math inline">\(T\)</span> is a UMVUE of its own expectation!</p>
-<p><strong>Example:</strong> <span class="math inline">\(X_1, \ldots, X_n \sim N(\mu, 1)\)</span>, estimate <span class="math inline">\(g(\mu) = \|\mu\|\)</span></p>
-<p><span class="math inline">\(\bar{X}\)</span> is complete sufficient</p>
-<p><span class="math inline">\(\|\bar{X}\|\)</span> is unbiased: <span class="math inline">\(\EE[\|\bar{X}\|] = \EE[\|N(\mu, 1/n)\|] = \|\mu\|\)</span></p>
-<p>So <span class="math inline">\(\|\bar{X}\|\)</span> is UMVUE</p>
-<p>If <span class="math inline">\(\mu = 0\)</span>, <span class="math inline">\(\delta(\bar{X}) = 0\)</span> about half the time</p>
-<p><span class="math inline">\(\|\bar{X}\| + d \cdot \max(0, \|\bar{X}\| - d)\)</span> strictly dominates UMVUE</p>
+<p><strong>Example:</strong> Suppose we observe a multivariate Gaussian vector with an unknown location parameter, <span class="math inline">\(X \sim N_d(\mu, I_d)\)</span> for <span class="math inline">\(\mu \in \RR^d\)</span>, where <span class="math inline">\(I_d\)</span> is the identity matrix, and we want to estimate <span class="math inline">\(g(\mu) = \|\mu\|^2\)</span>.</p>
+<p>Since <span class="math inline">\(X\)</span>, the complete sufficient statistic for this family, is a natural estimator for <span class="math inline">\(\mu\)</span>, we can start with <span class="math inline">\(\|X\|^2\)</span> and try to make it unbiased. If we write <span class="math inline">\(X = \mu + Z\)</span> where <span class="math inline">\(Z \sim N_d(0,I_d)\)</span>, then we have <span class="math display">\[
+\begin{aligned*}
+\EE_\mu \|X\|^2 &amp;= \sum_j \EE (Z_j + \mu_j)^2\\
+&amp;= \sum_j \mu_j^2 + 2\mu_j\EE Z_j + \EE Z_j^2\\
+&amp;= \|mu\|^2 + d,
+\end{aligned*}
+\]</span> since each cross-term is zero and <span class="math inline">\(\EE Z_j^2 = \Var(Z_j) = 1\)</span>. As a result, we can get an unbiased estimator by subtracting off the bias, namely <span class="math inline">\(\delta(X) = \|X\|^2-d\)</span>. But this estimator has the very odd property that it can be negative: if <span class="math inline">\(d=10\)</span> and <span class="math inline">\(\|X\|^2=5\)</span>, which can happen, we are giving the estimate <span class="math inline">\(-5\)</span> for the non-negative estimand <span class="math inline">\(\|\mu\|^2\)</span>. This may not seem like a big deal when we are just doing frequentist calculations, but imagine the authors’ embarrassment if such an estimate actually found its way into a journal paper!</p>
+<p>From a dry decision theory perspective, we can also recognize this estimator as inadmissible for any reasonable loss function: whenever the estimate is zero, we will always be getting closer to the estimand if we replace it with zero; that is, <span class="math inline">\(\delta_+(X) = (\|X\|^2-d)_+\)</span> will strictly dominate <span class="math inline">\(\delta(X)\)</span>, for any reasonable loss function.</p>
+<p>There are even sillier examples of UMVU estimators, as we see next.</p>
+<p><strong>Example:</strong> Suppose we observe <span class="math inline">\(X \sim \text{Bin}(1000, \theta)\)</span>, and want to estimate <span class="math inline">\(g(\theta) = \PP_\theta(X \geq 500)\)</span>. What is the UMVU estimator?</p>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Expand for answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A simple unbiased estimator for this probability is just the indicator of whether it happened, <span class="math inline">\(1\{X \geq 500\}\)</span>. Since <span class="math inline">\(X\)</span> is complete sufficient, this must also be the UMVU estimator.</p>
+<p>But this estimator makes no sense! If we see <span class="math inline">\(X=499\)</span> heads out of <span class="math inline">\(1000\)</span>, we are estimating that if we repeated the experiment by flipping the coin <span class="math inline">\(1000\)</span> more times, there is no chance we’d get more heads than we got this time. There are perfectly good estimators for this problem; for example if we have any reasonable estimator <span class="math inline">\(\hat\theta\)</span> for <span class="math inline">\(\theta\)</span> (such as <span class="math inline">\(X/n\)</span>) we can use the <em>plug-in estimator</em> <span class="math inline">\(\PP_{\hat\theta}(X \geq 500)\)</span>, and this will increase gradually with <span class="math inline">\(X\)</span>. But any such reasonable estimator cannot be unbiased, because all other unbiased estimators have to be worse than the UMVU estimator.</p>
+</div>
+</div>
+</div>
+<p>While it may seem like we are beating up the unbiased estimation paradigm here, in fact there is no statistical paradigm that doesn’t look a bit ridiculous on some examples. As we’ll see later, in the multivariate Gaussian location model above, both the maximum likelihood estimator and the Bayes estimator using the “objective” Jeffreys prior are even worse than the UMVU estimator. Much of the art of applied statistics is to understand the limitations of the different paradigms and choose one that’s appropriate for the problem at hand.</p>
 
 
 </section>
