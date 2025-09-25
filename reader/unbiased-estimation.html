@@ -295,6 +295,7 @@ window.Quarto = {
   <li><a href="#the-rao-blackwell-theorem" id="toc-the-rao-blackwell-theorem" class="nav-link" data-scroll-target="#the-rao-blackwell-theorem"><span class="header-section-number">3</span> The Rao-Blackwell Theorem</a></li>
   <li><a href="#umvu-estimators" id="toc-umvu-estimators" class="nav-link" data-scroll-target="#umvu-estimators"><span class="header-section-number">4</span> UMVU estimators</a></li>
   <li><a href="#finding-the-umvue" id="toc-finding-the-umvue" class="nav-link" data-scroll-target="#finding-the-umvue"><span class="header-section-number">5</span> Finding the UMVUE</a></li>
+  <li><a href="#doubts-about-unbiasedness" id="toc-doubts-about-unbiasedness" class="nav-link" data-scroll-target="#doubts-about-unbiasedness"><span class="header-section-number">6</span> Doubts about unbiasedness</a></li>
   </ul>
 </nav>
     </div>
@@ -436,7 +437,7 @@ L(\theta, \bar{\delta}(T(X)))\;=\;L(\theta, \;\EE[\delta \mid T(X)])\;\leq \;\EE
 </section>
 <section id="finding-the-umvue" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="finding-the-umvue"><span class="header-section-number">5</span> Finding the UMVUE</h2>
-<p>Theorem XXX suggests two strategies for finding the UMVUE:</p>
+<p>We have two strategies for finding the UMVUE:</p>
 <ol type="1">
 <li>Solve directly for an unbiased estimator based on <span class="math inline">\(T\)</span></li>
 <li>Find any unbiased estimator at all, then Rao-Blackwellize it</li>
@@ -457,38 +458,59 @@ p_\theta(t) = \frac{e^{-n\theta} (n\theta)^t}{t!}
 \delta(T) = \frac{T(T-1)}{n^2}
 \]</span></p>
 <p><strong>Strategy 2:</strong></p>
-<p>Alternatively, we can find an unbiased estimator and Rao-Blackwellize it. If $n$, we can use the fact that</p>
+<p>Alternatively, we can find an unbiased estimator and Rao-Blackwellize it. If <span class="math inline">\(n\geq 2\)</span>, we can use the fact that</p>
 <p><span class="math display">\[
 \EE_\theta [X_1 X_2] = \EE_\theta [X_1] \;\cdot\; \EE_\theta [X_2] = \theta^2
 \]</span> to obtain an initial unbiased estimator <span class="math inline">\(\delta_0(X) = X_1X_2\)</span>, which we will Rao-Blackwellize.</p>
-<p>Conditional on $</p>
-<p>to match the terms</p>
-<p><span class="math inline">\(\delta(T) = (1 - 1/n)^T\)</span> unbiased:</p>
-<p><span class="math display">\[\begin{aligned}
-\EE_\theta \delta(T) &amp;= \sum_{t=0}^\infty (1-1/n)^t e^{-n\theta} (n\theta)^t / t! \\
-&amp;= e^{-n\theta} \sum_{t=0}^\infty ((n-1)\theta)^t / t! \\
-&amp;= e^{-n\theta} e^{(n-1)\theta} = e^{-\theta}
-\end{aligned}\]</span></p>
-<p>Alternatively, we could Rao-Blackwellize <span class="math inline">\(\delta_0(X) = I(X_1 = 0)\)</span>:</p>
-<p><span class="math display">\[\begin{aligned}
-\EE[I(X_1 = 0) | T] &amp;= \PP(X_1 = 0 | T) \\
-&amp;= \frac{\PP(X_1 = 0, X_2 + \cdots + X_n = T)}{\PP(X_2 + \cdots + X_n = T-1) + \PP(X_2 + \cdots + X_n = T)} \\
-&amp;= \frac{\binom{n-1}{T} (1/n)^0 (1-1/n)^T}{\binom{n-1}{T-1} (1/n) (1-1/n)^{T-1} + \binom{n-1}{T} (1-1/n)^T} \\
-&amp;= \frac{(1-1/n)^T}{T/n + (1-1/n)^T} \\
-&amp;= (1-1/n)^T
-\end{aligned}\]</span></p>
+<p>Our calculation begins by recalling that, conditional on <span class="math inline">\(T\)</span>, we have <span class="math display">\[
+(X_1,\ldots,X_n) \mid T=t \sim \text{Multinom}\left(t, \frac{1}{n}1_n\right),
+\]</span> so that, in particular, <span class="math inline">\(X_1 \mid T=t \sim \text{Binom}(t, \frac{1}{n})\)</span>, which has mean <span class="math inline">\(t/n\)</span> and variance <span class="math inline">\(t\frac{1}{n}\cdot (1-\frac{1}{n}) = \frac{(n-1)t}{n^2}\)</span> Likewise, conditional on <span class="math inline">\(X_1\)</span> and <span class="math inline">\(T\)</span>, we have <span class="math display">\[
+(X_2,\ldots,X_n) \mid T=t, X_1=x_1 \sim \text{Multinom}\left(t-x_1, \frac{1}{n-1}1_{n-1}\right),
+\]</span> where <span class="math inline">\(1_n = (1,\ldots,1) \in \RR^n\)</span>, so we likewise have <span class="math inline">\(X_2 \mid T=t, X_1=x_1 \sim \text{Binom}(t-x_1, \frac{1}{n-1})\)</span>.</p>
+<p>Hence, we can write <span class="math display">\[
+\begin{aligned}
+\EE\left[\, X_1 X_2 \mid T \,\right]
+&amp;= \EE\left[\, X_1 \EE[X_2 \mid T, X_1] \mid T\,\right]\\[5pt]
+&amp;= \EE\left[\, X_1 \frac{T-X_1}{n-1} \mid T\,\right]\\[5pt]
+&amp;= \frac{1}{n-1}\cdot\EE[X_1 T - X_1^2 \mid T]\\[5pt]
+&amp;= \frac{1}{n-1}\cdot\left(T^2/n - \left[\frac{T (n-1)}{n^2}+\left(T/n\right)^2\right]\right)\\[5pt]
+&amp;= \frac{T(T-1)}{n^2},
+\end{aligned}
+\]</span> giving us the same answer as above (as we knew it had to).</p>
 <p><strong>Example:</strong> <span class="math inline">\(X_1, \ldots, X_n \sim U[0, \theta]\)</span>, <span class="math inline">\(\theta &gt; 0\)</span></p>
-<p><span class="math inline">\(T = X_{(n)}\)</span> complete sufficient</p>
-<p><span class="math inline">\(p_\theta(t) = n t^{n-1} / \theta^n \cdot I(0 &lt; t &lt; \theta)\)</span></p>
-<p><span class="math inline">\(\EE_\theta[T] = \frac{n}{n+1} \theta\)</span></p>
-<p><span class="math inline">\(T \cdot \frac{n+1}{n}\)</span> is UMVUE</p>
-<p>Alternatively, <span class="math inline">\(2X_1\)</span> is unbiased:</p>
-<p><span class="math display">\[\EE[2X_1 | T] = 2T \cdot \frac{n+1}{2n} = T \cdot \frac{n+1}{n}\]</span></p>
-<p>Actually, <span class="math inline">\(T\)</span> is inadmissible too! Keener shows <span class="math inline">\(\frac{n-1}{n} T\)</span> has better MSE for any estimator <span class="math inline">\(c \cdot T\)</span>.</p>
-<p>This raises the question: why do we require zero bias?</p>
-<p>The UMVUE is often inefficient, inadmissible, or just dumb in cases where another approach makes much more sense.</p>
-<p><strong>Example:</strong> <span class="math inline">\(X \sim \text{Bin}(1000, \theta)\)</span></p>
-<p>Estimate <span class="math inline">\(g(\theta) = I(\theta &gt; 0.5)\)</span></p>
+<p>The complete sufficient statistic for the model is <span class="math inline">\(T = X_{(n)}\)</span>, and its pdf is <span class="math display">\[
+p_\theta(t) = n t^{n-1} / \theta^n \cdot 1\{0 &lt; t &lt; \theta\}
+\]</span></p>
+<p><strong>Strategy 1</strong></p>
+<p>We can start by just checking how far off <span class="math inline">\(T\)</span> is from being an unbiased estimator, and see if we can correct it. From the density above we can recognize that <span class="math inline">\(T/\theta\)</span> follows a <span class="math inline">\(\text{Beta}(n,1)\)</span> distribution, which has mean <span class="math inline">\(\frac{n}{n+1}\)</span> and variance <span class="math inline">\(v=\frac{n}{(n+1)^2(n+2)}\)</span> (we could also compute these easily enough by integration).</p>
+<p>As a result, we have <span class="math inline">\(\EE_\theta[T] = \frac{n}{n+1} \theta\)</span>, so <span class="math inline">\(\frac{n+1}{n} T\)</span> is unbiased, and therefore UMVU.</p>
+<p><strong>Strategy 2</strong></p>
+<p>Alternatively, we could observe that <span class="math inline">\(2X_1\)</span> is unbiased and try to Rao-Blackwellize it. To do this we need to find the conditional distribution of <span class="math inline">\(X\)</span> given that <span class="math inline">\(X_{(n)}=t\)</span>. To warm up, let’s just condition on <span class="math inline">\(X_{(n)} = t\)</span> <em>and</em> <span class="math inline">\(X_n\)</span> is the maximum. This is equivalent to conditioning on <span class="math inline">\(X_n = t\)</span> and <span class="math inline">\(X_1,\ldots,X_{n-1} \leq t\)</span>. In that case, <span class="math inline">\(X_n\)</span> is deterministically <span class="math inline">\(t\)</span> and we have <span class="math display">\[
+X_1,\ldots,X_{n-1} \mid \max_{i\leq n} X_i \leq t, X_n =t \simiid \text{Unif}[0,t].
+\]</span> More generally, define <span class="math inline">\(I^*(X)\)</span> to be the maximizing index. We’ve just calculated the distribution of <span class="math inline">\(T(X)\)</span> given <span class="math inline">\(I^*(X)=n\)</span> and <span class="math inline">\(T(X)=t\)</span>. Since the data are exchangeable (or by Basu’s theorem) <span class="math inline">\(I^*(X)\)</span> is also independent of <span class="math inline">\(T(X)\)</span>. So the conditional distribution of <span class="math inline">\(X_1\)</span> is that its <span class="math inline">\(t\)</span> if <span class="math inline">\(I^*(X)=1\)</span>, which happens with probability <span class="math inline">\(1/n\)</span>, and it’s <span class="math inline">\(\text{Unif}[0,t]\)</span> otherwise. Wrapping up, we have</p>
+<p><span class="math display">\[
+\EE[X_1 \mid T=t] = \frac{1}{n}\EE[X_1 \mid T=t, I^*=1] + \frac{n-1}{n}\EE[X_1 \mid T=t, I^* \neq 1] = \frac{t}{n} + \frac{t(n-1)}{2n} = \frac{t(n+1)}{2n}
+\]</span> Hence <span class="math inline">\(\EE[2X_1 \mid T] = \frac{n+1}{n} T\)</span>, giving the same estimator as we saw before.</p>
+<p><strong>A better estimator</strong></p>
+<p>Unfortunately, the estimator we just calculated twice is inadmissible.</p>
+<p>For any estimator <span class="math inline">\(cT\)</span>, we can calculate its MSE as the squared bias plus the variance</p>
+<p><span class="math display">\[
+\begin{aligned*}
+\MSE(\theta; cT)
+&amp;= (\EE_\theta [cT] - \theta)^2 + \Var_\theta(cT)\\
+&amp;= (c \EE_\theta [T] - theta)^2 + c^2\Var_\theta(T)\\
+&amp;= \theta^2\left[(c \EE_\theta [T/\theta] - 1)^2 + c^2\Var_\theta(T/\theta)\right]\\
+&amp;= \theta^2\left[(\frac{cn}{n+1}-1)^2 + c^2v\right].
+\end{aligned*}
+\]</span> This is a quadratic in <span class="math inline">\(c\)</span>, which we can show is maximized at <span class="math inline">\(c^* = \frac{n+2}{n+1}\)</span>. Thus, <span class="math inline">\(\frac{n+2}{n+1}T\)</span> has a lower MSE than <span class="math inline">\(\frac{n+1}{n}T\)</span> *for every value of <span class="math inline">\(\theta\)</span>. By scaling down our estimator a bit, we reduce its variance enough to compensate for the bias we have introduced.</p>
+<p>Thus, we see that by introducing the unbiasedness constraint we have ruled out <em>all admissible estimators</em> and are left only with inadmissible ones, the best of which is <span class="math inline">\(\frac{n+1}{n}T\)</span>.</p>
+</section>
+<section id="doubts-about-unbiasedness" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="doubts-about-unbiasedness"><span class="header-section-number">6</span> Doubts about unbiasedness</h2>
+<p>The last example raises the question: why should we require zero bias? There can be good reasons for this: it’s nice to be able to say your estimator is correct on average, especially if the estimand is strongly contested by different parties. But we shouldn’t take this constraint too seriously because in some cases the UMVUE can be inadmissible, or even ridiculous in cases where other approaches work well.</p>
+<p><strong>Example:</strong> Suppose we observe <span class="math inline">\(X \sim \text{Bin}(1000, \theta)\)</span>, and want to estimate <span class="math inline">\(g(\theta) = \PP_\theta(X &gt; 500)\)</span>. What is the UMVU estimator?</p>
+<p><strong>Edited up to here. Everything below here is a gibberish transcript of a recorded lecture; pay no attention to it -WF</strong></p>
+<p>UMVUE is <span class="math inline">\(1\{X &gt; 500\}\)</span></p>
 <p>UMVUE is <span class="math inline">\(I(X &gt; 500)\)</span>. Why?</p>
 <ul>
 <li><span class="math inline">\(X = 500\)</span>: Conclude <span class="math inline">\(g(\theta) = 1\)</span></li>
