@@ -290,12 +290,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#outline" id="toc-outline" class="nav-link active" data-scroll-target="#outline"><span class="header-section-number">1</span> Outline</a></li>
-  <li><a href="#unbiased-estimation" id="toc-unbiased-estimation" class="nav-link" data-scroll-target="#unbiased-estimation"><span class="header-section-number">2</span> Unbiased Estimation</a></li>
-  <li><a href="#convex-loss-functions" id="toc-convex-loss-functions" class="nav-link" data-scroll-target="#convex-loss-functions"><span class="header-section-number">3</span> Convex Loss Functions</a></li>
-  <li><a href="#the-rao-blackwell-theorem" id="toc-the-rao-blackwell-theorem" class="nav-link" data-scroll-target="#the-rao-blackwell-theorem"><span class="header-section-number">4</span> The Rao-Blackwell Theorem</a></li>
-  <li><a href="#umvu-estimators" id="toc-umvu-estimators" class="nav-link" data-scroll-target="#umvu-estimators"><span class="header-section-number">5</span> UMVU estimators</a></li>
-  <li><a href="#finding-the-umvue" id="toc-finding-the-umvue" class="nav-link" data-scroll-target="#finding-the-umvue"><span class="header-section-number">6</span> Finding the UMVUE</a></li>
+  <li><a href="#unbiased-estimation" id="toc-unbiased-estimation" class="nav-link active" data-scroll-target="#unbiased-estimation"><span class="header-section-number">1</span> Unbiased Estimation</a></li>
+  <li><a href="#convex-loss-functions" id="toc-convex-loss-functions" class="nav-link" data-scroll-target="#convex-loss-functions"><span class="header-section-number">2</span> Convex Loss Functions</a></li>
+  <li><a href="#the-rao-blackwell-theorem" id="toc-the-rao-blackwell-theorem" class="nav-link" data-scroll-target="#the-rao-blackwell-theorem"><span class="header-section-number">3</span> The Rao-Blackwell Theorem</a></li>
+  <li><a href="#umvu-estimators" id="toc-umvu-estimators" class="nav-link" data-scroll-target="#umvu-estimators"><span class="header-section-number">4</span> UMVU estimators</a></li>
+  <li><a href="#finding-the-umvue" id="toc-finding-the-umvue" class="nav-link" data-scroll-target="#finding-the-umvue"><span class="header-section-number">5</span> Finding the UMVUE</a></li>
   </ul>
 </nav>
     </div>
@@ -361,18 +360,9 @@ Under construction
 <p>Add link to Lecture 2</p>
 </div>
 </div>
-<section id="outline" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="outline"><span class="header-section-number">1</span> Outline</h2>
-<ol type="1">
-<li>Convex Loss</li>
-<li>Rao-Blackwell Theorem</li>
-<li>UMVU Estimators</li>
-<li>Examples</li>
-</ol>
-</section>
-<section id="unbiased-estimation" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="unbiased-estimation"><span class="header-section-number">2</span> Unbiased Estimation</h2>
-<p>Recall from Lecture 2 that we had two primary strategies to choose an estimator:</p>
+<section id="unbiased-estimation" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="unbiased-estimation"><span class="header-section-number">1</span> Unbiased Estimation</h2>
+<p>Recall from <a href="../reader/estimation.html">Lecture 2</a> that we had two primary strategies to choose an estimator:</p>
 <ol type="1">
 <li>Summarize the risk function by a scalar (average or supremum)</li>
 <li>Restrict attention to a smaller class of estimators</li>
@@ -380,17 +370,17 @@ Under construction
 <p>Today we’ll discuss <em>unbiased estimation</em>, which is an example of the second strategy. That is, if <span class="math inline">\(g(\theta)\)</span> is our estimand, we will require that <span class="math inline">\(\EE_\theta \delta = g(\theta)\)</span> for all <span class="math inline">\(\theta\)</span></p>
 <p>Unbiased estimation is especially convenient in models with a complete sufficient statistic <span class="math inline">\(T(X)\)</span>. In that case:</p>
 <ul>
-<li>There is at most one unbiased <span class="math inline">\(\delta(T(X))\)</span> (if <span class="math inline">\(\delta_1, \delta_2(T)\)</span> are both unbiased, then <span class="math inline">\(\delta_1 \eqas \delta_2\)</span>)</li>
+<li>There is at most one unbiased estimator of the form <span class="math inline">\(\delta(T(X))\)</span>, because if <span class="math inline">\(\delta_1, \delta_2(T)\)</span> are both unbiased, then <span class="math inline">\(\delta_1 \eqas \delta_2\)</span></li>
 <li>If an unbiased estimator exists, it <strong>uniformly minimizes</strong> risk for any convex loss function</li>
 </ul>
 </section>
-<section id="convex-loss-functions" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="convex-loss-functions"><span class="header-section-number">3</span> Convex Loss Functions</h2>
+<section id="convex-loss-functions" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="convex-loss-functions"><span class="header-section-number">2</span> Convex Loss Functions</h2>
 <p>Recall <span class="math inline">\(f(y)\)</span> is <em>convex</em> if for all <span class="math inline">\(x_1, x_2\)</span> and all <span class="math inline">\(\gamma \in [0,1]\)</span>:</p>
 <p><span class="math display">\[f(\gamma x_1 + (1-\gamma)x_2) \leq \gamma f(x_1) + (1-\gamma) f(x_2)\]</span> <span class="math inline">\(f\)</span> is <em>strictly convex</em> if the inequality is strict unless <span class="math inline">\(x_1 = x_2\)</span>.</p>
 <p>An key fact about convex functions is <strong>Jensen’s Inequality:</strong> If <span class="math inline">\(f\)</span> is convex, then for <em>any</em> random variable <span class="math inline">\(X\)</span>, we have</p>
 <p><span class="math display">\[f(\EE[X]) \leq \EE[f(X)]\]</span> If <span class="math inline">\(f\)</span> is strictly convex, then the inequality is strict unless <span class="math inline">\(X\)</span> is constant.</p>
-<p>We say a loss function <span class="math inline">\(L(\theta, d)\)</span> is (strictly) convex if is (strictly) convex as a function of the estimate <span class="math inline">\(d\)</span>, its second argument, holding the parameter <span class="math inline">\(\theta\)</span> fixed.</p>
+<p>We say a loss function <span class="math inline">\(L(\theta, d)\)</span> is a (strictly) convex loss if is (strictly) convex as a function of the estimate <span class="math inline">\(d\)</span>, its second argument, holding the parameter <span class="math inline">\(\theta\)</span> fixed. Note convexity in <span class="math inline">\(\theta\)</span> is not relevant here; <span class="math inline">\(\theta\)</span> is just indexing the model.</p>
 <p><strong>Example:</strong> The best-known example of a convex loss function is the squared error loss. Recall that the corresponding risk, the MSE, can be decomposed as the sum of the bias squared and the variance:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -399,26 +389,24 @@ Under construction
 \end{aligned}
 \]</span> If <span class="math inline">\(\delta(X)\)</span> is unbiased, then its MSE is exactly its variance, so minimizing the risk among unbiased estimators just amounts to finding one with the least variance.</p>
 </section>
-<section id="the-rao-blackwell-theorem" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="the-rao-blackwell-theorem"><span class="header-section-number">4</span> The Rao-Blackwell Theorem</h2>
+<section id="the-rao-blackwell-theorem" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="the-rao-blackwell-theorem"><span class="header-section-number">3</span> The Rao-Blackwell Theorem</h2>
 <p>Intuitively, convex losses punish us for using noisy estimators: we would always improve the risk if we could replace an estimator <span class="math inline">\(\delta(X)\)</span> with its expectation: <span class="math display">\[L(\theta, \EE_\theta [\delta(X)]) \leq \EE_\theta \left[L(\theta, \delta(X))\right].\]</span>Generally, this is not feasible in real problems because <span class="math inline">\(\EE_\theta [\delta(X)]\)</span> depends on <span class="math inline">\(\theta\)</span>, so it is not an estimator. But for any sufficient statistic <span class="math inline">\(T(X)\)</span>, the <strong>conditional expectation</strong> of <span class="math inline">\(\delta(X)\)</span> given <span class="math inline">\(T(X)\)</span> really is an estimator, and it is always at least as good as <span class="math inline">\(\delta(X\)</span>) if the loss is convex.</p>
 <p>The next result formalizes this fact, and thereby gives decision-theoretic teeth to the sufficiency principle:</p>
 <p><strong>Theorem (Rao-Blackwell):</strong> Let <span class="math inline">\(T(X)\)</span> be sufficient for <span class="math inline">\(\cP = \{P_\theta:\;\theta\in\Theta\}\)</span>, and let <span class="math inline">\(\delta(X)\)</span> be any estimator for <span class="math inline">\(g(\theta)\)</span>. Define the new estimator:</p>
 <p><span class="math display">\[\bar{\delta}(T(X)) = \EE[\delta(X) \mid T(X)]\]</span></p>
 <p>Then for any convex loss <span class="math inline">\(L(\theta, d)\)</span>, we have <span class="math inline">\(R(\theta, \bar{\delta}) \leq R(\theta, \delta)\)</span> for all <span class="math inline">\(\theta\)</span>. If <span class="math inline">\(L\)</span> is strictly convex, <span class="math inline">\(\bar{\delta}\)</span> strictly dominates <span class="math inline">\(\delta\)</span> as an estimator unless <span class="math inline">\(\delta(X) \eqPas \bar{\delta}(T(X))\)</span>.</p>
-<p><em>Proof:</em></p>
+<p><em>Proof:</em> Conditioning on <span class="math inline">\(T(X)\)</span>, we have</p>
 <p><span class="math display">\[\begin{aligned}
-R(\theta, \bar{\delta}) &amp;= \EE_\theta\left[\,L(\theta, \;\EE[\delta \mid T])\,\right]\\[5pt]
-&amp;\leq \EE_\theta\left[\,\EE[L(\theta, \delta) \mid T]\,\right]\\[5pt]
-&amp;= \EE_\theta[\,L(\theta, \delta)\,] \\[5pt]
-&amp;= R(\theta, \bar{\delta})
+L(\theta, \bar{\delta}(T(X)))\;=\;L(\theta, \;\EE[\delta \mid T(X)])\;\leq \;\EE[L(\theta, \delta) \mid T(X)],
 \end{aligned}\]</span></p>
-<p><span class="math inline">\(\bar{\delta}\)</span> is called the Rao-Blackwellization of <span class="math inline">\(\delta\)</span>. Note that the condition $\delta(X) \eqPas \bar{\delta}(T(X))$ is equivalent to the condition that <span class="math inline">\(\delta\)</span> depends only on <span class="math inline">\(X\)</span> through <span class="math inline">\(T(X)\)</span>.</p>
-<p>Whenever we are dealing with a convex loss, the Rao-Blackwell theorem lets us restrict our attention only to estimators that run through <span class="math inline">\(T(X)\)</span>, because any other estimator could be improved (or at least not worsened) by Rao-Blackwellization. The theorem even gives us a recipe for **constructing** the improved estimator.</p>
+<p>where we apply Jensen’s inequality in the last step. Marginalizing over <span class="math inline">\(T\)</span> gives the desired result. If we assume further that <span class="math inline">\(L\)</span> is strictly convex, the inequality becomes strict unless <span class="math inline">\(\delta(X) = \delta(T(X))\)</span> almost surely.</p>
+<p><span class="math inline">\(\bar{\delta}\)</span> is called a Rao-Blackwellization of <span class="math inline">\(\delta\)</span>. Note that the condition <span class="math inline">\(\delta(X) \eqPas \bar{\delta}(T(X))\)</span> is equivalent to the condition that <span class="math inline">\(\delta\)</span> depends only on <span class="math inline">\(X\)</span> through <span class="math inline">\(T(X)\)</span>.</p>
+<p>Whenever we are dealing with a convex loss, the Rao-Blackwell theorem lets us restrict our attention only to estimators that run through <span class="math inline">\(T(X)\)</span>, because any other estimator could be improved (or at least not worsened) by Rao-Blackwellization. The theorem even gives us a recipe for <strong>constructing</strong> the improved estimator.</p>
 </section>
-<section id="umvu-estimators" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="umvu-estimators"><span class="header-section-number">5</span> UMVU estimators</h2>
-<p>In this section we will combine two key facts from this lecture and last concerning unbiased estimation of any estimand <span class="math inline">\(g(\theta)\)</span>.</p>
+<section id="umvu-estimators" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="umvu-estimators"><span class="header-section-number">4</span> UMVU estimators</h2>
+<p>In this section we will combine two key facts from this lecture and last concerning unbiased estimation of any estimand <span class="math inline">\(g(\theta)\)</span> when we have access to a complete sufficient statistic <span class="math inline">\(T(X)\)</span>.</p>
 <ol type="1">
 <li>If <span class="math inline">\(T(X)\)</span> is complete sufficient, there can be at most one unbiased estimator based on <span class="math inline">\(T(X)\)</span>.</li>
 <li>If the loss is convex, then we can restrict our attention only to estimators that are based on <span class="math inline">\(T(X)\)</span>.</li>
@@ -443,11 +431,11 @@ R(\theta, \bar{\delta}) &amp;= \EE_\theta\left[\,L(\theta, \;\EE[\delta \mid T])
 <li><span class="math inline">\(\delta(X)\)</span> is unbiased</li>
 <li><span class="math inline">\(\text{Var}_\theta \,\delta(X) \leq \text{Var}_\theta \,\tilde{\delta}(X)\)</span> for all <span class="math inline">\(\theta\)</span> and all unbiased <span class="math inline">\(\tilde{\delta}(X)\)</span></li>
 </ol>
-<p>Since <span class="math inline">\(\text{MSE}(\theta; \delta) = \text{Var}_\theta(\delta(X))\)</span> for any unbiased estimator, and the squared error loss is strictly convex, Theorem XXX immediately implies the existence of a unique UMVU estimator for any U-estimable <span class="math inline">\(g(\theta)\)</span>, whenever we have a complete sufficient statistic.</p>
+<p>Since <span class="math inline">\(\text{MSE}(\theta; \delta) = \text{Var}_\theta(\delta(X))\)</span> for any unbiased estimator, and the squared error loss is strictly convex, the foregoing theorem immediately implies the existence of a unique UMVU estimator for any U-estimable <span class="math inline">\(g(\theta)\)</span>, whenever we have a complete sufficient statistic.</p>
 <p>Note that in problems where no complete sufficient statistic exists, there can be multiple unbiased estimators based on the minimal sufficient statistic; for example, both the mean and the median are unbiased for the Laplace location parameter, but they are not almost surely equal to each other, and they do not have the same risk function.</p>
 </section>
-<section id="finding-the-umvue" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="finding-the-umvue"><span class="header-section-number">6</span> Finding the UMVUE</h2>
+<section id="finding-the-umvue" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="finding-the-umvue"><span class="header-section-number">5</span> Finding the UMVUE</h2>
 <p>Theorem XXX suggests two strategies for finding the UMVUE:</p>
 <ol type="1">
 <li>Solve directly for an unbiased estimator based on <span class="math inline">\(T\)</span></li>

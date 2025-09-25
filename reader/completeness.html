@@ -353,19 +353,6 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Under construction
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Check that Laplace median problem is on HW 2 or other, check that minimality for uniform scale is in previous lecture.</p>
-</div>
-</div>
 <section id="completeness" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="completeness"><span class="header-section-number">1</span> Completeness</h2>
 <p>As we have seen, for a given statistical problem we may have many different sufficient statistics, some of which reduce the data more than others. We usually want to look for one that is <em>minimal sufficient</em>, meaning that it strips away as much irrelevant information as possible and only retains the information that is relevant to estimating the parameter.</p>
@@ -373,7 +360,21 @@ Under construction
 <section id="definition-of-completeness" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="definition-of-completeness"><span class="header-section-number">1.1</span> Definition of completeness</h3>
 <p>A statistic <span class="math inline">\(T(X)\)</span> is complete for a family of distributions <span class="math inline">\(\cP = \{P_\theta: \theta \in \Theta\}\)</span> if no nontrivial function of <span class="math inline">\(T\)</span> can have expectation zero for every distribution in the family:</p>
-<p><span class="math display">\[\EE_\theta \,f(T(X)) = 0 \quad \forall \theta \in \Theta \implies f(T) \eqPas 0\]</span> ::: callout-note The name for complete statistics comes from a prior notion that <span class="math inline">\(\cP^T = \{P_\theta^T:\; \theta \in \Theta\}\)</span> is ``complete’’ as a model if its linear span includes all possible distributions on <span class="math inline">\(T(X)\)</span>; see Homework 3. :::</p>
+<p><span class="math display">\[\EE_\theta \,f(T(X)) = 0 \quad \forall \theta \in \Theta \implies f(T) \eqPas 0\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The name for complete statistics comes from a prior notion that <span class="math inline">\(\cP^T = \{P_\theta^T:\; \theta \in \Theta\}\)</span> is ``complete’’ as a model if its linear span includes all possible distributions on <span class="math inline">\(T(X)\)</span>; see Homework 3.</p>
+</div>
+</div>
+<p>An equivalent formulations would is that if <span class="math inline">\(\EE_\theta f(T(X)) = c \forall \theta\)</span>, for any constant <span class="math inline">\(c\)</span>, then <span class="math inline">\(f(T) \eqPas c\)</span>.</p>
 <p>If <span class="math inline">\(X\)</span> itself is complete, then the definition immediately implies that there can be at most one unbiased estimator for any estimand: if <span class="math inline">\(\EE_\theta \delta_1(X) = \EE_\theta \delta_2(X) = g(\theta)\)</span> for all <span class="math inline">\(\theta \in \Theta\)</span>, then <span class="math inline">\(f(X) = \delta_1(X) - \delta_2(X) = 0\)</span> almost surely. More generally, if <span class="math inline">\(T(X)\)</span> is a complete statistic then there can be at most one unbiased estimator that runs through <span class="math inline">\(T\)</span>. We will return to this fact when we discuss unbiased estimation.</p>
 <p>We will be especially interested in statistics that are both complete and sufficient. If <span class="math inline">\(T(X)\)</span> is complete and sufficient we call it a <em>complete sufficient statistic</em>.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -392,7 +393,7 @@ Warning
 </section>
 <section id="examples" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">1.2</span> Examples</h3>
-<p><strong>Example 1 (Laplace location family)</strong>: Let <span class="math inline">\(X_1,\ldots,X_n \simiid \text{Lap}(\theta)\)</span> for <span class="math inline">\(\theta \in \RR\)</span>, and recall that the vector of order statistics <span class="math inline">\(S(X) = (X_{(1)},\ldots,X_{(n)})\)</span> is a minimal sufficient statistic. Is <span class="math inline">\(S(X)\)</span> complete?</p>
+<p><strong>Example 1 (Laplace location family)</strong>: Let <span class="math inline">\(X_1,\ldots,X_n \simiid \text{Lap}(\theta)\)</span> for <span class="math inline">\(\theta \in \RR\)</span> and <span class="math inline">\(n\geq 2\)</span>, and recall that the vector of order statistics <span class="math inline">\(S(X) = (X_{(1)},\ldots,X_{(n)})\)</span> is a minimal sufficient statistic. Is <span class="math inline">\(S(X)\)</span> complete?</p>
 <div class="callout callout-style-simple callout-important no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -406,7 +407,8 @@ Expand to see answer
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>No, <span class="math inline">\(S(X)\)</span> is not complete.</strong></p>
-<p>Both the sample median <span class="math inline">\(\text{Med}(S)\)</span> (as defined in Homework 2 Problem XX) and sample mean <span class="math inline">\(\overline{X}(S)\)</span> can be calculated using <span class="math inline">\(S(X)\)</span> alone, and both are unbiased estimators for <span class="math inline">\(\theta\)</span>. Hence <span class="math inline">\(f(S) = \text{Med}(S) - \overline{X}(S)\)</span> has expectation zero, but is not almost surely equal to zero because the median and mean are not equal to each other.</p>
+<p>One simple way to see this is that <span class="math inline">\(X_{(n)}-X_{(1)}\)</span> has the same distribution for every <span class="math inline">\(\theta\)</span>, because we can write <span class="math inline">\(X_i = \theta + Z_i\)</span> for <span class="math inline">\(Z_1,\ldots,Z_n \simiid \text{Lap}(0)\)</span> and then <span class="math inline">\(X_{(n)}-X_{(1)} = Z_{(n)}-Z_{(1)}\)</span>.</p>
+<p>Another evocative counterexample is that both the sample median <span class="math inline">\(\text{Med}(X)\)</span> and sample mean <span class="math inline">\(\overline{X}\)</span> can be calculated using <span class="math inline">\(S(X)\)</span> alone, and both are unbiased estimators for <span class="math inline">\(\theta\)</span> (since the distribution is symmetric for <span class="math inline">\(\theta=0\)</span> and <span class="math inline">\(\text{Med}(X) = \theta + \text{Med}(Z)\)</span>). Hence <span class="math inline">\(f(S) = \text{Med}(X) - \overline{X}\)</span> has expectation zero, but is not almost surely equal to zero because the median and mean are a.s. unequal for <span class="math inline">\(n&gt;2\)</span>.</p>
 </div>
 </div>
 </div>
@@ -438,7 +440,7 @@ p_\theta(t) =  \frac{nt^{n-1}}{\theta^n}\,\cdot \;1\{t \leq \theta\}.
 </section>
 <section id="full-rank-exponential-families" class="level3" data-number="1.3">
 <h3 data-number="1.3" class="anchored" data-anchor-id="full-rank-exponential-families"><span class="header-section-number">1.3</span> Full-rank exponential families</h3>
-<p>In the general case where <span class="math inline">\(T(X)\)</span> can take on infinitely many values, it is hard to show completeness because the space of possible counterexample functions <span class="math inline">\(f\)</span> is infinite-dimensional. But there is an important class of examples where we can quickly verify complete sufficiency, as we see next.</p>
+<p>In the general case where <span class="math inline">\(T(X)\)</span> can take on infinitely many values, it can be hard to show completeness because the space of possible counterexample functions <span class="math inline">\(f\)</span> is infinite-dimensional. But there is an important class of examples where we can quickly verify complete sufficiency, as we see next.</p>
 <p><strong>Definition:</strong> Let <span class="math inline">\(\cP = \{P_\eta:\; \eta \in \Xi\}\)</span> be an <span class="math inline">\(s\)</span>-parameter exponential family with densities <span class="math display">\[
 p_\eta(x) = e^{\eta'T(x) - A(\eta)} h(x),
 \]</span> with respect to some carrier measure <span class="math inline">\(\mu\)</span>. Assume further that the sufficient statistic <span class="math inline">\(T(X)\)</span> satisfies no affine constraint: that is, there is no <span class="math inline">\(\alpha \in \RR\)</span> and nonzero <span class="math inline">\(\beta \in \RR^s\)</span> with <span class="math inline">\(\beta'T(x) \eqPas \alpha\)</span>.</p>
@@ -471,15 +473,16 @@ Expand for proof
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math inline">\(T(X)\)</span> is sufficient by the factorization theorem, so it remains only to prove completeness.</p>
-<p>Assume without loss of generality that <span class="math inline">\(0\)</span> is in the interior of <span class="math inline">\(\Xi\)</span>; otherwise we can reparameterize. Assume also that <span class="math inline">\(\cP\)</span> is in canonical form, i.e.&nbsp;<span class="math inline">\(T(X) = X\)</span> and <span class="math inline">\(p_\eta(x) = e^{\eta'x - A(\eta)}\)</span>; in general we can always reduce to this case by making a sufficiency reduction and taking <span class="math inline">\(P_0^T\)</span> as the carrier measure.</p>
-<p>Any measurable function <span class="math inline">\(f\)</span> can be decomposed as <span class="math inline">\(f(x) = f^+(x) - f^-(x)\)</span> where <span class="math inline">\(f^+\)</span> and <span class="math inline">\(f^-\)</span> are non-negative measurable functions. If <span class="math inline">\(\EE_\eta f(X) = \int (f^+-f^-)p_\eta \,d\mu = 0\)</span> for all <span class="math inline">\(\eta\in\Xi\)</span>, then we have <span id="eq-mgf-equality"><span class="math display">\[
+<p>Assume without loss of generality that <span class="math inline">\(0\)</span> is in the interior of <span class="math inline">\(\Xi\)</span>; otherwise we can reparameterize. Assume also that <span class="math inline">\(\cP\)</span> is in canonical form, i.e.&nbsp;<span class="math inline">\(T(X) = X\)</span> and <span class="math inline">\(p_\eta(x) = e^{\eta'x - A(\eta)}\)</span>. We can always reduce to this case by making a sufficiency reduction and taking <span class="math inline">\(P_0^T\)</span> as the carrier measure, and showing <span class="math inline">\(T(X)\)</span> is complete after a sufficiency reduction is equivalent to showing it is complete in the original model.</p>
+<p>If <span class="math inline">\(X\)</span> is not complete then there is some nontrivial <span class="math inline">\(f(x)\)</span> for which <span class="math inline">\(\EE_\eta f(X) = 0\)</span> for all <span class="math inline">\(\eta\in\Xi\)</span>. Decompose <span class="math inline">\(f(x) = f^+(x) - f^-(x)\)</span> where <span class="math inline">\(f^+(x) = \max\{0,f(x)\}\)</span> and <span class="math inline">\(f^{-}(x) = \max\{0,-f(x)\}\)</span>.</p>
+<p>If <span class="math inline">\(\EE_\eta f(X) = \int (f^+-f^-)p_\eta \,d\mu = 0\)</span> for all <span class="math inline">\(\eta\in\Xi\)</span>, then we have <span id="eq-mgf-equality"><span class="math display">\[
 \int e^{\eta'x} f^+(x) \,d\mu(x) = \int e^{\eta'x} f^-(x) \,d\mu(x), \quad \text{ for all } \eta \in \Xi.
-\tag{1}\]</span></span> By assumption, <span class="math inline">\(\Xi\)</span> contains an open neighborhood that includes <span class="math inline">\(0\)</span> on which both integrals are finite. Let <span class="math inline">\(c = \int f^+(x)\,d\mu(x) \geq 0\)</span>.</p>
-<p>If <span class="math inline">\(c&gt;0\)</span> then we can define the random variables <span class="math inline">\(Y^+\)</span> and <span class="math inline">\(Y^-\)</span> with probability densities <span class="math inline">\(f^+(x)/c\)</span> and <span class="math inline">\(f^-(x)/c\)</span> respectively; then <a href="#eq-mgf-equality" class="quarto-xref">Equation&nbsp;1</a> implies that <span class="math inline">\(Y^+\)</span> and <span class="math inline">\(Y^-\)</span> have equal MGFs in a neighborhood of <span class="math inline">\(0\)</span>; hence they have the same distribution and their densities must be a.s. equal to each other. But <span class="math inline">\(f^+(x)=f^-(x)\)</span> only when both are zero, so we have <span class="math inline">\(f^+, f^- \eqmuas 0\)</span>.</p>
+\tag{1}\]</span></span></p>
+<p>Assume wlog that <span class="math inline">\(\int f^+(x)\,d\mu(x) = \int f^-(x)\,d\mu(x) = 1\)</span> (otherwise normalize <span class="math inline">\(f\)</span>). Then we can define the random variables <span class="math inline">\(Y^+\)</span> and <span class="math inline">\(Y^-\)</span> with probability densities <span class="math inline">\(f^+(x)\)</span> and <span class="math inline">\(f^-(x)\)</span> respectively, and <a href="#eq-mgf-equality" class="quarto-xref">Equation&nbsp;1</a> implies that <span class="math inline">\(Y^+\)</span> and <span class="math inline">\(Y^-\)</span> have equal MGFs in a neighborhood of <span class="math inline">\(0\)</span>. Hence they have the same distribution and their densities must be a.s. equal to each other. But <span class="math inline">\(f^+(x)=f^-(x)\)</span> only when both are zero, so <span class="math inline">\(f(x) \eqmuas 0\)</span> and we have derived a contradiction.</p>
 </div>
 </div>
 </div>
-<p>The next figure shows three cases for exponential families with the same sufficient statistic. The set <span class="math inline">\(\Xi_1\)</span> indicates the full natural parameter space for a generic 2-parameter exponential family, and (A), (B), and (C) denote parameter spaces for three different subfamilies. The subfamily described by the shaded circle (A) is a full-rank exponential family, because it contains an open set. The subfamily described by the curve (B) is a typical example of a curved family, because it does not contain an open set. The subfamily described by the line segment (C) is technically curved according to the definition above, but we could view it as a full-rank <span class="math inline">\(1\)</span>-parameter exponential family after reparameterizing it.</p>
+<p>The next figure shows three cases for exponential families with the same sufficient statistic. The set <span class="math inline">\(\Xi_1\)</span> indicates the full natural parameter space for a generic 2-parameter exponential family, and (A), (B), and (C) denote parameter spaces for three different subfamilies. The subfamily described by the shaded circle (A) is a full-rank exponential family, because it contains an open set. The subfamily described by the curve (B) is a typical example of a curved family, because it does not contain an open set. The subfamily described by the line segment (C) can be re-parameterized as a full-rank <span class="math inline">\(1\)</span>-parameter exponential family.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="completeness.png" class="img-fluid figure-img"></p>
@@ -508,7 +511,7 @@ g(t) = t - \overline{T}(f(t)).
 </section>
 <section id="ancillarity" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="ancillarity"><span class="header-section-number">2</span> Ancillarity</h2>
-<p>We’ve spent a lot of time discussing sufficient statistics, which are statistics that carry <em>all</em> of the information about <span class="math inline">\(\theta\)</span>. Our next definition describes a type of statistic that carry <em>no</em> information about the parameter.</p>
+<p>We’ve spent a lot of time discussing sufficient statistics, which are statistics that carry <em>all</em> of the information about <span class="math inline">\(\theta\)</span>. Our next definition describes a type of statistic that carries <em>no</em> information about the parameter.</p>
 <p><strong>Definition:</strong> We say <span class="math inline">\(V(X)\)</span> is ancillary for the model <span class="math inline">\(\cP = \{P_\theta: \theta \in \Theta\}\)</span> if its distribution does not depend on <span class="math inline">\(\theta\)</span>.</p>
 <p>Just as the sufficiency principle tells us that our inference procedures should depend only on information from sufficient statistics, an analogous principle suggests in effect that procedures should depend as little as possible on ancillary statistics. Specifically, it recommends treating <span class="math inline">\(V(X)\)</span> as a fixed value and evaluating the rest of the data set according to its distribution <em>conditional on</em> <span class="math inline">\(V(X)\)</span>:</p>
 <p><strong>Conditionality Principle:</strong> If <span class="math inline">\(V(X)\)</span> is ancillary, then all inference should be conditional on <span class="math inline">\(V(X)\)</span>.</p>
