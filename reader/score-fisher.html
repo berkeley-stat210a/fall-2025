@@ -123,13 +123,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#outline" id="toc-outline" class="nav-link active" data-scroll-target="#outline"><span class="header-section-number">1</span> Outline</a></li>
-  <li><a href="#motivation-tangent-family" id="toc-motivation-tangent-family" class="nav-link" data-scroll-target="#motivation-tangent-family"><span class="header-section-number">2</span> Motivation: Tangent Family</a></li>
-  <li><a href="#score-function" id="toc-score-function" class="nav-link" data-scroll-target="#score-function"><span class="header-section-number">3</span> Score Function</a></li>
-  <li><a href="#differential-identities-and-the-fisher-information" id="toc-differential-identities-and-the-fisher-information" class="nav-link" data-scroll-target="#differential-identities-and-the-fisher-information"><span class="header-section-number">4</span> Differential Identities and the Fisher Information</a></li>
-  <li><a href="#cramér-rao-lower-bound" id="toc-cramér-rao-lower-bound" class="nav-link" data-scroll-target="#cramér-rao-lower-bound"><span class="header-section-number">5</span> Cramér-Rao Lower Bound</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">6</span> Examples</a></li>
-  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency"><span class="header-section-number">7</span> Efficiency</a></li>
+  <li><a href="#score-function" id="toc-score-function" class="nav-link active" data-scroll-target="#score-function"><span class="header-section-number">1</span> Score Function</a></li>
+  <li><a href="#differential-identities-and-the-fisher-information" id="toc-differential-identities-and-the-fisher-information" class="nav-link" data-scroll-target="#differential-identities-and-the-fisher-information"><span class="header-section-number">2</span> Differential Identities and the Fisher Information</a></li>
+  <li><a href="#cramér-rao-lower-bound" id="toc-cramér-rao-lower-bound" class="nav-link" data-scroll-target="#cramér-rao-lower-bound"><span class="header-section-number">3</span> Cramér-Rao Lower Bound</a></li>
+  <li><a href="#score-and-fisher-information-in-an-i.i.d.-sample" id="toc-score-and-fisher-information-in-an-i.i.d.-sample" class="nav-link" data-scroll-target="#score-and-fisher-information-in-an-i.i.d.-sample"><span class="header-section-number">4</span> Score and Fisher information in an i.i.d. sample</a></li>
+  <li><a href="#score-and-fisher-information-in-curved-exponential-families" id="toc-score-and-fisher-information-in-curved-exponential-families" class="nav-link" data-scroll-target="#score-and-fisher-information-in-curved-exponential-families"><span class="header-section-number">5</span> Score and Fisher information in (curved) exponential families</a></li>
   </ul>
 </nav>
     </div>
@@ -181,6 +179,142 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
+<section id="score-function" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="score-function"><span class="header-section-number">1</span> Score Function</h2>
+<p>In this section we introduce the score function and Fisher information, two concepts that are central in asymptotic statistics. We</p>
+<p>Assume a family <span class="math inline">\(\cP\)</span> has densities <span class="math inline">\(p_\theta\)</span> with respect to a measure <span class="math inline">\(\mu\)</span>, for <span class="math inline">\(\theta \in \Theta \subseteq \RR^d\)</span>. Assume additionally that these densities have common support: that <span class="math inline">\(\{x: p_\theta(x) &gt; 0\}\)</span> is the same for all <span class="math inline">\(\theta\)</span> (since we can truncate the sample space to this common support, we could just as well assume <span class="math inline">\(p_\theta(x) &gt; 0\)</span> for all <span class="math inline">\(x\)</span> and <span class="math inline">\(\theta\)</span>).</p>
+<p><strong>Definition:</strong> The <em>Score function</em> is defined as <span class="math inline">\(S_{\theta}(X) = \nabla \ell(\theta;X)\)</span>, a random vector of dimension <span class="math inline">\(d\)</span>.</p>
+<p>We can think of the score function <span class="math inline">\(S_{\theta_0}(X)\)</span> at a given value <span class="math inline">\(\theta_0\)</span> as a kind of “local” sufficient statistic that we could use to distinguish between <span class="math inline">\(\theta\)</span> values in a small neighorhood of <span class="math inline">\(\theta_0\)</span>.</p>
+<p>To see why, recall that the log-likelihood <span class="math inline">\(\ell(\theta;X) = \log p_\theta(X)\)</span>, thought of as a random function with argument <span class="math inline">\(\theta\)</span>, is a minimal sufficient statistic for <span class="math inline">\(X\)</span>, up to a vertical shift.</p>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Wait! Didn’t we say a statistic can’t be a function of <span class="math inline">\(\theta\)</span>?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Yes, but what we meant by this is, more precisely, is that a statistic can be calculated from the data, by an analyst who doesn’t know what is the <em>true</em> value of <span class="math inline">\(\theta\)</span> that governed the sampling distribution of the data <span class="math inline">\(X\)</span>.</p>
+<p>The trouble is that there is a bit of notational ambiguity when we write <span class="math inline">\(\ell(\theta;X)\)</span>. If we want to be a bit more precise, what we mean here is <span class="math inline">\(\ell(\cdot; X)\)</span>, which is realized in the space of functions from <span class="math inline">\(\theta\)</span> to <span class="math inline">\(\mathbb{R}\)</span>. If the analyst observes <span class="math inline">\(X\)</span> they can plot a graph of this whole likelihood function; that graph is the statistic.</p>
+<p>On the other hand, suppose that instead we interpret <span class="math inline">\(\ell(\theta;X)\)</span> as the function <em>evaluated at</em> the true value <span class="math inline">\(\theta\)</span>, i.e.&nbsp;in more pedantic notation <span class="math inline">\(\left.\ell(\cdot; X)\right|_{\text{true } \theta}\)</span>. Then, this would <em>not</em> be a statistic because the analyst can’t calculate it without knowing which is the true value.</p>
+<p>A third possibility is that we could be evaluating $()</p>
+</div>
+</div>
+</div>
+<p>For any fixed reference point <span class="math inline">\(\theta_0 \in \Theta\)</span>, we can subtract <span class="math inline">\(\ell(\theta_0; X)\)</span> to obtain the minimal sufficient statistic <span class="math inline">\(\ell(\theta; X) - \ell(\theta_0; X)\)</span>. Then, for a nearby value <span class="math inline">\(\theta = \theta_0 + \eta\)</span>, with <span class="math inline">\(\eta\)</span> small, we have <span class="math display">\[
+\ell(\theta_0 + \eta; X) - \ell(\theta_0; X) \approx \eta'S_{\theta_0}(X),
+\]</span> so the statistic <span class="math inline">\(S_{\theta_0}(X)\)</span> would approximately capture all of the information in a “local” model <span class="math inline">\(\{P_{\theta_0+\eta}: \eta \text{ small}\} \subseteq \cP\)</span>.</p>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Is the score a statistic?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>It depends. Sometimes the reference point <span class="math inline">\(\theta_0\)</span> is generic, or it might be specified by the analyst without knowing whether it is the true value of <span class="math inline">\(\theta\)</span>; for example, we could be testing the null hypothesis <span class="math inline">\(H_0:\;\theta = \theta_0\)</span>, without knowing whether the null is true. In that case, it is a statistic (and we’ll often call it a “score statistic”).</p>
+<p>On the other hand, for many theoretical calculations, including most of the calculations in this section, we will be specifically interested in <span class="math inline">\(S_\theta(X)\)</span> for the <em>true</em> value of <span class="math inline">\(\theta\)</span> that is govering the sampling distribution <span class="math inline">\(P_\theta\)</span> of the data. In that case, the score is <em>not</em> a statistic.</p>
+</div>
+</div>
+</div>
+<p>When we study asymptotic statistics, local models like these will be natural objects of study, because a large data set will commonly allow us to rule out most <span class="math inline">\(\theta\)</span> values and only focus on values in a small neighborhood of the true parameter.</p>
+<p>Or, writing it a different way, we have <span class="math display">\[
+p_{\theta_0+\eta}(x) = e^{\ell(\theta_0 + \eta; x)} \approx e^{\eta'\nabla \ell(\theta_0;x)}p_{\theta_0}(x).
+\]</span></p>
+<p>This evokes some analogies between the score in a generic parametric family and the sufficient statistic in an exponential family. We’ll begin by looking at differential identities.</p>
+</section>
+<section id="differential-identities-and-the-fisher-information" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="differential-identities-and-the-fisher-information"><span class="header-section-number">2</span> Differential Identities and the Fisher Information</h2>
+<p>Assuming enough regularity, we can arrive at some important differential identities by differentiating both sides of the equation</p>
+<p><span class="math display">\[1 = \int_\cX e^{\ell(\theta;x)}\,d\mu(x).\]</span></p>
+<p>Differentiating both sides with respect to <span class="math inline">\(\theta_j\)</span>, we obtain <span class="math display">\[0 = \int_\cX \frac{\partial}{\partial \theta_j} \ell(\theta; x) e^{\ell(\theta; x)}\,d\mu(x) = \EE_\theta \left[\frac{\partial}{\partial\theta_j}\ell(\theta;X)\right].\]</span> Collecting these identities into a vector, we obtain <span class="math display">\[
+\EE_\theta [S_\theta(X)] = 0.
+\]</span> Importantly, note that this identity only holds if the two values of <span class="math inline">\(\theta\)</span> in the above expression match each other. So if the analyst calculates the score function at some reference value <span class="math inline">\(\theta_0\)</span>, but the true parameter is some other value <span class="math inline">\(\theta \neq \theta_0\)</span>, we typically would have <span class="math inline">\(\EE_\theta[S_{\theta_0}(X)] \neq 0\)</span>.</p>
+<p>If we differentiate the identity a second time with respect to <span class="math inline">\(\theta_k\)</span>, we obtain <span class="math display">\[
+0 = \int_\cX \left(\frac{\partial^2\ell}{\partial \theta_j\partial\theta_k} + \frac{\partial \ell}{\partial \theta_j}\frac{\partial \ell}{\partial\theta_k}\right) e^{\ell}\,d\mu = \EE_\theta\left[\frac{\partial^2\ell}{\partial \theta_j\partial\theta_k}\right] + \EE_\theta\left[\frac{\partial \ell}{\partial \theta_j}\frac{\partial \ell}{\partial \theta_k}\right]
+%= \EE_\theta\left[\frac{\partial^2\ell}{\partial \theta_j\partial\theta_k}\right] + \Cov_\theta\left(\frac{\partial \ell}{\partial \theta_j},\frac{\partial \ell}{\partial \theta_k}\right).
+\]</span></p>
+<p>Again collecting these identities into a matrix, and noting that <span class="math display">\[
+\EE_\theta\left[\frac{\partial \ell}{\partial \theta_j}\frac{\partial \ell}{\partial \theta_k}\right] = \Cov_\theta\left(S_{\theta,j}(X),S_{\theta,k}(X)\right),
+\]</span> we obtain <span class="math display">\[
+\Var_\theta\left(S_{\theta}(X)\right) = \EE_\theta\left[-\nabla^2\ell(\theta;X)\right],
+\]</span> again with the important observation that the equality holds only if the <span class="math inline">\(\theta\)</span> in both subscripts matches the <span class="math inline">\(\theta\)</span> where we are calculating derivatives.</p>
+<p>The left-hand side of the last equation, the variance of the score, is called the <em>Fisher Information</em> matrix <span class="math display">\[
+J(\theta) := \Var_\theta(S_\theta(X)).
+\]</span> Note <span class="math inline">\(J(\theta)\)</span> is always positive semidefinite.</p>
+<p>We will not discuss in detail the regularity conditions on <span class="math inline">\(\ell\)</span> (basically, one or two “tame” derivatives) that make these identities work; the correct regularity conditions are complicated. But the score function is useful even certain models where <span class="math inline">\(\ell(\theta;x)\)</span> is not differentiable with respect to <span class="math inline">\(\theta\)</span>, such as the Laplace location family.</p>
+</section>
+<section id="cramér-rao-lower-bound" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="cramér-rao-lower-bound"><span class="header-section-number">3</span> Cramér-Rao Lower Bound</h2>
+<p>The score function and Fisher information play critical roles in asymptotic statistics but they have finite-sample implications too. For example, they can be used to derive a lower bound on the variance of any unbiased estimator.</p>
+<p>Let <span class="math inline">\(\delta(X)\)</span> be an unbiased estimator for the estimand <span class="math inline">\(g(\theta)\in \RR\)</span>, so <span class="math inline">\(g(\theta) = \int \delta p_\theta \,d\mu\)</span>. If we repeat the idea of differentiating <span class="math inline">\(g(\theta) = \int \delta(x) e^{\ell(\theta;x)}\,d\mu(x)\)</span> with respect to <span class="math inline">\(\theta\)</span>, we obtain <span class="math display">\[
+\frac{\partial g}{\partial\theta_j}(\theta) = \int \delta(x) \frac{\partial}{\partial \theta_j} \ell(\theta; x)e^{\ell(\theta;x)}\,d\mu(x),
+\]</span> leading to <span class="math display">\[
+\nabla g(\theta) = \EE_\theta\left[\delta(X) S_{\theta}(X)\right] = \Cov_\theta\left(\delta(X), S_{\theta}(X)\right).
+\]</span> This covariance should be thought of as a <span class="math inline">\(d\)</span>-vector like <span class="math inline">\(S_\theta(X)\)</span>, since <span class="math inline">\(\delta(X)\)</span> is a scalar.</p>
+<p>For the case <span class="math inline">\(d=1\)</span> (<span class="math inline">\(\theta\in\RR\)</span>), we will write the derivative as <span class="math inline">\(\dot g(\theta) = \frac{d}{d\theta}g(\theta)\)</span>. Then we can express the correlation of our estimator and <span class="math inline">\(S_{\theta}(X)\)</span> in terms of <span class="math inline">\(\nabla g(\theta)\)</span> and the Fisher information: <span class="math display">\[
+\Corr_\theta^2\left(\delta(X),S_\theta(X) \right) \;=\; \frac{\Cov_\theta^2\left(\delta(X),S_\theta(X) \right)}{\Var_\theta(\delta(X))\Var_\theta(S_\theta(X))} \;=\; \frac{\dot g(\theta)^2}{\Var_\theta(\delta(X)) J(\theta)}.
+\]</span> Rearranging and recalling that a squared correlation must be less than 1, we obtain the <em>Cram'{e}r-Rao Lower Bound</em> (CRLB) <span class="math display">\[
+\Var_\theta(\delta(X)) = \frac{\dot g(\theta)^2}{J(\theta)\Corr_\theta^2(\delta,S_\theta)} \geq \frac{\dot g(\theta)^2}{J(\theta)}
+\]</span> In particular, if <span class="math inline">\(g(\theta)=\theta\)</span>, no unbiased estimator can have smaller variance than <span class="math inline">\(1/J(\theta)\)</span>. In general, the bound depends on how rapidly the estimand changes with <span class="math inline">\(\theta\)</span>.</p>
+<p>Is it really “harder” to estimate <span class="math inline">\(g(\theta) = 12\theta\)</span> than it is to estimate <span class="math inline">\(g(\theta) = \theta\)</span>? Yes and no: it’s harder in the sense that we can expect the variance of an estimator to be <span class="math inline">\(144\)</span> times larger in the first case than the second. But what if this just reflects the fact that <span class="math inline">\(\theta\)</span> is denominated in inches and <span class="math inline">\(g(\theta)\)</span> is denominated in feet? Then we can see clearly that the <span class="math inline">\(\dot{g}(\theta)\)</span> is just keeping track of a unit conversion. Likewise, if <span class="math inline">\(\theta\)</span> has units of feet, we can think of <span class="math inline">\(S_\theta(X)\)</span> as having units of inverse feet, and <span class="math inline">\(J(\theta)\)</span> as having units of inverse square feet.</p>
+<p>In finite samples it’s typically the case that even the UMVU estimator will not attain the CRLB. An estimator that attains the CRLB is called <em>efficient</em>, and more generally the gap <span class="math inline">\(\Corr_\theta^2(\delta,S_\theta)\)</span> is called the <em>efficiency</em> of the estimator. Very roughly, if <span class="math inline">\(S_\theta(X)\)</span> is locally capturing all of the relevant information, but <span class="math inline">\(\delta(X)\)</span> has only a <span class="math inline">\(50\%\)</span> “R squared” with it, then <span class="math inline">\(\delta(X)\)</span> is only using <span class="math inline">\(1/2\)</span> of the available information, and we can roughly say that is what accounts for its inefficiency.</p>
+<p>As <span class="math inline">\(n\to\infty\)</span> in i.i.d. sampling models, however, there typically will be estimators that achieve the CRLB in the limit (for example, in an asymptotically limiting sense the maximum likelihood estimator will typically be both unbiased and efficient).</p>
+<p>For the multivariate case where <span class="math inline">\(\theta\)</span> has dimension <span class="math inline">\(d&gt;1\)</span> (but <span class="math inline">\(g(\theta)\in \RR\)</span> still), we have more generally <span class="math display">\[
+\Var_\theta(\delta(X) \geq \nabla g(\theta)'J(\theta)^{-1}\nabla g(\theta).
+\]</span></p>
+<p>To derive this identity, note that for any <span class="math inline">\(a \in \RR^d\)</span>, we have <span class="math display">\[
+\Cov_\theta(\delta(X), a'S_\theta(X)) = a'\Cov_\theta(\delta(X), S_\theta(X)) = a'\nabla g(\theta)
+\]</span> and <span class="math inline">\(\Var_\theta(a'S_\theta(X)) = a'J(\theta)a\)</span>. Then we can repeat the derivation above to obtain <span class="math display">\[
+\Var_\theta(\delta(X)) \geq \frac{a'\nabla g(\theta)\nabla g(\theta)'a}{a'J(\theta)a}.
+\]</span> We obtain the CRLB <span class="math inline">\(\nabla g(\theta)'J(\theta)^{-1}\nabla g(\theta)\)</span> by maximizing the right-hand side, which is a Rayleigh quotient maximized by <span class="math inline">\(a^* = J(\theta)^{-1}\nabla g(\theta)\)</span>.</p>
+</section>
+<section id="score-and-fisher-information-in-an-i.i.d.-sample" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="score-and-fisher-information-in-an-i.i.d.-sample"><span class="header-section-number">4</span> Score and Fisher information in an i.i.d. sample</h2>
+<p>The score and Fisher information are both additive over i.i.d. observations. Assume <span class="math inline">\(X_1, \ldots, X_n\)</span> are sampled i.i.d. from a univariate density <span class="math inline">\(p_\theta^{(1)}(x)\)</span>, for <span class="math inline">\(\theta \in \Theta \subseteq \RR^d\)</span>. Assume additionally that <span class="math inline">\(p_\theta^{(1)}\)</span> is “regular:” it has common support, and tame derivatives w.r.t. <span class="math inline">\(\theta\)</span>.</p>
+<p>The full data density is <span class="math inline">\(p_\theta(x) = \prod_{i=1}^n p_\theta^{(1)}(x_i)\)</span>. Likewise, if we define the single-sample log-likelihood <span class="math display">\[
+\ell_1(\theta;X_i) = \log p_\theta^{(1)}(X_i),
+\]</span> then the log-likelihood for the full sample is <span class="math inline">\(\ell(\theta;X) = \sum_{i=1}^n \ell_1(\theta;X_i)\)</span>. Hence, each sample gives us a random realization of the log-likelihood function on the parameter space, and we just add them up to obtain the log-likelihood function for the full sample.</p>
+<p>If the score for a single observation is <span class="math inline">\(S_\theta^{(1)}(X_i) = \nabla \ell(\theta; X_i)\)</span>, then the score for the full sample is <span class="math inline">\(S_\theta(X) = \sum_i S_\theta^{(i)}(X_i)\)</span>, the sum of the single-observation scores. Because these are i.i.d., the variance of <span class="math inline">\(S_\theta(X)\)</span> for the full sample is just <span class="math inline">\(n\)</span> times the variance of <span class="math inline">\(S_\theta^{(1)}(X_i)\)</span>, so we can write <span class="math inline">\(J(\theta)=n J_1(\theta)\)</span>, where <span class="math inline">\(J_1(\theta)\)</span> is the Fisher information when <span class="math inline">\(n=1\)</span>.</p>
+<p>As one consequence, we see that the CRLB scales like <span class="math inline">\(n^{-1}\)</span> for regular families; in other words, the standard deviation of an estimator should scale roughly like <span class="math inline">\(1/\sqrt{n}\)</span>.</p>
+</section>
+<section id="score-and-fisher-information-in-curved-exponential-families" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="score-and-fisher-information-in-curved-exponential-families"><span class="header-section-number">5</span> Score and Fisher information in (curved) exponential families</h2>
+<p><strong>Example: Exponential family</strong></p>
+<p>It is also illuminating to calculated these quantities for exponential families. Assume we have <span class="math display">\[
+p_\eta(x) = e^{\eta'T(x) - A(\eta)} h(x).
+\]</span></p>
+<p>Then the log-likelihood is <span class="math inline">\(\ell(\eta;X) = \eta'T(X) - A(\eta) + \log h(X)\)</span>, and the score is <span class="math display">\[
+\nabla \ell(\eta;X) = T(X) - \nabla A(\eta).
+\]</span> Recalling that <span class="math inline">\(\nabla A(\eta) = \EE_\eta T(X)\)</span>, we obtain <span class="math display">\[
+S_\eta(X) = T(X) - \EE_\eta T(X).
+\]</span> So we indeed see that, up to a constant shift (which is needed for its mean to be zero), the score in an exponential family (at least in the natural parameterization) is none other than the sufficient statistic <span class="math inline">\(T(X)\)</span>.</p>
+<p>Since <span class="math inline">\(\EE_\eta T(X)\)</span> is nonrandom, the variance is <span class="math display">\[
+J(\eta) = \Var_\eta (T(X)) = \nabla^2 A(\eta).
+\]</span></p>
+<p>We could alternatively derive the Fisher information by taking a second derivative of the log-likelihood with respect to <span class="math inline">\(\eta\)</span>, giving <span class="math display">\[
+\nabla^2\ell(\eta;X) = -\nabla^2 A(\eta),
+\]</span> which is deterministically equal to <span class="math inline">\(-\Var_\eta(T(X))\)</span>, so we have confirmed the identity <span class="math inline">\(J(\eta) = -\EE_\eta[\nabla^2 \ell(\eta;X)]\)</span>.</p>
+<p><strong>Example: Curved exponential family</strong></p>
+<p>Next, consider a curved version of the previous family, parameterized by <span class="math inline">\(\theta \in \RR\)</span>: <span class="math display">\[
+p_\theta(x) = e^{\eta(\theta)'T(x) - A(\eta(\theta))}h(x),
+\]</span> So, <span class="math inline">\(\eta(\theta)\)</span> is tracing out a one-dimensional curve through the ambient <span class="math inline">\(s\)</span>-dimensional parameter space.</p>
+<p>Now, the log-likelihood is <span class="math display">\[\ell(\theta;X) = \eta(\theta)'T(x) - A(\eta(\theta))  + \log h(x),\]</span> and we can obtain its first derivative by applying the chain rule: <span class="math display">\[
+\dot{\ell}(\theta;X) = \dot{\eta}(\theta)'(T(X) - \nabla_\eta A(\eta(\theta))),
+\]</span> leading to <span class="math display">\[
+S_\theta(X) = \dot{\eta}(\theta)'(T(X) - \EE_\theta T(X)) = \dot{\eta}(\theta)'S_{\eta(\theta)}(X),
+\]</span> where (slightly abusing notation) <span class="math inline">\(S_{\eta}(X)\)</span> is the score in the ambient exponential family. Note here <span class="math inline">\(\dot\eta(\theta)\)</span> is an <span class="math inline">\(s\)</span>-vector. Its direction tells us which projection of <span class="math inline">\(T(X)\)</span> is informative for distinguishing parameter values in a local neighborhood of <span class="math inline">\(\theta\)</span>, and its magnitude tells us how rapidly we are traversing the parameter space.</p>
+<p>Likewise the Fisher information is <span class="math display">\[
+J(\theta) = \dot{\eta}(\theta)'J(\eta(\theta))\dot{\eta}(\theta).
+\]</span> It is noteworthy that choosing a “faster” parameterization of the same subfamily will make the Fisher information larger. This is not because the data become any more or less informative about a statistical model when we change the parameterization. Again, we can think of it more as a “unit conversion” issue: the farther <span class="math inline">\(P_{\theta}\)</span> is from (say) <span class="math inline">\(P_{\theta\pm 0.1}\)</span>, the better chance we have of estimating <span class="math inline">\(\theta\)</span> up to a precision of <span class="math inline">\(0.1\)</span>.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -191,119 +325,9 @@ Under construction
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Think through “tangent family” part… is it really helping, or can it be combined with curved exponential family example?</p>
-<p>Add back in figures from handwritten notes.</p>
+<p>Add tangent family and curved Gaussian family examples.</p>
 </div>
 </div>
-<section id="outline" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="outline"><span class="header-section-number">1</span> Outline</h2>
-<ol type="1">
-<li>Score function</li>
-<li>Fisher information</li>
-<li>Cramér-Rao Lower Bound</li>
-<li>Examples</li>
-</ol>
-</section>
-<section id="motivation-tangent-family" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="motivation-tangent-family"><span class="header-section-number">2</span> Motivation: Tangent Family</h2>
-<p>Consider a family of densities:</p>
-<p><span class="math display">\[p(x; \theta) = e^{\theta'T(x) - A(\theta)}h(x)\]</span></p>
-<p>where <span class="math inline">\(\theta \in \RR^d\)</span> and <span class="math inline">\(A(\theta) = \log \int e^{\theta'T(x)}h(x)dx\)</span>.</p>
-<p>For this family:</p>
-<ul>
-<li><span class="math inline">\(T(X)\)</span> is complete sufficient</li>
-<li><span class="math inline">\(T(X)\)</span> is minimal</li>
-<li><span class="math inline">\(\PP_\theta(T(X) = t) = e^{\theta't - A(\theta)}\)</span></li>
-<li><span class="math inline">\(\EE_\theta[T(X)] = A'(\theta)\)</span></li>
-</ul>
-<p>Let <span class="math inline">\(\theta_0 \in \RR^d\)</span> be fixed. Define the <strong>tangent family</strong></p>
-<p><span class="math display">\[q(x; t) = e^{t'\nabla l_{\theta_0}(x) - k(t)}p_{\theta_0}(x)\]</span></p>
-<p>where <span class="math inline">\(k(t) = \log \int e^{t'\nabla l_{\theta_0}(x)}p_{\theta_0}(x)dx\)</span>.</p>
-<p>Then <span class="math inline">\(\nabla l_{\theta_0}(X)\)</span> is complete sufficient for the tangent family at <span class="math inline">\(\theta_0\)</span>.</p>
-<p>This is called the Score function.</p>
-</section>
-<section id="score-function" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="score-function"><span class="header-section-number">3</span> Score Function</h2>
-<p>Assume a family <span class="math inline">\(\cP\)</span> has densities <span class="math inline">\(p_\theta\)</span> with respect to a measure <span class="math inline">\(\mu\)</span>, for <span class="math inline">\(\theta \in \Theta \subseteq \RR^d\)</span>. Assume additionally that these densities have common support: that <span class="math inline">\(\{x: p_\theta(x) &gt; 0\}\)</span> is the same for all <span class="math inline">\(\theta\)</span>.</p>
-<p>Recall the log-likelihood is <span class="math inline">\(l(\theta;X) = \log p_\theta(X)\)</span> (thought of as a random function of <span class="math inline">\(\theta\)</span>)</p>
-<p><strong>Definition:</strong> The <em>Score function</em> is <span class="math inline">\(\nabla l_\theta(X)\)</span>.</p>
-<p>It plays a key role in many areas of statistics, especially in asymptotics. We can think of it as a “local complete sufficient statistic.” For <span class="math inline">\(\eta \approx 0\)</span>, and <span class="math inline">\(\theta_0 \in \Theta^\circ\)</span>, we have</p>
-<p><span class="math display">\[p_{\theta_0+\eta}(x) = e^{\ell(\theta_0 + \eta; x)} \approx e^{\eta'\nabla \ell(\theta_0;x)}p_{\theta_0}(x).\]</span></p>
-</section>
-<section id="differential-identities-and-the-fisher-information" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="differential-identities-and-the-fisher-information"><span class="header-section-number">4</span> Differential Identities and the Fisher Information</h2>
-<p>Assuming enough regularity, we can arrive at some important differential identities by differentiating both sides of the equation</p>
-<p><span class="math display">\[1 = \int_\cX e^{\ell(\theta;x)}\,d\mu(x).\]</span></p>
-<p>Differentiating both sides with respect to <span class="math inline">\(\theta_j\)</span>, we obtain <span class="math display">\[0 = \int_\cX \frac{\partial}{\partial \theta_j} \ell(\theta; x) e^{\ell(\theta; x)}\,d\mu(x) = \EE_\theta \left[\frac{\partial}{\partial\theta_j}\ell(\theta;X)\right].\]</span> Collecting these identities into a vector, we obtain <span class="math display">\[\EE_\theta [\nabla \ell(\theta; X)] = 0.\]</span> Importantly, note that this identity only holds if the <span class="math inline">\(\theta\)</span> in the subscript (defining the distribution with respect to which the expectation is taken) matches the <span class="math inline">\(\theta\)</span> at which the gradient is being evaluated.</p>
-<p>If we differentiate the identity a second time with respect to <span class="math inline">\(\theta_k\)</span>, we obtain <span class="math display">\[0 = \int_\cX \left(\frac{\partial^2\ell}{\partial \theta_j\partial\theta_k} + \frac{\partial \ell}{\partial \theta_j}\frac{\partial \ell}{\partial\theta_k}\right) e^{\ell}\,d\mu = \EE_\theta\left[\frac{\partial^2\ell}{\partial \theta_j\partial\theta_k}\right] + \EE_\theta\left[\frac{\partial \ell}{\partial \theta_j}\frac{\partial \ell}{\partial \theta_k}\right]
-%= \EE_\theta\left[\frac{\partial^2\ell}{\partial \theta_j\partial\theta_k}\right] + \Cov_\theta\left(\frac{\partial \ell}{\partial \theta_j},\frac{\partial \ell}{\partial \theta_k}\right).
-\]</span> Again collecting these identities into a matrix, and noting that <span class="math display">\[\EE_\theta\left[\frac{\partial \ell}{\partial \theta_j}\frac{\partial \ell}{\partial \theta_k}\right] = \Cov_\theta\left(\frac{\partial \ell}{\partial \theta_j},\frac{\partial \ell}{\partial \theta_k}\right),\]</span> we obtain <span class="math display">\[\Var_\theta\left(\nabla\ell(\theta;X)\right) = \EE_\theta\left[-\nabla^2\ell(\theta;X)\right],\]</span> again with the important observation that the <span class="math inline">\(\theta\)</span> in both subscripts must match the <span class="math inline">\(\theta\)</span> where the first and second derivatives are evaluated.</p>
-<p>The left-hand side of the last equation, the variance of the score, is called the <em>Fisher Information</em> matrix <span class="math display">\[ J(\theta) := \Var_\theta(\nabla\ell(\theta;X)). \]</span> Note <span class="math inline">\(J(\theta)\)</span> is always positive semidefinite. It is possible to extend this definition to certain models where <span class="math inline">\(\ell(\theta;x)\)</span> is not differentiable with respect to <span class="math inline">\(\theta\)</span>, such as the Laplace location family. However we will not explore these generalizations.</p>
-</section>
-<section id="cramér-rao-lower-bound" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="cramér-rao-lower-bound"><span class="header-section-number">5</span> Cramér-Rao Lower Bound</h2>
-<p>Let <span class="math inline">\(\delta(X)\)</span> be any real-valued statistic. Let <span class="math inline">\(g(\theta) = \EE_\theta[\delta]\)</span>, so <span class="math inline">\(\delta\)</span> is an unbiased estimator for <span class="math inline">\(g(\theta)\)</span>. If we repeat the idea of differentiating <span class="math inline">\(g(\theta) = \int \delta(x) e^{\ell(\theta;x)}\,d\mu(x)\)</span> with respect to <span class="math inline">\(\theta_j\)</span> for each <span class="math inline">\(j\)</span>, and collect the resulting partial derivatives into a vector, we obtain</p>
-<p><span class="math display">\[\nabla g(\theta) = \int \delta(x) \nabla \ell(\theta;x) e^{\ell(\theta;x)}\,d\mu(x) = \EE_\theta\left[\delta(X) \nabla\ell(\theta;X)\right] = \Cov_\theta\left(\delta(X), \nabla\ell(\theta;X)\right).\]</span> Combining these results with the Cauchy-Schwarz inequality gives us the <em>Cramér-Rao Lower Bound</em>, also known as the <em>Information lower bound</em>. For a single parameter (<span class="math inline">\(d=1\)</span>), we have <span class="math display">\[\Var_\theta(\delta(X)) \cdot \Var_\theta(\dot{\ell}(\theta;X)) \geq \Cov_\theta(\delta(X), \dot{\ell}(\theta; X))^2, \]</span> so after rearranging terms and applying identities, <span class="math display">\[\Var_\theta(\delta(X)) \geq \frac{\dot{g}(\theta)^2}{J(\theta)}.\]</span></p>
-<p>For the multivariate case (<span class="math inline">\(d&gt;1\)</span>), we have more generally <span class="math display">\[ \Var_\theta(\delta(X) \geq \nabla g(\theta)'J(\theta)^{-1}\nabla g(\theta).\]</span> The interpretation of this identity is that no unbiased estimator for <span class="math inline">\(g(\theta)\)</span> can have variance smaller than <span class="math inline">\(\nabla g(\theta)'J(\theta)^{-1}\nabla g(\theta)\)</span>. In particular, if <span class="math inline">\(g(\theta) = \theta_j\)</span>, no estimator can have variance smaller than <span class="math inline">\((J(\theta)^{-1})_{jj}\)</span>.</p>
-<p><span class="math display">\[\Var_\theta(\delta) \geq \Var_\theta(\delta(X)) \Cov_\theta(\delta, \nabla l_\theta(X))I(\theta)^{-1}\Cov_\theta(\delta, \nabla l_\theta(X))' = g'(\theta)I(\theta)^{-1}g'(\theta)'\]</span></p>
-<div class="callout callout-style-simple callout-important no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Expand to see proof
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>For any <span class="math inline">\(a \in \RR^d\)</span>, we can write <span class="math display">\[\begin{aligned}
-\Var_\theta(\delta(X)) \cdot a'J(\theta)a &amp;= \Var_\theta(\delta)\Var_\theta(a'\nabla\ell(\theta;X))\\
-&amp;\geq \Cov_\theta(\delta(X), a'\nabla\ell(\theta;X))^2\\
-&amp;= \left(a'\nabla \Cov_\theta(\delta, \nabla\ell(\theta))\right)^2\\
-&amp;= (a'\nabla g(\theta))^2.
-\end{aligned}\]</span></p>
-<p>Thus we obtain for all nonzero <span class="math inline">\(a \in \RR^d\)</span>,</p>
-<p><span class="math display">\[\Var_\theta(\delta(X)) \geq \frac{(a'\nabla g(\theta))^2}{a'J(\theta)a}.\]</span></p>
-<p>We obtain the result by optimizing the bound, with <span class="math inline">\(a = J(\theta)^{-1}\nabla g(\theta)\)</span> (show this as an exercise).</p>
-</div>
-</div>
-</div>
-<!-- For multivariate $\theta \in \RR^d$, $g(\theta) \in \RR^k$: -->
-<!-- $$\Var_\theta(\delta) \succeq g'(\theta)I(\theta)^{-1}g'(\theta)'$$ -->
-<!-- Meaning: $a'\Var_\theta(\delta)a \geq a'g'(\theta)I(\theta)^{-1}g'(\theta)'a$ for all $a \in \RR^k$. -->
-</section>
-<section id="examples" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="examples"><span class="header-section-number">6</span> Examples</h2>
-<p><strong>Example: i.i.d. sample</strong></p>
-<p>Assume <span class="math inline">\(X_1, \ldots, X_n \simiid p_\theta^{(1)}(x)\)</span>, for <span class="math inline">\(\theta \in \Theta \subseteq \RR^d\)</span>.</p>
-<p>Assume additionally that <span class="math inline">\(p_\theta^{(1)}\)</span> is “regular:” it has common support, and finite derivative w.r.t. <span class="math inline">\(\theta\)</span>.</p>
-<p>Then the full data density is <span class="math inline">\(p_\theta(x) = \prod_i p_\theta^{(1)}(x_i)\)</span>.</p>
-<p>Define the single-sample log-likelihood <span class="math inline">\(\ell_1(\theta;x_i) = \log p_\theta^{(1)}(x_i)\)</span>; then we have <span class="math inline">\(\ell(\theta;x) = \sum_i \ell_1(\theta;x_i)\)</span>.</p>
-<p>Then the Fisher information for the full sample is <span class="math display">\[J(\theta) = \Var_\theta(\nabla \ell(\theta; X)) = \sum_{i=1}^n \Var_\theta(\nabla \ell_1(\theta; X_i)) = n J_1(\theta),\]</span> where <span class="math inline">\(J_1(\theta) = \Var_\theta(\nabla\ell(\theta; X_1))\)</span> is the Fisher information for a single sample.</p>
-<p>As a result, we see that the Information bound scales like <span class="math inline">\(n^{-1}\)</span> for regular families; in other words, the standard deviation of an estimator should scale roughly like <span class="math inline">\(1/\sqrt{n}\)</span>.</p>
-<p><strong>Example: exponential family</strong></p>
-<p>Suppose we have an exponential family of the form <span class="math display">\[ p_\eta(x) = e^{\eta'T(x) - A(\eta)} h(x).\]</span></p>
-<p>The log-likelihood is <span class="math inline">\(\ell(\eta;X) = \eta'T(X) - A(\eta) + \log h(X)\)</span>, and its gradient (the score) is <span class="math display">\[\nabla \ell(\eta;X) = T(X) - \nabla A(\eta) = T(X) - \EE_\eta T(X).\]</span> Since <span class="math inline">\(\EE_\eta T(X)\)</span> is nonrandom, the variance is <span class="math display">\[ J(\eta) = \Var_\eta (T(X)) = \nabla^2 A(\eta).\]</span></p>
-<p>We could alternatively derive the Fisher information from taking a second derivative with respect to <span class="math inline">\(\eta\)</span>, giving <span class="math display">\[ \nabla^2\ell(\eta;X) = -\nabla^2 A(\eta),\]</span> which is deterministically equal to <span class="math inline">\(-\Var_\eta(T(X))\)</span>, so we have confirmed the identity <span class="math inline">\(J(\eta) = -\EE_\eta[\nabla^2 \ell(\eta;X)]\)</span>.</p>
-<p><strong>Example: Curved exponential family</strong></p>
-<p>Next, consider a curved version of the previous family, parameterized by <span class="math inline">\(\theta \in \RR\)</span>: <span class="math display">\[p_\theta(x) = e^{\eta(\theta)'T(x) - B(\theta)}h(x),\quad \text{ with } B(\theta) = A(\eta(\theta))\]</span> Again, the log-likelihood is <span class="math display">\[\ell(\theta;X) = \eta(\theta)'T(x) - B(\theta)  + \log h(x),\]</span> and its first derivative is <span class="math display">\[\begin{aligned}
-\dot{\ell}(\theta;X) &amp;= \dot{\eta}(\theta)'T(X) - \dot{\eta}(\theta)'\nabla_\eta A(\eta(\theta))\\
-&amp;= \dot{\eta}(\theta) '\left(T(X) - \nabla_\eta A(\eta(\theta))\right)\\
-&amp;= \dot{\eta}(\theta)'(T(X) - \EE_\theta T(X)).\end{aligned}\]</span></p>
-<p>As a result, the Fisher information is <span class="math display">\[J(\theta) = \Var_\theta(\dot{\eta}(\theta)'T(X)) =  \dot{\eta}(\theta)'\Var_\theta(T(X))\dot{\eta}(\theta).\]</span> Note in this model <span class="math inline">\(\dot{\eta}'T(X)\)</span> is a “local complete sufficient statistic” for the model near <span class="math inline">\(\theta\)</span>.</p>
-</section>
-<section id="efficiency" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="efficiency"><span class="header-section-number">7</span> Efficiency</h2>
-<p>The CRLB is not necessarily attainable.</p>
-<p>We define the efficiency of an unbiased estimator as:</p>
-<p><span class="math display">\[\text{eff}_\delta(\theta) = \frac{\text{CRLB}(\theta)}{\Var_\theta(\delta)} \leq 1,\]</span></p>
-<p>We say <span class="math inline">\(\delta(X)\)</span> is <em>efficient</em> if <span class="math inline">\(\text{eff}_\delta(\theta) = 1\)</span> for all <span class="math inline">\(\theta\)</span>.</p>
-<p>For <span class="math inline">\(g(\theta)=\theta\in \RR\)</span>, the efficiency depends on how correlated <span class="math inline">\(\delta(X)\)</span> is with the score: <span class="math display">\[\begin{aligned}\text{eff}_\delta(\theta) &amp;= \frac{\Cov_\theta(\delta(X), \dot{\ell}(\theta;X))^2}{\Var_\theta(\delta(X)) \cdot \Var_\theta(\dot{\ell}(\theta;X))}\\
-&amp;= \Corr_\theta(\delta,\dot{\ell}(\theta))^2
-\end{aligned}\]</span></p>
-<p>Thus, an efficient estimator for <span class="math inline">\(\theta\)</span> is one that is perfectly correlated with the score. This is rarely achieved in finite samples, but we can often approach it asymptotically as <span class="math inline">\(n \to \infty\)</span>.</p>
 
 
 </section>
