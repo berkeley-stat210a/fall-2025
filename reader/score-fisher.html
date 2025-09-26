@@ -314,20 +314,14 @@ S_\theta(X) = \dot{\eta}(\theta)'(T(X) - \EE_\theta T(X)) = \dot{\eta}(\theta)'S
 \]</span> where (slightly abusing notation) <span class="math inline">\(S_{\eta}(X)\)</span> is the score in the ambient exponential family. Note here <span class="math inline">\(\dot\eta(\theta)\)</span> is an <span class="math inline">\(s\)</span>-vector. Its direction tells us which projection of <span class="math inline">\(T(X)\)</span> is informative for distinguishing parameter values in a local neighborhood of <span class="math inline">\(\theta\)</span>, and its magnitude tells us how rapidly we are traversing the parameter space.</p>
 <p>Likewise the Fisher information is <span class="math display">\[
 J(\theta) = \dot{\eta}(\theta)'J(\eta(\theta))\dot{\eta}(\theta).
-\]</span> It is noteworthy that choosing a “faster” parameterization of the same subfamily will make the Fisher information larger. This is not because the data become any more or less informative about a statistical model when we change the parameterization. Again, we can think of it more as a “unit conversion” issue: the farther <span class="math inline">\(P_{\theta}\)</span> is from (say) <span class="math inline">\(P_{\theta\pm 0.1}\)</span>, the better chance we have of estimating <span class="math inline">\(\theta\)</span> up to a precision of <span class="math inline">\(0.1\)</span>.</p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Under construction
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Add tangent family and curved Gaussian family examples.</p>
-</div>
-</div>
+\]</span> It is noteworthy that choosing a “faster” parameterization of the same subfamily will make the Fisher information larger. This is not because the data become any more or less informative about a statistical model when we change the parameterization. Again, we can think of it more as a “unit conversion” issue: the farther <span class="math inline">\(P_{\eta(\theta)}\)</span> is from (say) <span class="math inline">\(P_{\eta(\theta\pm 0.1)}\)</span>, the better chance we have of estimating <span class="math inline">\(\theta\)</span> up to a precision of <span class="math inline">\(0.1\)</span>.</p>
+<p><strong>Example: Curved Gaussian location family</strong></p>
+<p>As a concrete example of the above, suppose <span class="math inline">\(X_1,\ldots,X_n \simiid N_d(\mu(\theta), I_d)\)</span>, for <span class="math inline">\(\theta \in \RR\)</span> and <span class="math inline">\(\mu(\theta) \in \RR^d\)</span>: that is, <span class="math inline">\(\mu(\theta)\)</span> is tracing out a curve in the parameter space of the ambient <span class="math inline">\(d\)</span>-dimensional Gaussian location model.</p>
+<p>In the ambient family, the score is <span class="math display">\[
+S_\mu^{(\mu)}(X) = \sum_i X_i - n\mu = n(\overline{X}-\mu),
+\]</span> and the Fisher information is <span class="math inline">\(J^{(\mu)}(\mu) = nI_d\)</span>. Thus, in the curved subfamily, we have <span class="math display">\[
+S_{\theta}(X) = n\dot\mu(\theta)'(\overline{X}-\mu(\theta)),
+\]</span> and <span class="math inline">\(J(\theta) = n\|\dot\mu(\theta)\|^2\)</span>, i.e.&nbsp;the sample size times the parameterization speed. The</p>
 
 
 </section>
