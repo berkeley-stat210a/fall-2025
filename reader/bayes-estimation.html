@@ -160,27 +160,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bayes-risk-and-bayes-estimator" id="toc-bayes-risk-and-bayes-estimator" class="nav-link active" data-scroll-target="#bayes-risk-and-bayes-estimator"><span class="header-section-number">1</span> Bayes Risk and Bayes Estimator</a>
+  <li><a href="#frequentist-motivation-for-a-bayes-estimator" id="toc-frequentist-motivation-for-a-bayes-estimator" class="nav-link active" data-scroll-target="#frequentist-motivation-for-a-bayes-estimator"><span class="header-section-number">1</span> Frequentist motivation for a Bayes Estimator</a></li>
+  <li><a href="#bayes-estimator" id="toc-bayes-estimator" class="nav-link" data-scroll-target="#bayes-estimator"><span class="header-section-number">2</span> Bayes estimator</a>
   <ul class="collapse">
-  <li><a href="#definitions" id="toc-definitions" class="nav-link" data-scroll-target="#definitions"><span class="header-section-number">1.1</span> Definitions</a></li>
-  <li><a href="#prior-and-posterior" id="toc-prior-and-posterior" class="nav-link" data-scroll-target="#prior-and-posterior"><span class="header-section-number">1.2</span> Prior and Posterior</a></li>
-  <li><a href="#theorem-characterization-of-bayes-estimators" id="toc-theorem-characterization-of-bayes-estimators" class="nav-link" data-scroll-target="#theorem-characterization-of-bayes-estimators"><span class="header-section-number">1.3</span> Theorem: Characterization of Bayes Estimators</a></li>
-  </ul></li>
-  <li><a href="#special-cases-and-examples" id="toc-special-cases-and-examples" class="nav-link" data-scroll-target="#special-cases-and-examples"><span class="header-section-number">2</span> Special Cases and Examples</a>
-  <ul class="collapse">
-  <li><a href="#squared-error-loss" id="toc-squared-error-loss" class="nav-link" data-scroll-target="#squared-error-loss"><span class="header-section-number">2.1</span> Squared Error Loss</a></li>
-  <li><a href="#weighted-squared-error" id="toc-weighted-squared-error" class="nav-link" data-scroll-target="#weighted-squared-error"><span class="header-section-number">2.2</span> Weighted Squared Error</a></li>
-  </ul></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">3</span> Examples</a>
-  <ul class="collapse">
-  <li><a href="#beta-binomial" id="toc-beta-binomial" class="nav-link" data-scroll-target="#beta-binomial"><span class="header-section-number">3.1</span> Beta-Binomial</a></li>
-  <li><a href="#normal-mean" id="toc-normal-mean" class="nav-link" data-scroll-target="#normal-mean"><span class="header-section-number">3.2</span> Normal Mean</a></li>
-  </ul></li>
-  <li><a href="#conjugate-priors" id="toc-conjugate-priors" class="nav-link" data-scroll-target="#conjugate-priors"><span class="header-section-number">4</span> Conjugate Priors</a>
-  <ul class="collapse">
-  <li><a href="#conjugate-priors-for-exponential-families" id="toc-conjugate-priors-for-exponential-families" class="nav-link" data-scroll-target="#conjugate-priors-for-exponential-families"><span class="header-section-number">4.1</span> Conjugate Priors for Exponential Families</a></li>
-  <li><a href="#conjugate-prior-examples" id="toc-conjugate-prior-examples" class="nav-link" data-scroll-target="#conjugate-prior-examples"><span class="header-section-number">4.2</span> Conjugate Prior Examples</a></li>
-  <li><a href="#beta-binomial-example" id="toc-beta-binomial-example" class="nav-link" data-scroll-target="#beta-binomial-example"><span class="header-section-number">4.3</span> Beta-binomial example</a></li>
+  <li><a href="#conjugate-priors-for-exponential-families" id="toc-conjugate-priors-for-exponential-families" class="nav-link" data-scroll-target="#conjugate-priors-for-exponential-families"><span class="header-section-number">2.1</span> Conjugate priors for exponential families</a></li>
+  <li><a href="#conjugate-prior-examples" id="toc-conjugate-prior-examples" class="nav-link" data-scroll-target="#conjugate-prior-examples"><span class="header-section-number">2.2</span> Conjugate Prior Examples</a></li>
+  <li><a href="#beta-binomial-example" id="toc-beta-binomial-example" class="nav-link" data-scroll-target="#beta-binomial-example"><span class="header-section-number">2.3</span> Beta-binomial example</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -233,110 +218,127 @@ window.Quarto = {
 \newcommand{\Cov}{\textnormal{Cov}}
 \newcommand{\Corr}{\textnormal{Corr}}
 \]</span></p>
-<section id="bayes-risk-and-bayes-estimator" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="bayes-risk-and-bayes-estimator"><span class="header-section-number">1</span> Bayes Risk and Bayes Estimator</h2>
-<section id="definitions" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="definitions"><span class="header-section-number">1.1</span> Definitions</h3>
-<p>The Bayes risk is the average case risk:</p>
+<section id="frequentist-motivation-for-a-bayes-estimator" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="frequentist-motivation-for-a-bayes-estimator"><span class="header-section-number">1</span> Frequentist motivation for a Bayes Estimator</h2>
+<p>We will motivate Bayes estimation first as a strategy for selecting an estimator in the setting of <a href="../reader/estimation.html">Lecture 2</a>. Recall that, when we discussed possible strategies for choosing between different admissible estimators, we suggested using the <em>average-case risk</em> to reduce the risk function to a scalar summary. This average must be taken with respect to some measure <span class="math inline">\(\Lambda\)</span> on the parameter space <span class="math inline">\(\Theta\)</span>, which we will call the <em>prior</em>.</p>
+<p>That is, for an estimator <span class="math inline">\(\delta\)</span> we can define the average-case or <em>Bayes risk</em> with respect to <span class="math inline">\(\Lambda\)</span>: <span class="math display">\[
+r_\Lambda(\delta) = \int_\Theta R(\theta; \delta)\,d\Lambda(\theta).
+\]</span> An estimator <span class="math inline">\(\delta_\Lambda\)</span> that minimizes the Bayes risk is called a <em>Bayes estimator</em>. If <span class="math inline">\(\Lambda(\Theta) = \infty\)</span>, we call the prior <em>improper</em>, and otherwise we assume <span class="math inline">\(\Lambda\)</span> is normalized so that <span class="math inline">\(\Lambda(\Theta) = 1\)</span>. Then, <span class="math inline">\(\Lambda\)</span> is a probability measure; in that case we call it <em>proper</em>, and the integral can be rewritten as an expectation</p>
 <p><span class="math display">\[
-r(\pi, \delta) = \EE_\pi[R(\theta, \delta)] = \int R(\theta, \delta) \,d\pi(\theta)
+r_\Lambda(\delta) = \EE_{\theta \sim \Lambda}[R(\theta; \delta)] = \EE[L(\theta, \delta(X))],
+\]</span> where the last expectation is taken with respect to the <em>joint distribution</em> where <span class="math inline">\(\theta \sim \Lambda\)</span> and <span class="math inline">\(X \mid \theta \sim P_\theta\)</span>. The key to finding a Bayes estimator is to calculate the conditional distribution of <span class="math inline">\(\theta\)</span> given <span class="math inline">\(X\)</span>, which we call the <em>posterior</em>.</p>
+<p>The prior will commonly be represented by a density <span class="math inline">\(\lambda(\theta)\)</span>, giving the joint density <span class="math inline">\(\lambda(\theta)p_\theta(x)\)</span>. Then the marginal distribution of <span class="math inline">\(X\)</span> is <span class="math inline">\(q(x) = \int_\Theta p_\theta(x)\lambda(\theta)\,d\theta\)</span>, and the posterior density is given by Bayes’ rule: <span class="math display">\[
+\lambda(\theta \mid x) = \frac{\lambda(\theta) p_\theta(x)}{q(x)}.
 \]</span></p>
-<p>where <span class="math inline">\(\pi(\theta)\)</span> is a probability measure (for now, we assume it’s proper; later we will allow it to be improper).</p>
-<p>Note: <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\delta\)</span> are functionally equivalent for average risk, which makes sense even if we don’t believe <span class="math inline">\(\pi\)</span>.</p>
-<p><span class="math display">\[
-r(\pi, \delta) = \EE_\pi[\EE_\theta[L(\theta, \delta(X))]] = \EE[L(\theta, \delta(X))]
-\]</span></p>
-<p>where <span class="math inline">\((\theta, X) \sim p(\theta, x) = p(x|\theta)\pi(\theta)\)</span></p>
-<p>An estimator <span class="math inline">\(\delta\)</span> minimizing <span class="math inline">\(r_\text{Bayes}(\delta)\)</span> is called a Bayes estimator. It depends on <span class="math inline">\(\pi\)</span> and <span class="math inline">\(L\)</span>.</p>
-<p><span class="math display">\[
-\delta_\pi = \argmin_\delta \EE[L(\theta, \delta(X))]
-\]</span></p>
+<p>The names “prior” and “posterior” evoke a natural epistemic interpretation that the prior represents our subjective beliefs about <span class="math inline">\(\theta\)</span> before we observe the data, and the posterior our beliefs afterward. But nothing about the mathematical formulation of the problem requires that we endorse these interpretations: even if we are dogmatic frequentists, or if we are using a <span class="math inline">\(\Lambda\)</span> that doesn’t really correspond to anyone’s subjective prior beliefs, the expectation still makes sense as a mathematically equivalent expression to the average-case risk.</p>
 </section>
-<section id="prior-and-posterior" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="prior-and-posterior"><span class="header-section-number">1.2</span> Prior and Posterior</h3>
-<ul>
-<li>The usual interpretation of <span class="math inline">\(\pi\)</span> is the prior belief about <span class="math inline">\(\theta\)</span> before seeing the data.</li>
-<li>The conditional distribution <span class="math inline">\(\pi(\theta|X)\)</span> is called the posterior distribution (belief after seeing the data).</li>
-</ul>
-<p>Densities: - Prior: <span class="math inline">\(\pi(\theta)\)</span> - Likelihood: <span class="math inline">\(p(x|\theta)\)</span> - Joint density: <span class="math inline">\(p(\theta, x) = \pi(\theta)p(x|\theta)\)</span> - Marginal density: <span class="math inline">\(q(x) = \int p(\theta, x) \,d\theta\)</span> - Posterior density: <span class="math inline">\(\pi(\theta|x) = \frac{p(\theta, x)}{q(x)}\)</span></p>
-<p>The Bayes estimator depends on the posterior:</p>
-<p><span class="math display">\[
-\delta_\pi(x) = \argmin_d \EE[L(\theta, d)|X=x] = \argmin_d \int L(\theta, d) \pi(\theta|x) \,d\theta
+<section id="bayes-estimator" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="bayes-estimator"><span class="header-section-number">2</span> Bayes estimator</h2>
+<p>Whatever our interpretation of the marginal expectation that defines <span class="math inline">\(r_\Lambda\)</span>, the way to minimize it is the same: we simply choose <span class="math inline">\(\delta(X)\)</span> to minimize the <em>conditional</em> expectation of the loss given the data <span class="math inline">\(X\)</span>.</p>
+<p><strong>Theorem: Bayes estimation</strong></p>
+<p>Assume <span class="math inline">\(r_\Lambda(\delta_0) &lt; \infty\)</span> for some estimator <span class="math inline">\(\delta_0\)</span>. Then <span class="math inline">\(\delta_{\Lambda}\)</span> is Bayes with <span class="math inline">\(r_\Lambda(\delta_{\Lambda}) &lt; \infty\)</span>, if and only if <span class="math display">\[
+\delta_\Lambda(x) \in \argmin \EE[ L(\theta, d) \mid X=x], \quad \text{ for a.e. } x,
+\]</span> meaning the marginal probability that <span class="math inline">\(\delta(X)\)</span> does not minimize the conditional expectation is 0.</p>
+<p><em>Proof:</em> First, we prove the reverse direction. If <span class="math inline">\(\delta\)</span> is any other estimator, then by assumption we have <span class="math display">\[
+\EE[L(\theta, \delta_\Lambda(X)) \mid X] \;\stackrel{\text{a.s.}}{\leq}\; \EE[L(\theta, \delta(X)) \mid X],
+\]</span> and marginalizing over <span class="math inline">\(X\)</span> gives the desired result. Taking <span class="math inline">\(\delta = \delta_0\)</span> establishes that <span class="math inline">\(r_\Lambda(\delta_\Lambda) \leq r_\Lambda(\delta_0) &lt; \infty\)</span>.</p>
+<p>For the forward direction, define <span class="math inline">\(E_x(d) = \EE[L(\theta; d) \mid X=x]\)</span>. By assumption, there is some <span class="math inline">\(\varepsilon &gt; 0\)</span> with <span class="math inline">\(\PP(X \in A_\varepsilon) &gt; 0\)</span>, where <span class="math display">\[
+A_\varepsilon = \left\{x:\; E_x(\delta_\Lambda(x)) - \inf_d E_x(d) &gt; \varepsilon \right\}.
 \]</span></p>
-</section>
-<section id="theorem-characterization-of-bayes-estimators" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="theorem-characterization-of-bayes-estimators"><span class="header-section-number">1.3</span> Theorem: Characterization of Bayes Estimators</h3>
-<p>Suppose <span class="math inline">\(X \sim p_\theta(x)\)</span> and <span class="math inline">\(\delta_\pi(x) = \delta(x)\)</span> for some function <span class="math inline">\(\delta\)</span>. Then <span class="math inline">\(\delta\)</span> is Bayes with respect to <span class="math inline">\(\pi\)</span> if and only if <span class="math inline">\(\delta(x) \in \argmin_d \EE[L(\theta, d)|X=x]\)</span> for almost every <span class="math inline">\(x\)</span>.</p>
-<p>Proof: 1. Let <span class="math inline">\(\delta'\)</span> be any other estimator. 2. <span class="math inline">\(r(\pi, \delta') = \int \EE[L(\theta, \delta'(X))|X=x] q(x) \,dx\)</span> 3. <span class="math inline">\(r(\pi, \delta) = \int \EE[L(\theta, \delta(X))|X=x] q(x) \,dx\)</span> 4. Define <span class="math inline">\(E_x(d) = \EE[L(\theta, d)|X=x]\)</span> 5. If <span class="math inline">\(\delta(x) \in \argmin_d E_x(d)\)</span>, then <span class="math inline">\(E_x(\delta(x)) \leq E_x(\delta'(x))\)</span> for all <span class="math inline">\(x\)</span> 6. This implies <span class="math inline">\(r(\pi, \delta) \leq r(\pi, \delta')\)</span></p>
-</section>
-</section>
-<section id="special-cases-and-examples" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="special-cases-and-examples"><span class="header-section-number">2</span> Special Cases and Examples</h2>
-<section id="squared-error-loss" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="squared-error-loss"><span class="header-section-number">2.1</span> Squared Error Loss</h3>
-<p>If <span class="math inline">\(L(\theta, d) = (\theta - d)^2\)</span>, then the Bayes estimator is the posterior mean:</p>
-<p><span class="math display">\[
-\delta_\pi(x) = \EE[\theta|X=x]
-\]</span></p>
-<p>Proof: <span class="math display">\[
+<p>For any <span class="math inline">\(x \in A_\varepsilon\)</span>, we can find <span class="math inline">\(\delta^*(x)\)</span> such that <span class="math display">\[
+E_x(\delta^*(x)) \leq \min\{E_x(\delta_\Lambda(x)) - \varepsilon, E_x(\delta_0(x))\},
+\]</span> and for <span class="math inline">\(x \in A_\varepsilon^C\)</span> take <span class="math inline">\(\delta^*(x)\)</span> to be whichever of <span class="math inline">\(\delta_0(x)\)</span> and <span class="math inline">\(\delta_\Lambda(x)\)</span> minimizes <span class="math inline">\(E_x\)</span>. Then <span class="math inline">\(E_x(\delta^*(x)) \leq E_x(\delta_0(x))\)</span> for every <span class="math inline">\(x\)</span>, so <span class="math inline">\(r_\Lambda(\delta^*) &lt; \infty\)</span>.</p>
+<p>If <span class="math inline">\(r_\Lambda(\delta_\Lambda) &lt; \infty\)</span> as well, then <span class="math inline">\(E_x(\delta^*(x)) \leq E_x(\delta_\Lambda(x))\)</span> for every <span class="math inline">\(x\)</span>, and <span class="math inline">\(E_x(\delta^*(x) \leq E_x(\delta_\Lambda(x)) - \varepsilon)\)</span> for <span class="math inline">\(x \in A_{\varepsilon}\)</span>. Hence, <span class="math display">\[
+r_\Lambda(\delta^*) \leq r_\Lambda(\delta_\Lambda) - \varepsilon \PP(X \in A_\varepsilon) &lt; r_\Lambda(\delta_\Lambda),
+\]</span> so <span class="math inline">\(\delta_\Lambda\)</span> is not Bayes. <span class="math inline">\(\blacksquare\)</span></p>
+<p><strong>Example: Squared error loss</strong></p>
+<p>The form of the Bayes estimator is particularly nice in the case of the squared error loss <span class="math inline">\(L(\theta, d) = (g(\theta)-d)^2\)</span>. Then, we can decompose the conditional expected loss as <span class="math display">\[
 \begin{aligned}
-\EE[(\theta - d)^2|X=x] &amp;= \EE[\theta^2|X=x] - 2d\EE[\theta|X=x] + d^2 \\
-&amp;= \Var(\theta|X=x) + (\EE[\theta|X=x] - d)^2 + \EE[\theta|X=x]^2 - 2d\EE[\theta|X=x] + d^2
+\EE[(g(\theta)-d)^2 \mid X]
+&amp;\;=\; \EE\Big[\big(g(\theta) - \EE[g(\theta) \mid X] + \EE[g(\theta) \mid X] - d\big)^2 \mid X\Big]\\
+&amp;\;=\; \Var(g(\theta) \mid X) + (\EE[g(\theta) \mid X] - d)^2,
 \end{aligned}
+\]</span> noting that the cross-term <span class="math inline">\((g(\theta) - \EE[g(\theta) \mid X])\cdot(\EE[g(\theta) \mid X] - d)\)</span> has zero conditional expectation.</p>
+<p>The optimal choice of <span class="math inline">\(d\)</span> is <span class="math inline">\(\EE[g(\theta) \mid X]\)</span>, which zeroes the second term, giving Bayes risk <span class="math inline">\(\EE[\Var(g(\theta) \mid X)]\)</span>.</p>
+<p><strong>Example: Weighted squared error loss</strong></p>
+<p>An alternative loss is the <em>weighted</em> squared error loss, which gives more weight to some <span class="math inline">\(\theta\)</span> values than others: <span class="math display">\[
+L(\theta, d) = w(\theta)(g(\theta) - d)^2.
+\]</span> For example, we could care about the <em>relative</em> squared error <span class="math inline">\(\left(\frac{g(\theta)-d}{g(\theta)}\right)^2\)</span>, in which case <span class="math inline">\(w(\theta) = g(\theta)^{-2}\)</span>. Then, our Bayes estimator will minimize <span class="math display">\[
+\EE[w(\theta)(g(\theta)-d)^2 \mid X] = d^2 \EE[w(\theta) \mid X] - 2d \EE[w(\theta)g(\theta) \mid X] + \EE[w(\theta)g(\theta)^2 \mid X].
+\]</span> Minimizing this quadratic in <span class="math inline">\(d\)</span> gives the Bayes estimator <span class="math display">\[
+\delta_\Lambda(X) = \frac{\EE[w(\theta)g(\theta) \mid X]}{\EE[ w(\theta) \mid X]}
+\]</span> ## Conjugate priors</p>
+<p>A special class of easy-to-update prior distributions is the set of <em>conjugate priors</em>. For data <span class="math inline">\(X\)</span> drawn from a likelihood model <span class="math inline">\(\cP = \{P_\theta:\; \theta\in\Theta\}\)</span>, we say a family <span class="math inline">\(\mathcal{Q}\)</span> of priors is <em>conjugate</em> to <span class="math inline">\(\cP\)</span> if the posterior distribution is also always in <span class="math inline">\(\mathcal{Q}\)</span>. Conjugate priors exist for many exponential families.</p>
+<p><strong>Example: Beta-Binomial</strong></p>
+<p>Suppose that we observe a binomial random variable with a Beta prior: <span class="math display">\[
+\begin{aligned}
+\theta \sim \text{Beta}(\alpha,\beta) &amp;= \theta^{\alpha-1}(1-\theta)^{\beta-1} \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)} \\
+X \mid \theta \sim \text{Binom}(n,\theta) &amp;= \theta^x(1-\theta)^{n-x}\binom{n}{x}
+\end{aligned}
+\]</span> Recall that the <span class="math inline">\(\text{Beta}(\alpha,\beta)\)</span> distribution is an exponential family on the unit interval with mean <span class="math inline">\(\frac{\alpha}{\alpha + \beta}\)</span> and variance <span class="math inline">\(\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}\)</span>. The marginal distribution of <span class="math inline">\(X\)</span> in this problem is called a <em>Beta-Binomial</em> distribution.</p>
+<p>In this context, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are not unknown parameters; rather, the analyst will specify them to define the prior for <span class="math inline">\(\theta\)</span>. Parameters of the prior are commonly called <em>hyperparameters</em>. Note that the functional form in <span class="math inline">\(\theta\)</span> is similar for the prior and the likelihood, but <span class="math inline">\(\theta\)</span> plays different roles in each: in the Beta prior, <span class="math inline">\(\theta\)</span> is the random variable, but in the binomial likelihood, <span class="math inline">\(\theta\)</span> plays the role of the parameter.</p>
+<p>Note that we only need to calculate the posterior up to a proportionality constant in <span class="math inline">\(\theta\)</span>. Since we know it is a probability distribution, we can drop any multiplicative constants along the way and just normalize it at the very end. <span class="math display">\[
+\begin{aligned}
+\lambda(\theta \mid X=x)
+&amp;\propto_\theta \lambda(\theta)p_\theta(x)\\
+&amp;\propto_\theta \theta^{\alpha-1}(1-\theta)^{\beta-1} \cdot \theta^x (1-\theta)^{n-x}\\
+&amp;= \theta^{x + \alpha-1} \cdot (1-\theta)^{n-x + \beta-1}\\
+&amp;\propto_\theta \text{Beta}(x+\alpha, n-x+\beta)
+\end{aligned}
+\]</span> Thus, we have calculated that <span class="math inline">\(\theta \mid X=x \sim \text{Beta}(x+\alpha, n-x+\beta)\)</span>, and in particular we have the posterior mean <span class="math display">\[
+\EE[\theta \mid X] = \frac{X + \alpha}{n + \alpha + \beta}
+\]</span> We may recognize the form of this estimator as our estimators from <a href="../reader/estimation.html">Lecture 2</a> where we imagined we had observed <span class="math inline">\(k = \alpha+\beta\)</span> “pseudo-trials” with <span class="math inline">\(\alpha\)</span> successes, and then report the success rate after combining the pseudo-trials with the <span class="math inline">\(n\)</span> trials represented by our binomial data. If we take <span class="math inline">\(\alpha = \beta = 1\)</span>, we get the uniform prior. Thus, the estimator <span class="math inline">\(\frac{X+1}{n+2}\)</span> minimizes the corresponding Bayes risk <span class="math inline">\(\int_0^1 R(\theta;\delta)\,d\theta\)</span> over all possible estimators <span class="math inline">\(\delta\)</span>.</p>
+<p>By massaging the expression above, we can interpret the Bayes estimator as a weighted average of the UMVU estimator we’d obtain using the data alone, and the “pseudo-estimator” we’d obtain if we observed only the <span class="math inline">\(k\)</span> pseudo-trials, with the weights corresponding to the relative sample sizes of the real data and the pseudo-data: <span class="math display">\[
+\EE[\theta \mid X] = \frac{X}{n} \cdot \frac{n}{n+k} + \frac{\alpha}{k}\cdot \frac{k}{n+k}
 \]</span></p>
-<p>The minimum occurs when <span class="math inline">\(d = \EE[\theta|X=x]\)</span>.</p>
-</section>
-<section id="weighted-squared-error" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="weighted-squared-error"><span class="header-section-number">2.2</span> Weighted Squared Error</h3>
-<p>For <span class="math inline">\(L(\theta, d) = w(\theta)(\theta - d)^2\)</span> (e.g., squared relative error), the Bayes estimator is:</p>
-<p><span class="math display">\[
-\delta_\pi(x) = \frac{\EE[w(\theta)\theta|X=x]}{\EE[w(\theta)|X=x]}
+<p><strong>Example: Normal mean</strong></p>
+<p>As another example, suppose we observe a single observation from a univariate Gaussian location family with a Gaussian prior on the location parameter <span class="math display">\[
+\begin{aligned}
+\theta \sim N(\mu,\tau^2) &amp;\propto_\theta e^{-(\theta-\mu)^2/2\tau^2}\\
+X \mid \theta \sim N(\theta,\sigma^2) &amp;\propto_\theta e^{-(x-\theta)^2/2\sigma^2}
+\end{aligned}
+\]</span> Again, <span class="math inline">\(\theta\)</span> plays a different role in the two densities above, first as the random variable and then as a parameter. Note <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(\tau^2\)</span> are both assumed known.</p>
+<p>Multiplying the likelihood by the prior gives an expression proportional to the posterior density: <span class="math display">\[
+\begin{aligned}
+\lambda(\theta \mid x)
+&amp;\propto_\theta \exp\left\{ -\frac{(x-\theta)^2}{2\sigma^2} -\frac{(\theta-\mu)^2}{2\tau^2}\right\}\\
+&amp;\propto_\theta \exp\left\{ \theta\left(\frac{x}{\sigma^2} + \frac{\mu}{\tau^2}\right)-\theta^2\left(\frac{1}{2\sigma^2} + \frac{1}{2\tau^2}\right)\right\}
+\end{aligned}
+\]</span> Since the log-posterior is quadratic in <span class="math inline">\(\theta\)</span>, we recognize this as proportional to a Gaussian density. We can find the mean and variance by completing the square. Recalling that <span class="math display">\[
+a\theta^2-b\theta = \left(\theta - \frac{b}{2a}\right)^2 a - c(a,b),
+\]</span> we can continue our calculation with <span class="math inline">\(a=\frac{1}{2}\left(\sigma^{-2} + \tau^{-2}\right)\)</span> and <span class="math inline">\(b= x\sigma^{-2} + \mu\tau^{-2}\)</span>, giving <span class="math display">\[
+\begin{aligned}
+\lambda(\theta \mid x)
+&amp;\propto_\theta \exp\left\{ -\left(\theta-\frac{x\sigma^{-2}+\mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}}\right)^2 \bigg/ 2\left(\sigma^{-2}+\tau^{-2}\right)^{-1}\right\}\\
+&amp;\propto_\theta N\left(  \frac{x\sigma^{-2}+\mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}}  ,  \frac{1}{\sigma^{-2}+\tau^{-2}} \right).
+\end{aligned}
+\]</span> This formula becomes a bit less unlovely if we interpret it in terms of the <em>precision</em>, which is defined as the reciprocal of the variance. Then, the posterior precision is <span class="math inline">\(\sigma^{-2} + \tau^{-2}\)</span>, the sum of the precisions for the prior and likelihood, and the posterior mean is the precision-weighted average <span class="math display">\[
+\EE[\theta \mid X] = \frac{X\sigma^{-2}+\mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}} = X \frac{\sigma^{-2}}{\sigma^{-2}+\tau^{-2}} + \mu \frac{\tau^{-2}}{\sigma^{-2}+\tau^{-2}}.
+\]</span> This suggests a pseudo-data interpretation, which we can make more concrete if we extend this example to an i.i.d. sample.</p>
+<p><strong>Example: Gaussian i.i.d. sample</strong></p>
+<p>Now, assume we have the same prior but instead of one draw, we have <span class="math inline">\(n\)</span> draws <span class="math inline">\(X_1,\ldots,X_n \simiid N(\theta,\sigma^2)\)</span>. If we first make a sufficiency reduction to <span class="math inline">\(\overline{X} \sim N(\theta,\sigma^2/n)\)</span>, we can immediately apply our formula from before to obtain: <span class="math display">\[
+\theta \mid X \sim N\left( \frac{\overline{X} n\sigma^{-2}+\mu\tau^{-2}}{n\sigma^{-2} + \tau^{-2}}, \frac{1}{n\sigma^{-2}+\tau^{-2}}  \right).
+\]</span> Since the likelihood precision is linear in the sample size <span class="math inline">\(n\)</span>, we could think of the prior as arising from an equivalent sample of <span class="math inline">\(k=\sigma^2/\tau^2\)</span> pseudo-observations with mean <span class="math inline">\(\mu\)</span>. Then we have <span class="math display">\[
+\theta \mid X \sim N\left( \frac{n\overline{X} + k\mu}{n + k}, \frac{\sigma^2}{n+k}  \right),
+\]</span> giving a similar interpretation as in the Beta-Binomial example.</p>
+<section id="conjugate-priors-for-exponential-families" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="conjugate-priors-for-exponential-families"><span class="header-section-number">2.1</span> Conjugate priors for exponential families</h3>
+<p>Conjugate priors are commonly available for exponential family models. To understand why, consider a generic <span class="math inline">\(s\)</span>-parameter exponential family model where <span class="math display">\[
+X_1,\ldots,X_n \simiid p_\eta(x) = e^{\eta'T(x)-A(\eta)}h(x),
+\]</span> We can always define a conjugate <span class="math inline">\((s+1)\)</span>-parameter prior that is also an exponential family model. For any carrier <span class="math inline">\(\lambda_0\)</span>, define for <span class="math inline">\(k\in\RR\)</span>, <span class="math inline">\(\mu\in \RR^{s}\)</span>: <span class="math display">\[
+\lambda_{\mu,k}(\eta) = e^{k\mu'\eta - kA(\eta) - B(k\mu,k)}\lambda_0(\eta).
+\]</span> Recalling that <span class="math inline">\(\eta\)</span> is no longer a parameter, but the sampled random variable, this is an exponential family model with sufficient statistic <span class="math inline">\(\binom{\eta}{-A(\eta)}\)</span> and natural parameter <span class="math inline">\(\binom{k\mu}{k}\)</span>, both in <span class="math inline">\(\RR^{s+1}\)</span>.</p>
+<p>Then the posterior density is <span class="math display">\[
+\begin{aligned}
+\lambda(\eta \mid x)
+&amp;\propto_\eta \left(\prod_{i=1}^n e^{\eta'T(x_i)-A(\eta)}h(x_i)\right) \cdot \lambda_{k,\mu}(\eta)\\
+#&amp;\propto_\eta \exp\left\{ \left(k\mu + \sum_i T(x_i)\right)'\eta - (k+n)A(\eta)\right\}\lambda_0(\eta)
+&amp;\propto_\eta e^{ \left(k\mu + \sum_i T(x_i)\right)'\eta - (k+n)A(\eta)}\lambda_0(\eta)\\
+&amp;\propto_\eta \lambda_{\mu_{\text{post}},n+k}(\eta),
+\end{aligned}
+\]</span> where <span class="math display">\[
+\mu_{\text{post}}(x) = \frac{n \overline{T}(x) + k\mu}{n+k}, \quad\text{for } \overline{T}(x) = \frac{1}{n}\sum_i T(x_i)
 \]</span></p>
-</section>
-</section>
-<section id="examples" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="examples"><span class="header-section-number">3</span> Examples</h2>
-<section id="beta-binomial" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="beta-binomial"><span class="header-section-number">3.1</span> Beta-Binomial</h3>
-<ul>
-<li><span class="math inline">\(X|\theta \sim \text{Binomial}(n, \theta)\)</span>, <span class="math inline">\(\theta \in [0,1]\)</span></li>
-<li><span class="math inline">\(\theta \sim \text{Beta}(\alpha, \beta)\)</span>, <span class="math inline">\(\alpha, \beta &gt; 0\)</span></li>
-</ul>
-<p>The marginal distribution of <span class="math inline">\(X\)</span> is called Beta-Binomial.</p>
-<p>Posterior: <span class="math display">\[
-\pi(\theta|x) \propto \theta^x (1-\theta)^{n-x} \cdot \theta^{\alpha-1}(1-\theta)^{\beta-1} \propto \theta^{x+\alpha-1}(1-\theta)^{n-x+\beta-1}
-\]</span></p>
-<p>Therefore, <span class="math inline">\(\theta|X \sim \text{Beta}(x+\alpha, n-x+\beta)\)</span></p>
-<p><span class="math display">\[
-\EE[\theta|X] = \frac{x+\alpha}{n+\alpha+\beta}
-\]</span></p>
-<p>Interpret <span class="math inline">\(\alpha+\beta\)</span> as pseudo-trials and <span class="math inline">\(\alpha\)</span> as pseudo-successes.</p>
-</section>
-<section id="normal-mean" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="normal-mean"><span class="header-section-number">3.2</span> Normal Mean</h3>
-<ul>
-<li><span class="math inline">\(X_i|\theta \sim N(\theta, \sigma^2)\)</span>, <span class="math inline">\(\sigma^2\)</span> known</li>
-<li><span class="math inline">\(\theta \sim N(\mu, \tau^2)\)</span></li>
-</ul>
-<p>Posterior: <span class="math display">\[
-\pi(\theta|x) \propto \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\theta)^2\right) \exp\left(-\frac{1}{2\tau^2}(\theta-\mu)^2\right)
-\]</span></p>
-<p>Complete the square:</p>
-<p><span class="math display">\[
-\theta|X \sim N\left(\frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}, \frac{1}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}\right)
-\]</span></p>
-<p><span class="math display">\[
-\EE[\theta|X] = \frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}} = w\bar{x} + (1-w)\mu
-\]</span></p>
-<p>where <span class="math inline">\(w = \frac{n\tau^2}{n\tau^2 + \sigma^2}\)</span></p>
-<p>If <span class="math inline">\(\frac{1}{\tau^2} = k\)</span>, interpret as <span class="math inline">\(k\)</span> pseudo-observations with mean <span class="math inline">\(\mu\)</span>.</p>
-</section>
-</section>
-<section id="conjugate-priors" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="conjugate-priors"><span class="header-section-number">4</span> Conjugate Priors</h2>
-<p>In both examples, the prior and likelihood have a similar functional form, and the posterior comes from the same exponential family as the prior. When the posterior is from the same family as the prior, we say the prior is conjugate to the likelihood.</p>
-<section id="conjugate-priors-for-exponential-families" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="conjugate-priors-for-exponential-families"><span class="header-section-number">4.1</span> Conjugate Priors for Exponential Families</h3>
 <p>Suppose <span class="math inline">\(p_\theta(x) = h(x)\exp(\eta(\theta)'T(x) - A(\theta))\)</span> for carrier <span class="math inline">\(h\)</span>. Define:</p>
 <p><span class="math display">\[
 \pi(\theta) = g(\theta)\exp(\lambda'u(\theta) - \psi(\lambda))
@@ -347,8 +349,8 @@ r(\pi, \delta) = \EE_\pi[\EE_\theta[L(\theta, \delta(X))]] = \EE[L(\theta, \delt
 \]</span></p>
 <p>Often, <span class="math inline">\(u(\theta) = \eta(\theta)\)</span> and <span class="math inline">\(\lambda\)</span> is interpreted as pseudo-observations.</p>
 </section>
-<section id="conjugate-prior-examples" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="conjugate-prior-examples"><span class="header-section-number">4.2</span> Conjugate Prior Examples</h3>
+<section id="conjugate-prior-examples" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="conjugate-prior-examples"><span class="header-section-number">2.2</span> Conjugate Prior Examples</h3>
 <ol type="1">
 <li><p>Normal-Normal:</p>
 <ul>
@@ -364,146 +366,146 @@ r(\pi, \delta) = \EE_\pi[\EE_\theta[L(\theta, \delta(X))]] = \EE[L(\theta, \delt
 <p>Interpret <span class="math inline">\(\alpha\)</span> as pseudo-counts and <span class="math inline">\(\beta\)</span> as pseudo-exposure.</p></li>
 </ol>
 </section>
-<section id="beta-binomial-example" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="beta-binomial-example"><span class="header-section-number">4.3</span> Beta-binomial example</h3>
+<section id="beta-binomial-example" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="beta-binomial-example"><span class="header-section-number">2.3</span> Beta-binomial example</h3>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="182" data-source-offset="-50"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 181;"><span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>betaPDF <span class="op">=</span> (x<span class="op">,</span> alpha<span class="op">,</span> beta) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (x <span class="op">&lt;=</span> <span class="dv">0</span> <span class="op">||</span> x <span class="op">&gt;=</span> <span class="dv">1</span>) <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>  <span class="co">// For small integer values, use exact calculation</span></span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alpha <span class="op">===</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(alpha) <span class="op">&amp;&amp;</span> beta <span class="op">===</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(beta) <span class="op">&amp;&amp;</span> alpha <span class="op">&lt;=</span> <span class="dv">10</span> <span class="op">&amp;&amp;</span> beta <span class="op">&lt;=</span> <span class="dv">10</span>) {</span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> numerator <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(x<span class="op">,</span> alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">1</span> <span class="op">-</span> x<span class="op">,</span> beta <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Beta function B(alpha, beta) = Gamma(alpha) * Gamma(beta) / Gamma(alpha + beta)</span></span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>    <span class="co">// For integers: Gamma(n) = (n-1)!</span></span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> betaFunction <span class="op">=</span> <span class="fu">factorial</span>(alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="fu">factorial</span>(beta <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> <span class="fu">factorial</span>(alpha <span class="op">+</span> beta <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> numerator <span class="op">/</span> betaFunction<span class="op">;</span></span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>  <span class="co">// For general case, use log form for numerical stability</span></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> logPdf <span class="op">=</span> (alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(x) <span class="op">+</span> (beta <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">1</span> <span class="op">-</span> x) <span class="op">-</span> <span class="fu">logBeta</span>(alpha<span class="op">,</span> beta)<span class="op">;</span></span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(logPdf)<span class="op">;</span></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="co">// Factorial function</span></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>factorial <span class="op">=</span> (n) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="op">&lt;=</span> <span class="dv">1</span>) <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> result <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>    result <span class="op">*=</span> i<span class="op">;</span></span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> result<span class="op">;</span></span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="co">// Log Beta function approximation</span></span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>logBeta <span class="op">=</span> (alpha<span class="op">,</span> beta) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use Stirling's approximation for log-gamma</span></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> logGammaApprox <span class="op">=</span> (z) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (z <span class="op">&lt;=</span> <span class="dv">0</span>) <span class="cf">return</span> <span class="kw">Infinity</span><span class="op">;</span></span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (z <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(z) <span class="op">-</span> z <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)<span class="op">;</span></span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">logGammaApprox</span>(alpha) <span class="op">+</span> <span class="fu">logGammaApprox</span>(beta) <span class="op">-</span> <span class="fu">logGammaApprox</span>(alpha <span class="op">+</span> beta)<span class="op">;</span></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="co">// Interactive controls</span></span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>viewof n <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"n"</span>})</span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>viewof x <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"X"</span>})</span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>viewof pseudoHeads <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"α (pseudo-heads)"</span>})</span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>viewof pseudoTails <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"β (pseudo-tails)"</span>})</span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="co">// Ensure X doesn't exceed n</span></span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>xClamped <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(x<span class="op">,</span> n)</span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate posterior parameters</span></span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>posteriorAlpha <span class="op">=</span> pseudoHeads <span class="op">+</span> xClamped</span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>posteriorBeta <span class="op">=</span> pseudoTails <span class="op">+</span> (n <span class="op">-</span> xClamped)</span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="co">// Generate data for plotting</span></span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thetaMin <span class="op">=</span> <span class="fl">0.001</span><span class="op">;</span></span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thetaMax <span class="op">=</span> <span class="fl">0.999</span><span class="op">;</span></span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> numPoints <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dTheta <span class="op">=</span> (thetaMax <span class="op">-</span> thetaMin) <span class="op">/</span> (numPoints <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> numPoints}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> theta <span class="op">=</span> thetaMin <span class="op">+</span> i <span class="op">*</span> dTheta<span class="op">;</span></span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>      <span class="dt">theta</span><span class="op">:</span> theta<span class="op">,</span></span>
-<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>      <span class="dt">prior</span><span class="op">:</span> <span class="fu">betaPDF</span>(theta<span class="op">,</span> pseudoHeads<span class="op">,</span> pseudoTails)<span class="op">,</span></span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>      <span class="dt">posterior</span><span class="op">:</span> <span class="fu">betaPDF</span>(theta<span class="op">,</span> posteriorAlpha<span class="op">,</span> posteriorBeta)</span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a><span class="co">// Find maximum values for y-axis scaling</span></span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>maxPrior <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">prior</span>))</span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>maxPosterior <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">posterior</span>))</span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>maxY <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(maxPrior<span class="op">,</span> maxPosterior)</span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
-<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">120</span><span class="op">,</span></span>
-<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"18px"</span></span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span></span>
-<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
-<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">60</span></span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> maxY <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
-<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span><span class="op">,</span></span>
-<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
-<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">70</span></span>
-<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"prior"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
-<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"posterior"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
-<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
-<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Title</span></span>
-<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Beta Prior and Posterior: X = </span><span class="sc">${</span>xClamped<span class="sc">}</span><span class="vs">, n = </span><span class="sc">${</span>n<span class="sc">}</span><span class="vs">`</span>]<span class="op">,</span> {</span>
-<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> </span>
-<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">1.15</span><span class="op">,</span> </span>
-<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">18</span><span class="op">,</span> </span>
-<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">"bold"</span><span class="op">,</span></span>
-<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span></span>
-<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Legend with colored lines</span></span>
-<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.95</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.95</span>}]<span class="op">,</span> {</span>
-<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
-<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span></span>
-<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
-<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Prior: Beta(</span><span class="sc">${</span>pseudoHeads<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>pseudoTails<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">)`</span>]<span class="op">,</span> {</span>
-<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
-<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.95</span><span class="op">,</span> </span>
-<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
-<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
-<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
-<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.88</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.88</span>}]<span class="op">,</span> {</span>
-<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
-<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span></span>
-<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
-<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
-<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Posterior: Beta(</span><span class="sc">${</span>posteriorAlpha<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>posteriorBeta<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">)`</span>]<span class="op">,</span> {</span>
-<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
-<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.88</span><span class="op">,</span> </span>
-<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
-<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
-<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
-<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="247" data-source-offset="-50"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 246;"><span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>betaPDF <span class="op">=</span> (x<span class="op">,</span> alpha<span class="op">,</span> beta) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (x <span class="op">&lt;=</span> <span class="dv">0</span> <span class="op">||</span> x <span class="op">&gt;=</span> <span class="dv">1</span>) <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>  <span class="co">// For small integer values, use exact calculation</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alpha <span class="op">===</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(alpha) <span class="op">&amp;&amp;</span> beta <span class="op">===</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(beta) <span class="op">&amp;&amp;</span> alpha <span class="op">&lt;=</span> <span class="dv">10</span> <span class="op">&amp;&amp;</span> beta <span class="op">&lt;=</span> <span class="dv">10</span>) {</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> numerator <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(x<span class="op">,</span> alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">1</span> <span class="op">-</span> x<span class="op">,</span> beta <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Beta function B(alpha, beta) = Gamma(alpha) * Gamma(beta) / Gamma(alpha + beta)</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>    <span class="co">// For integers: Gamma(n) = (n-1)!</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> betaFunction <span class="op">=</span> <span class="fu">factorial</span>(alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="fu">factorial</span>(beta <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> <span class="fu">factorial</span>(alpha <span class="op">+</span> beta <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> numerator <span class="op">/</span> betaFunction<span class="op">;</span></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>  <span class="co">// For general case, use log form for numerical stability</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> logPdf <span class="op">=</span> (alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(x) <span class="op">+</span> (beta <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">1</span> <span class="op">-</span> x) <span class="op">-</span> <span class="fu">logBeta</span>(alpha<span class="op">,</span> beta)<span class="op">;</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(logPdf)<span class="op">;</span></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="co">// Factorial function</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>factorial <span class="op">=</span> (n) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="op">&lt;=</span> <span class="dv">1</span>) <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> result <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>    result <span class="op">*=</span> i<span class="op">;</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a><span class="co">// Log Beta function approximation</span></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>logBeta <span class="op">=</span> (alpha<span class="op">,</span> beta) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use Stirling's approximation for log-gamma</span></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> logGammaApprox <span class="op">=</span> (z) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (z <span class="op">&lt;=</span> <span class="dv">0</span>) <span class="cf">return</span> <span class="kw">Infinity</span><span class="op">;</span></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (z <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(z) <span class="op">-</span> z <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)<span class="op">;</span></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">logGammaApprox</span>(alpha) <span class="op">+</span> <span class="fu">logGammaApprox</span>(beta) <span class="op">-</span> <span class="fu">logGammaApprox</span>(alpha <span class="op">+</span> beta)<span class="op">;</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a><span class="co">// Interactive controls</span></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>viewof n <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"n"</span>})</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>viewof x <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"X"</span>})</span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>viewof pseudoHeads <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"α (pseudo-heads)"</span>})</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>viewof pseudoTails <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"β (pseudo-tails)"</span>})</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a><span class="co">// Ensure X doesn't exceed n</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>xClamped <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(x<span class="op">,</span> n)</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate posterior parameters</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>posteriorAlpha <span class="op">=</span> pseudoHeads <span class="op">+</span> xClamped</span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>posteriorBeta <span class="op">=</span> pseudoTails <span class="op">+</span> (n <span class="op">-</span> xClamped)</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a><span class="co">// Generate data for plotting</span></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thetaMin <span class="op">=</span> <span class="fl">0.001</span><span class="op">;</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thetaMax <span class="op">=</span> <span class="fl">0.999</span><span class="op">;</span></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> numPoints <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dTheta <span class="op">=</span> (thetaMax <span class="op">-</span> thetaMin) <span class="op">/</span> (numPoints <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> numPoints}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> theta <span class="op">=</span> thetaMin <span class="op">+</span> i <span class="op">*</span> dTheta<span class="op">;</span></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>      <span class="dt">theta</span><span class="op">:</span> theta<span class="op">,</span></span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>      <span class="dt">prior</span><span class="op">:</span> <span class="fu">betaPDF</span>(theta<span class="op">,</span> pseudoHeads<span class="op">,</span> pseudoTails)<span class="op">,</span></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>      <span class="dt">posterior</span><span class="op">:</span> <span class="fu">betaPDF</span>(theta<span class="op">,</span> posteriorAlpha<span class="op">,</span> posteriorBeta)</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="co">// Find maximum values for y-axis scaling</span></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>maxPrior <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">prior</span>))</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>maxPosterior <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">posterior</span>))</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>maxY <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(maxPrior<span class="op">,</span> maxPosterior)</span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot</span></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">120</span><span class="op">,</span></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"18px"</span></span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span></span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">60</span></span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> maxY <span class="op">*</span> <span class="fl">1.1</span>]<span class="op">,</span></span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span><span class="op">,</span></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span><span class="op">,</span></span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>    <span class="dt">labelOffset</span><span class="op">:</span> <span class="dv">70</span></span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"prior"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"theta"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"posterior"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Title</span></span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Beta Prior and Posterior: X = </span><span class="sc">${</span>xClamped<span class="sc">}</span><span class="vs">, n = </span><span class="sc">${</span>n<span class="sc">}</span><span class="vs">`</span>]<span class="op">,</span> {</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> </span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">1.15</span><span class="op">,</span> </span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">18</span><span class="op">,</span> </span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">"bold"</span><span class="op">,</span></span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"middle"</span></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Legend with colored lines</span></span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.95</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.95</span>}]<span class="op">,</span> {</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span></span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Prior: Beta(</span><span class="sc">${</span>pseudoHeads<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>pseudoTails<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">)`</span>]<span class="op">,</span> {</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.95</span><span class="op">,</span> </span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineX</span>([{<span class="dt">x</span><span class="op">:</span> <span class="fl">0.72</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.88</span>}<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="fl">0.78</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.88</span>}]<span class="op">,</span> {</span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span></span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>([<span class="vs">`Posterior: Beta(</span><span class="sc">${</span>posteriorAlpha<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>posteriorBeta<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">)`</span>]<span class="op">,</span> {</span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> maxY <span class="op">*</span> <span class="fl">0.88</span><span class="op">,</span> </span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">16</span><span class="op">,</span></span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"black"</span><span class="op">,</span></span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span></span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
