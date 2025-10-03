@@ -44,9 +44,9 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 5 \\
-  {\large {\bf Due on}: Wednesday, Oct. 9}}
+  {\large {\bf Due on}: Wednesday, Oct. 8}}
 \date{}
 
 \maketitle
@@ -55,6 +55,8 @@
 
 
 \begin{problem}[Ridge regression]
+\label{prob:ridge-bayes}
+
 Consider the {\em Gaussian linear model} where
 \[
 y_i = x_i' \beta + \ep_i, \quad \text{ with } \ep_i \simiid N(0,\sigma^2) \;\text{ for } i =1, \ldots n,
@@ -82,10 +84,15 @@ where $\beta \in \RR^d$ is unknown, and the covariate vectors $x_i \in \RR^d$ ar
 
 
 \end{enumerate}
+
+\paragraph{Moral:} While the humble ridge regression method was initially introduced just to deal with poorly conditioned regression problems, it has an appealing Bayesian interpretation. Moreover, using Bayesian methods often helps us sidestep concerns about identifiability --- but we should think hard about the implications of doing so.
+
+
 \end{problem}
 
 
 \begin{problem}[Admissibility and Bayes estimators]
+\label{prob:admissibility-bayes}
 
 One of the frequentist motivations for Bayes estimators is their connection to admissibility.
 
@@ -112,34 +119,30 @@ Now consider a model with a finite parameter space, $|\Theta|=n<\infty$ and assu
 
 \end{enumerate}
 
-{\bf Moral:} Minimizing average-case risk is closely related to admissibility, though the general relationship is not quite as tight as what we've shown in this problem for finite parameter spaces. In more general parameter spaces, there is a more general result which roughly states that all admissible estimators are limits of Bayes estimators, under relatively mild conditions.
+\paragraph{Moral:} Minimizing average-case risk is closely related to admissibility, though the general relationship is not quite as tight as what we've shown in this problem for finite parameter spaces. In more general parameter spaces, there is a more general result which roughly states that all admissible estimators are limits of Bayes estimators, under relatively mild conditions.
 \end{problem}
 
 
-\begin{problem}[MCMC algorithms]
-This problem considers MCMC sampling from a generic posterior density $\lambda(\theta \mid x)$ where $\theta\in\RR^d$.
 
+
+
+
+\begin{problem}[Other loss functions]
+\label{prob:other-loss}
+
+Assume for each problem below that there exists an estimator with finite Bayes risk.
 \begin{enumerate}[(a)]
-
-\item The Metropolis--Hastings algorithm is a Markov chain using the following update rule: First, sample $\zeta \sim f(\cdot \mid \theta^{(t)})$ according to some ``proposal distribution'' $f(\zeta\mid\theta): \Theta \times \Theta \to (0,\infty)$, where $f(\cdot \mid \theta)$ is a probability density for each $\theta$ (assume $\lambda$ and $f(\cdot \mid \theta)$ are densities w.r.t. the same dominating measure). Next, compute the ``accept probability'' as 
-\[
-a(\zeta \mid \theta) = \min \left\{1, \;\;\frac{\lambda(\zeta \mid X)}{\lambda(\theta \mid X) } \frac{f(\theta \mid \zeta)}{f(\zeta \mid \theta)}\right\}.
-\]
-
-Finally, let $\theta^{(t+1)} = \zeta$ with probability $a(\zeta \mid \theta^{(t)})$ and $\theta^{(t+1)} = \theta^{(t)}$ with probability $1-a(\zeta \mid \theta^{(t)})$. Show that $\lambda(\theta\mid X)$ is stationary for the Metropolis--Hastings algorithm.
+\item Consider a Bayesian model with a discrete parameter $\theta$. What is the Bayes estimator for the loss $L(\theta, d) = 1\{\theta \neq d\}$?
 
 
 
 
-\item Consider the version of the Gibbs sampler that updates a {\em single} random index $J^{(t+1)} \sim \text{Unif}\{1,\ldots,d\}$ at each step, so
-\[
-\theta_j^{(t+1)} = \begin{cases} \zeta_j^{(t+1)} &\text{ if } j = J^{(t+1)} \\ \theta_j^{(t)} &\text{ if } j \neq J^{(t+1)}\end{cases},
-\]
-with
-\[
-\zeta_j^{(t+1)} \mid \theta^{(t)} \sim \lambda(\theta_j \mid \theta_{\setminus j} = \theta^{(t)}, X),
-\]
-where $\lambda$ above is the conditional density for the $j$th coordinate of  $\theta$ given the others, and the data, in the full Bayes model. Show that this algorithm is a special case of the Metropolis--Hastings algorithm.
+\item Next consider a Bayesian model with a single real parameter $\theta$, and assume that the posterior distribution of $\theta$ given $X=x$ is absolutely continuous (with respect to the Lebesgue measure) for all $x$. What is the Bayes estimator for the {\em absolute error loss} $L(\theta, d) = |\theta-d|$? 
+
+
+
+
+\item Under the same assumptions as part (b), what loss function $L_\gamma(\theta, d)$ would give the posterior $\gamma$ quantile as its Bayes estimator; that is, the estimator $\delta_\gamma(X)$ has $\PP(\theta < \delta_\gamma(X) \mid X) = \gamma$.
 
 
 
@@ -147,84 +150,83 @@ where $\lambda$ above is the conditional density for the $j$th coordinate of  $\
 
 \end{enumerate}
 
+\paragraph{Moral:} Using different loss functions often gives other appealing summaries of the posterior distribution besides the posterior mean. Using these loss functions as the prediction error in regression problems can also lead to appealing methods such as quantile regression.
 
-{\bf Note:} The Metropolis-Hastings algorithm is computationally attractive because we can can always implement it using only the unnormalized posterior $p_\theta(X)\lambda(\theta)$ (or any function $g(\theta)$ that is proportional to it), which is often much easier to compute than the normalized posterior.
 \end{problem}
 
-\begin{problem}[Gamma-Poisson empirical Bayes]
-Consider the Bayes model with 
+
+\begin{problem}[Motivation for the Jeffreys prior]
+\label{prob:motivate-jeffreys}
+
+Recall that the {\em Kullback--Leibler (KL) Divergence} from a density $p$ to an approximating density $q$ (on a sample space $\cX$ with respect to base measure $\mu$) is
+\[
+D_{\text{KL}}(p \,\|\, q) = \EE_p\left[\log\frac{p(X)}{q(X)}\right] = \int_\cX p(x)\log\frac{p(x)}{q(x)}\,d\mu(x),
+\]
+where the integrand is treated as zero wherever $p(x) = 0$. For a density $p$ and a family $\cP$, define the KL ball of radius $\ep$ around $p$ as
+\[
+B_\ep(p) = \{q\in\cP:\; D_{\text{KL}}(p\,\|\,q) < \ep\}
+\]
+
+Now, assume we have a family $\cP$ of positive densities $p_\theta$ parameterized by $\theta \in \Theta \subseteq \RR^d$, with enough regularity for us to freely take derivatives under the integral, and for those derivatives to be continuous. In particular, assume the Fisher information $J(\theta)$ is continuous and (strictly) positive definite, so $|J(\theta)|>0$.
+
+In this problem you will show that the Jeffreys prior $\Lambda$ spreads its prior mass evenly on $\cP$, in the sense that for distinct values $\theta_1,\theta_2\in\Theta^{\circ}$ (the interior of $\Theta$), we have
+\[
+\lim_{\ep \to 0} \frac{\Lambda(B_\ep(p_{\theta_1}))}{\Lambda(B_\ep(p_{\theta_2}))} = 1.
+\]
+Here $\Lambda$ could refer either to the probability distribution with density proportional to $|J(\theta)|^{1/2}$ (if the Jeffreys prior is proper) or an infinite measure with density equal to $|J(\theta)|^{1/2}$. Note the slight abuse of notation where we use $\Lambda$ to refer both to the Jeffreys prior on $\Theta$ and to the corresponding prior on $\cP = \{p_{\theta}:\;\theta\in \Theta\}$.
+
+To rule out perversities, assume also that for each $\theta$ there is some radius $r_\theta$ such that $d_\theta(\zeta) = D_{\text{KL}}(p_{\theta}\,\|\,p_{\zeta})$ is convex for $\|\zeta-\theta\| \leq r$, and $\inf_{\|\zeta - \theta\| > r} d_\theta(\zeta) > 0$ (in particular, this implies identifiability). That is, small KL balls in $\cP$ are not going to include $p_\zeta$ with faraway values of $\zeta$. You don't need to explicitly use this condition; you can just not pay attention to what's happening away from infinitesimal neighborhoods around $\theta_1$ and $\theta_2$ and assume everything is fine.
+
+\begin{enumerate}[(a)]
+
+\item For $\theta\in\Theta^{\circ}$, and any vector $a\in\RR^d$, show that 
+\[
+\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep a}) = a'J(\theta)a,
+\]
+or equivalently $D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + a}) = a'J(\theta)a + o(\|a\|^2)$.
+
+{\bf Hint 1:} Try differentiating the KL divergence and recall that, for $f:\;\RR^d\to\RR$, where $x,a\in \RR^d$ and $\ep \in \RR$, we have
 \begin{align*}
-  \theta_i &\simiid \text{Gamma}(k,\sigma), \quad i=1,\ldots,n\\
-  X_{ij} \mid \theta_i &\simind \text{Pois}(\theta_i), \quad i=1,\ldots,n, \quad j = 1,\ldots,m
+  \frac{d}{d\ep}f(x+\ep a) &= a'\nabla f(x+\ep a)\\
+  \frac{d^2}{d\ep^2}f(x+\ep a) &= a'\nabla^2 f(x+\ep a)a
 \end{align*}
-Assume $k > 0$ (shape parameter) is known and $\sigma > 0$ (scale parameter) is unknown and estimated via the MLE. In addition, assume $\sum_{ij} X_{ij} > 0$ (though the formulae below would be basically correct in a limiting sense if the sum were zero, too).
-\begin{enumerate}[(a)]
-\item If $m = 1$, show that the empirical Bayes posterior mean for $\theta_i$ is
+
+{\bf Hint 2:} You are welcome to jump to the general case $d\geq 1$, but it may help to warm up with the case $d=1$, in which case the above boils down to
 \[
-\frac{\overline X}{\overline X + k} (k + X_{i1}), \quad \text{ where } \overline X = n^{-1}\sum_i X_{i1}.
+\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep}) = J(\theta)
 \]
-You may use without proof the fact that the marginal distribution of $X_i$ is negative binomial.
 
 
 
-\item For general $m$, show that the empirical Bayes posterior mean for $\theta_i$ is
+
+
+\item Next, show that for any $\theta\in\Theta^{\circ}$, we have
+
 \[
-\frac{\overline X}{\overline{X} + k/m} (k/m + \overline{X}_i), \quad \text{ where } \overline{X}_i = m^{-1}\sum_{j} X_{ij} \quad \text{ and } \overline{X} = (nm)^{-1}\sum_{ij} X_{ij}.
+\lim_{\ep\to 0}\frac{1}{\ep^{d/2}} \Lambda\left(\{\zeta:\; (\zeta - \theta)'J(\theta)(\zeta - \theta) < \ep\}\right) = \begin{cases} V_d/C_\Lambda &\text{if } \Lambda \text{ is proper and } \lambda(\theta) \propto_\theta |J(\theta)|^{1/2}\\ V_d &\text{if } \Lambda \text{ is improper and } \lambda(\theta) = |J(\theta)|^{1/2}\end{cases}.
 \]
-{\bf Hint:} Make a sufficiency reduction and remember that $\sigma$ is a scale parameter.
+where $V_d = \int_{\RR^d}1\{\|u\|<1\} du$ is the volume of a unit ball in $\RR^d$ and $C_\Lambda = \int_{\Theta} |J(\theta)|^{1/2} \,d\theta$ is the normalizing constant for the Jeffreys prior, when it is finite.
+
+{\bf Hint:} Try the change of variables $\zeta(a) = \theta + J(\theta)^{-1/2}a$.
+
+
+
+\item Now, finish the argument by showing that we have
+  \[
+  \lim_{\ep\to 0} \frac{1}{\ep^{d/2}} \Lambda(B_\ep(p_\theta)) = \begin{cases} V_d/C_\Lambda &\text{if } \Lambda \text{ is proper and } \lambda(\theta) \propto_\theta |J(\theta)|^{1/2}\\ V_d &\text{if } \Lambda \text{ is improper and } \lambda(\theta) = |J(\theta)|^{1/2}\end{cases}.
+  \]
+
+  {\bf Hint:} Try to relate the sublevel sets of $f_\theta(\zeta) = D_{\text{KL}}(p_{\theta}\,\|\,p_\zeta)$ to sublevel sets of $(\zeta-\theta)'J(\theta)(\zeta-\theta)$.
+
 
 
 \end{enumerate}
+
+\paragraph{Moral:} Whereas the flat prior spreads mass evenly over the parameter space, the Jeffreys prior spreads mass evenly over the statistical model itself, by assigning equal probability to small neighborhoods of equal ``KL radius.'' Since the KL divergence exists prior to the parametrization, the Jeffreys prior therefore implements the ``principle of indifference'' without reference to any parametrization of the model.
+
 \end{problem}
 
-\begin{problem}[Gibbs Sampler for Gamma-Poisson model]\label{prob:gibbspoisson}
 
-Consider a hierarchical Bayes model instead, where
-\begin{align*}
-  \sigma^{-1} &\sim \text{Exp}(1)\\
-  \theta_i \mid \sigma &\simiid \text{Gamma}(k,\sigma), \;\; i=1,\ldots,n\\
-  X_{ij} \mid \sigma, \theta &\simind \text{Pois}(\theta_i), \;\; i=1,\ldots,n, \quad j = 1,\ldots,m\\
-\end{align*}
-where $\sigma$ is a scale parameter, and $k,n,m$, are fixed and known.
-
-{\bf Note:} For parts (b) and (c) below, be sure to read the instructions on coding problems at the top of this problem set.
-
-\begin{enumerate}[(a)]
-\item Give an explicit algorithm for one full iteration of the Gibbs sampler. It may be helpful to look up the inverse gamma distribution on Wikipedia.
-
-
-
-
-
-\item Implement the Gibbs sampler in a programming language of your choice (R is recommended since it is easy to draw random draws from standard distributions; Python or Matlab will probably also work fine). For $k=m=3$ and $n=100$, download the matrix $X \in \RR^{n \times m}$, in \texttt{gibbspoisson.csv} from the course website and implement the Gibbs sampler (the standard version where you update all variables in every round; use 100 rounds of burn-in and take the next 10,000 rounds of sampling, without thinning). Make a trace plot of your draws from $\sigma$ and $\theta_1$ and include them in your homework submission. Report the following three estimators of $\theta_1$, to three significant digits:
-\begin{enumerate}[(i)]
-\item the hierarchical Bayes estimator (for squared error loss),
-\item the empirical Bayes estimator from Problem 4, and
-\item the UMVU estimator (in the model where $\theta$ is fixed and unknown).
-\end{enumerate}
-
-
-
-\item Next, carry out a Monte Carlo simulation to estimate the Bayes risk conditional on $\sigma$, for four estimators: (i--iii) from part (b), plus the ``oracle Bayes'' estimator where the value of $\sigma$ is known. That is, for each estimator $\delta_1^{(\ell)}(X)$ of $\theta_1$, approximately evaluate:
-\[
-R^{(\ell)}(\sigma) = \EE[(\delta_1^{(\ell)}(X) - \theta_1)^2 \mid \sigma] = \EE\left[n^{-1}\sum_i(\delta_i^{(\ell)}(X) - \theta_i)^2 \mid \sigma\right],
-\]
-where the expectation is taken over $\theta$ and $X$ (but {\em not} $\sigma$, since we are conditioning on that). The second equality follows from the exchangeability over different values of $i$ (you do not need to prove it yourself, but you should use it to save yourself computation). {\bf Note:} for the hierarchical Bayes estimator, this does {\em not} mean you should hold $\sigma$ fixed in your MCMC chain: you should compute it just as you did in part (b). Use the values $\sigma = 0.1, 0.2, 0.5, 1, 2, 5, 10$ and include a $4\times 7$ table of risk values, each reported to at least 3 significant figures, in your answer.
-
-For each of the three non-oracle estimators, plot the relative excess risk
-\[
-\frac{R^{(\ell)}(\sigma)}{R^{(\text{oracle})}(\sigma)} - 1
-\]
-against $\sigma$ for the values above. Make an analogous plot for $m = 30, n = 100$ and another for $m = 3, n = 10$. I recommend using a log scale for the horizontal and vertical axis but it is not required.
-
-{\bf Note:} This exercise should not take you an absurd amount of computer time; using 100 MC runs per value of $\sigma$ and the 7 values of $\sigma$ above, takes my three-year-old laptop computer less than three minutes to produce each of the three plots requested above. If it is taking your computer much much longer you are probably doing something very inefficiently.
-
-
-
-\end{enumerate}
-
-{\bf Moral:} The hierarchical Bayes and oracle Bayes do almost the same thing: get a highly precise estimate for $\sigma$ by pooling all $n$ problems, and then carrying out the Bayes rule at the estimated value. They perform almost as well as the oracle Bayes rule because they are effective at figuring out what the true value of $\sigma$ is. This is least true for $m=3,n=10$, because there simply aren't that many $\theta_i$ values from which to estimate $\sigma$. Note that from the perspective of estimating $\sigma$, increasing $n$ has a bigger effect on the accuracy of $\hat\sigma$ (empirical or hierarchical Bayes estimate) than increasing $m$: getting to see more $\theta_i$ values helps more than just getting to estimate each one more accurately. But increasing $m$ has a large effect on the absolute risk, because we observe each $\theta_i$ with a great deal of accuracy even before shrinking them toward the average $\theta$ value. This is also when the UMVU estimator does almost as well as oracle Bayes.
-\end{problem}
 
 \bibliography{biblio}
 \bibliographystyle{plainnat}

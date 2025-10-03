@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-09-26">
 
 <title>Interpretations of Probability and Sources of Priors</title>
 <style>
@@ -126,9 +125,9 @@ window.Quarto = {
   <ul>
   <li><a href="#interpretations-of-probability" id="toc-interpretations-of-probability" class="nav-link active" data-scroll-target="#interpretations-of-probability"><span class="header-section-number">1</span> Interpretations of Probability</a>
   <ul class="collapse">
-  <li><a href="#long-run-frequency-over-repeated-trials" id="toc-long-run-frequency-over-repeated-trials" class="nav-link" data-scroll-target="#long-run-frequency-over-repeated-trials"><span class="header-section-number">1.1</span> 1. Long-run Frequency Over Repeated Trials</a></li>
-  <li><a href="#systematic-random-sampling-from-a-population" id="toc-systematic-random-sampling-from-a-population" class="nav-link" data-scroll-target="#systematic-random-sampling-from-a-population"><span class="header-section-number">1.2</span> 2. Systematic Random Sampling from a Population</a></li>
-  <li><a href="#subjective-uncertainty-about-an-outcome" id="toc-subjective-uncertainty-about-an-outcome" class="nav-link" data-scroll-target="#subjective-uncertainty-about-an-outcome"><span class="header-section-number">1.3</span> 3. Subjective Uncertainty About an Outcome</a></li>
+  <li><a href="#aleatory-probabilities" id="toc-aleatory-probabilities" class="nav-link" data-scroll-target="#aleatory-probabilities"><span class="header-section-number">1.1</span> Aleatory probabilities</a></li>
+  <li><a href="#epistemic-probabilities" id="toc-epistemic-probabilities" class="nav-link" data-scroll-target="#epistemic-probabilities"><span class="header-section-number">1.2</span> Epistemic probabilities</a></li>
+  <li><a href="#a-coin-flipping-example" id="toc-a-coin-flipping-example" class="nav-link" data-scroll-target="#a-coin-flipping-example"><span class="header-section-number">1.3</span> A coin flipping example</a></li>
   </ul></li>
   <li><a href="#where-does-the-prior-come-from" id="toc-where-does-the-prior-come-from" class="nav-link" data-scroll-target="#where-does-the-prior-come-from"><span class="header-section-number">2</span> Where Does the Prior Come From?</a>
   <ul class="collapse">
@@ -157,12 +156,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 26, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -200,47 +193,40 @@ window.Quarto = {
 \]</span></p>
 <section id="interpretations-of-probability" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="interpretations-of-probability"><span class="header-section-number">1</span> Interpretations of Probability</h2>
-<p>Why do we model anything as random? What does probability mean in the real world?</p>
-<section id="long-run-frequency-over-repeated-trials" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="long-run-frequency-over-repeated-trials"><span class="header-section-number">1.1</span> 1. Long-run Frequency Over Repeated Trials</h3>
-<ul>
-<li>Examples:
-<ul>
-<li>Repeatedly flipping a coin</li>
-<li>Shooting electrons at a double slit</li>
-</ul></li>
-</ul>
-<p>Note: “You can never step into the same river twice.”</p>
+<p>In this lecture, we will examine more closely the interpretation of Bayesian inference, and the controversy that has at times surrounded it. But first, we must ask the question: Why do we model anything as random? Probability distributions have a crisp mathematical definition as normalized finite measures, but they have also been a very useful conceit in statistics — of both the frequentist and Bayesian varieties. But how do we justify attaching this mathematical definition to things in the real world?</p>
+<p>There is a wide variety of candidate interpretations of probability, which you can find catalogued in the Stanford Encyclopedia of Philosophy’s <a href="https://plato.stanford.edu/entries/probability-interpret/">entry on the subject</a>. From the perspective of statistical practice, the most important distinction is arguably whether we are willing to assign probabilities to unknown parameters, or only to the data set. Methodologically, this has led to a break between <em>Bayesians</em> who argue we are on solid ground assigning probabilities to both <span class="math inline">\(\theta\)</span> and <span class="math inline">\(X\)</span>, and <em>frequentists</em> who argue we should refrain from assigning probabilities to <span class="math inline">\(\theta\)</span>, and assign them only to <span class="math inline">\(X\)</span>.</p>
+<section id="aleatory-probabilities" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="aleatory-probabilities"><span class="header-section-number">1.1</span> Aleatory probabilities</h3>
+<p>Frequentists tend to adopt a more modest view that we should only assign a probability to the chance that an event will happen, and then only to certain kinds of events. Uncertainty about chance events happening is called <em>aleatory uncertainty</em> after the Roman word for a die (Caesar famously said “<em>alea iacta est</em>” — the die is cast — after crossing the Rubicon).</p>
+<p>Strictly speaking, the <em>frequentist interpretation</em> of an event’s probability is the relative frequency with which it occurs in a well-specified, and preferably large, <em>reference class</em> of similar trials. This interpretation is most concrete in the case of physical experiments: for example, there are many radium-226 atoms in the universe at any given time, and it has been observed that in any given time interval, a certain fraction of them will spontaneously emit alpha particles and decay to the radium-222 isotope. The half-life for this decay can be measured precisely by observing many such atoms (about <span class="math inline">\(1600\)</span> years) and faced with a new radium-226 atom we can estimate the likelihood that it will decay after a year as <span class="math inline">\(2^{-1/1600}\)</span>, or <span class="math inline">\(0.0004\)</span>, where the probability statement only requires us to accept that there is nothing special about the atom we have been presented with to distinguish it from the reference class of all the other radium atoms in the world. By contrast, many frequentists would deny that it is reasonable to assign a probability to a one-off event like whether the Democratic Party nominee will win the next presidential election.</p>
+<p>The frequentist definition is appealing, but it can become more problematic when we try to extend it to other types of events to which statisticians regularly assign probabilities without thinking twice. If we have a coin or a die, we can imagine throwing it many times, but what is the right reference class if we are asking whether a certain patient will recover from lung cancer after a chemotherapy treatment? If we take into account information any clinician would likely know about the patient — that she is a Japanese woman, that she is 83 years old, that her cancer was caught before spreading to other tissues etc. — each of these pieces of information should affect the probability by narrowing the reference class to relevant examples. Nowadays we can also sequence her genome, as well as the genome of her tumor, but once we have done so we will have reduced her case to a reference class of size one. And yet, if we are considering which of several different treatments to prescribe, we would like to do more than shrug off the question of which treatment is most likely to cure her illness.</p>
+<p>Even in the case of coin tossing, we have discussed in <a href="../reader/introduction.html">Lecture 1</a> that the probability of a coin landing on the same side as it began depends on who is flipping it, and may change over time as they acquire more skill. As the Greek Heraclitus eloquently put it, “A man cannot step into the same river twice, because it is not the same river, and he is not same man.”</p>
+<p>Other bases for aleatory probability may come from detailed knowledge of the physical system that let us judge its <em>propensity</em> to produce certain outcomes. For example, if we toss a near-perfectly symmetric six-sided die, we can argue simply from the symmetry of the system that it is equally likely to land on each face. In some cases, a statistician can directly infuse an experiment with well-specified aleatory randomness by carefully controlling the experimental conditions, for example by randomly sampling survey respondents from a well-specified population, or by randomly assigning the treatment or control condition to each participant in an experiment. In these cases, there is little controversy about what the probabilities mean.</p>
 </section>
-<section id="systematic-random-sampling-from-a-population" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="systematic-random-sampling-from-a-population"><span class="header-section-number">1.2</span> 2. Systematic Random Sampling from a Population</h3>
-<ul>
-<li>Examples:
-<ul>
-<li>Survey of 500 random voters</li>
-<li>Random assignment to treatment/control in controlled experiments</li>
-</ul></li>
-</ul>
+<section id="epistemic-probabilities" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="epistemic-probabilities"><span class="header-section-number">1.2</span> Epistemic probabilities</h3>
+<p>By contrast, Bayesians tend to be comfortable assigning probabilities not only to whether an event will happen, but also to whether something is true about the world, for example whether someone committed a crime they are accused of, or whether a certain theory of physics is true. Such probabilities can reflect the evidence for, or a person’s subjective credence (degree of belief) in a proposition. Uncertainty about what is true is called <em>epistemic uncertainty</em>.</p>
+<p>If we want to define the probability as an <em>objective</em> measure of evidence for a proposition, we need some objective way of arriving at prior probabilities. One classical proposal for how to do this is to start from a “principle of indifference,” by enumerating all possibilities and placing equal prior probability on each. However, this proposal runs into objections that it is arbitrary or question-begging (why should all possibilities be equally likely?) and is not even well-defined when the number of possibilities is infinite (as most parameter spaces are).</p>
+<p>We can sidestep these issues by adopting the <em>subjectivist</em> view, which holds that probabilities reflect a particular observer’s personal degrees of belief in various propositions — as reflected, say, by the odds at which they are willing to place a bet on the truth or falsehood of a given proposition. If the observer in question is rational, in the sense of having self-consistent beliefs about the world, then it is claimed that their degrees of belief in all possible propositions should form a probability measure, and that they should update their beliefs on evidence according to Bayes’ rule.</p>
+<p>Defining personal probabilities becomes practically difficult when there are many unknowns, as there are for many real-world questions, because it requires us to take a position on the <em>joint</em> distribution for all unknowns in the problem. For example, suppose we are analyzing a microbiome data set to study the effect of some treatment on the abundance of thousands of different species with complex taxonomic and ecological relationships to each other. It is hard enough to specify our subjective prior over the possible ways the treatment could affect the abundance distribution for a single species; to come up with a believable <em>joint</em> prior distribution over all of these species is more taxing still, and it is difficult to credit that anyone has ever conducted a true subjective Bayesian analysis in such a context.</p>
+<p>Ultimately, these different interpretations of probability all have their advantages and drawbacks, and they coexist with each other in statistical practice. While statisticians of fifty years ago had bitter arguments about which interpretation is “correct,” nowadays most statisticians take a pragmatic view that the appropriate interpretation depends on the context. Even scientists who have no philosophical objection to talking about subjectivist probabilities may still prefer not to preface their data analyses by statements like “it’s my personal opinion that the mass of the Higgs boson is…” On the other hand, consider someone running a small grocery store, who must decide how much inventory of various items to order for the holiday season. There is no need for such a person to justify their business decisions as objective, so it would be wise for them to bring their fuzzy intuitions into the analysis, especially when they do not have much data to go on.</p>
 </section>
-<section id="subjective-uncertainty-about-an-outcome" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="subjective-uncertainty-about-an-outcome"><span class="header-section-number">1.3</span> 3. Subjective Uncertainty About an Outcome</h3>
-<ul>
-<li>Examples:
-<ul>
-<li>Chance that President Biden is re-elected</li>
-<li>Higgs boson having a given mass</li>
-<li>P = NP</li>
-</ul></li>
-</ul>
-<p>Notes: - Could be broad intersubjective agreement - These are often conflated with #1 - What if survey sampling is pseudo-random? - Probably relying on shared ignorance</p>
+<section id="a-coin-flipping-example" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="a-coin-flipping-example"><span class="header-section-number">1.3</span> A coin flipping example</h3>
+<p>Consider the following class demonstration that seems to show the close relationships between these different sorts of uncertainty. Suppose the professor in a lecture hall brings a coin out from his pocket and asks the class to predict the probability it will land heads (he reassures the students that it is not a trick coin and he is not a sleight-of-hand artist, and he is a trustworthy sort so they believe him). Virtually all students will agree at this point that there is a <span class="math inline">\(50\%\)</span> chance that the coin will land heads, as a matter of aleatory uncertainty.</p>
+<p>Now the professor flips the coin in the air, and on the way down he catches it between his hands. He now asks the students what is the chance that it landed heads. Now, there is typically a divide between the students: some will argue that it is still <span class="math inline">\(50\%\)</span> because they haven’t learned anything since he flipped the coin (so we are in the same epistemic position as before), while the others will say that the randomness in the system has already been realized, so there is either a <span class="math inline">\(0\%\)</span> or <span class="math inline">\(100\%\)</span> chance, and we just don’t know which.</p>
+<p>Next, the professor opens his hands and peeks at the coin, but does not tell the students what he sees. He asks again what is the chance that it landed heads. Of the students who previously stuck to <span class="math inline">\(50\%\)</span>, some may feel that they can no longer say what the probability is, because evidence has emerged that they have not seen. The subjectivists, however, will be perfectly comfortable admitting that <em>to them</em>, it is still <span class="math inline">\(50\%\)</span>, even though <em>to the professor</em> it has collapsed to <span class="math inline">\(0\%\)</span> or <span class="math inline">\(100\%\)</span>.</p>
+<p>But how much has really changed, from the students’ perspective, since the moment before the professor flipped the coin? Even then, we might have argued that the laws of physics are sufficiently deterministic that the outcome of the coin toss was foreordained. Likewise, even randomization into treatment and control is typically based on pseudo-random number generators that are really deterministic “under the hood.” On that view, perhaps aleatory uncertainty is always based implicitly on appeals to (subjective) ignorance.</p>
 </section>
 </section>
 <section id="where-does-the-prior-come-from" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="where-does-the-prior-come-from"><span class="header-section-number">2</span> Where Does the Prior Come From?</h2>
-<p>Bayesian rejoinder: Where does <span class="math inline">\(P\)</span> come from?</p>
-<p>Four main sources for prior on <span class="math inline">\(\theta\)</span>:</p>
+<p>We discussed in <a href="../reader/probability.html">Lecture 2</a> that there are, broadly speaking, two ways that we can evade the problem of induction. So far in this semester, we have focused on the evasion of <em>inductive behavior</em>: as statistical methodologists, we can devise methods for estimation, testing, and other decision problems and analyze these methods’ MSEs, or bound their Type I error rates, treating <span class="math inline">\(\theta\)</span> as an unknown quantity that can vary freely over the parameter space (and is not necessarily governed by a prior). A frequentist is willing to present an estimator, prove that it is highly precise (say, that it’s off by <span class="math inline">\(0.1\)</span> no more than <span class="math inline">\(1\%\)</span> of the time), and then use it to calculate an estimate <span class="math inline">\(\delta(X)\)</span> for <span class="math inline">\(\theta\)</span> on a given data set <span class="math inline">\(X\)</span>. But if you ask them whether we can say that <span class="math inline">\(\theta\)</span> is therefore probably close to the estimate they just calculated, they may deny that the question even makes sense. <span class="math inline">\(X\)</span> has already been realized so there is no more probability left in the problem to talk about; the probability statement they were making before was only with respect to its distribution.</p>
+<p>In the Bayesian paradigm, we can use the posterior distribution to freely make statements of this type. The only trouble is that these statements follow from an assumption we made, before seeing the data, about the prior distribution of <span class="math inline">\(\theta\)</span>. So the Bayesian must be prepared to answer questions about where the prior comes from.</p>
+<p>Note that Bayesians often retort that coming up with the likelihood is no less problematic because it also commonly involves a great deal of subjective judgment — this is certainly true in some cases (and not in others), but at least we usually sample repeatedly from the likelihood so we can usually check assumptions like independence of successive observations, normality of errors, and so on.</p>
 <section id="source-1-subjective-beliefs" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="source-1-subjective-beliefs"><span class="header-section-number">2.1</span> Source 1: Subjective Beliefs</h3>
+<p>If we take the subjectivist view, coming up with a prior boils down to introspection about what our prior beliefs actually are. For example, The benefit of this</p>
 <p>Pros: - Brings all relevant info to bear - Straightforward interpretation of posterior</p>
 <p>Cons: - Posterior is therefore subjective - Embarrassing to write “I think” in abstract - Hard if <span class="math inline">\(\theta\)</span> high-dimensional or <span class="math inline">\(P\)</span> nonparametric</p>
 <p>Example: Flip coin 20 times, get 7 heads - 0.5 probably a better estimate than 0.35 - My subjective prior on coins:</p>
