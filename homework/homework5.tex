@@ -180,10 +180,11 @@ To rule out perversities, assume also that for each $\theta$ there is some radiu
 \begin{enumerate}[(a)]
 
 \item For $\theta\in\Theta^{\circ}$, and any vector $a\in\RR^d$, show that 
-\[
-\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep a}) = a'J(\theta)a,
-\]
-or equivalently $D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + a}) = a'J(\theta)a + o(\|a\|^2)$.
+  \begin{equation}
+    \label{eq:lim-ratio}
+\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep a}) = \frac{1}{2}a'J(\theta)a,
+\end{equation}
+or equivalently $D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + a}) = \frac{1}{2}a'J(\theta)a + o(\|a\|^2)$.
 
 {\bf Hint 1:} Try differentiating the KL divergence and recall that, for $f:\;\RR^d\to\RR$, where $x,a\in \RR^d$ and $\ep \in \RR$, we have
 \begin{align*}
@@ -193,7 +194,11 @@ or equivalently $D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + a}) = a'J(\theta)a 
 
 {\bf Hint 2:} You are welcome to jump to the general case $d\geq 1$, but it may help to warm up with the case $d=1$, in which case the above boils down to
 \[
-\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep}) = J(\theta)
+\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep a}) = \frac{a^2}{2}J(\theta)
+\]
+or more simply
+\[
+\lim_{\ep\to 0} \frac{1}{\ep^2} D_{\text{KL}}(p_{\theta} \,\|\, p_{\theta + \ep}) = \frac{1}{2}J(\theta)
 \]
 
 
@@ -213,10 +218,10 @@ where $V_d = \int_{\RR^d}1\{\|u\|<1\} du$ is the volume of a unit ball in $\RR^d
 
 \item Now, finish the argument by showing that we have
   \[
-  \lim_{\ep\to 0} \frac{1}{\ep^{d/2}} \Lambda(B_\ep(p_\theta)) = \begin{cases} V_d/C_\Lambda &\text{if } \Lambda \text{ is proper and } \lambda(\theta) \propto_\theta |J(\theta)|^{1/2}\\ V_d &\text{if } \Lambda \text{ is improper and } \lambda(\theta) = |J(\theta)|^{1/2}\end{cases}.
+  \lim_{\ep\to 0} \frac{1}{\ep^{d/2}} \Lambda(B_{\ep/2}(p_\theta)) = \begin{cases} V_d/C_\Lambda &\text{if } \Lambda \text{ is proper and } \lambda(\theta) \propto_\theta |J(\theta)|^{1/2}\\ V_d &\text{if } \Lambda \text{ is improper and } \lambda(\theta) = |J(\theta)|^{1/2}\end{cases}.
   \]
 
-  {\bf Hint:} Try to relate the sublevel sets of $f_\theta(\zeta) = D_{\text{KL}}(p_{\theta}\,\|\,p_\zeta)$ to sublevel sets of $(\zeta-\theta)'J(\theta)(\zeta-\theta)$.
+  {\bf Hint:} Try to relate the sublevel sets of $f_\theta(\zeta) = D_{\text{KL}}(p_{\theta}\,\|\,p_\zeta)$ to sublevel sets of $\frac{1}{2}(\zeta-\theta)'J(\theta)(\zeta-\theta)$.
 
 
 
