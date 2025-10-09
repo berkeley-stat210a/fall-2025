@@ -4,7 +4,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsthm,bm}
 \usepackage{latexsym,color,minipage-marginpar,caption,multirow,verbatim}
-\usepackage{enumerate}
+\usepackage{enumitem}
 \usepackage[round]{natbib}
 \usepackage{times}
 
@@ -44,16 +44,121 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 6 \\
-  {\large {\bf Due on}: Wednesday, Oct. 16}}
+  {\large {\bf Due on}: Wednesday, Oct. 15}}
 \date{}
 
 \maketitle
 
 \paragraph{Instructions:} See the standing homework instructions on the course web page
 
+
+
+\begin{problem}[Gamma-Poisson empirical Bayes]
+\label{prob:gamma-poisson-bayes}
+
+Consider a hierarchical Bayes model with 
+\begin{align*}
+  \sigma &\sim \lambda_0\\
+  \theta_i \mid \sigma &\simiid \text{Gamma}(k,\sigma) = , \;\; i=1,\ldots,n\\
+  X_{ij} \mid \sigma, \theta &\simind \text{Pois}(\theta_i) = \frac{\theta_i^{x}e^{-\theta_i}}{x!}, \;\; i=1,\ldots,n, \quad j = 1,\ldots,m,
+\end{align*}
+where
+\[
+\text{Gamma}(k,\sigma) = \frac{1}{\Gamma(k)\sigma^{k}} x^{k - 1}e^{-x/\sigma} \quad \text{ on } x>0,
+\]
+and
+\[
+\text{Pois}(\theta) = \frac{\theta^{x}e^{-\theta}}{x!}, \quad \text{ on } x=0,1,2,\ldots.
+\]
+
+Assume $k > 0$ (shape parameter) is known. We'll consider three possible ways an analyst could handle $\sigma$:
+\begin{enumerate}[leftmargin=.5in, label=(\roman*),]
+\item a point mass on a fixed, known value $\sigma$ (no learning across problem instances)
+\item a point mass on a fixed, estimated value $\hat\sigma^{-1}$, estimated by maximum likelihood (empirical Bayes)
+\item a hyperprior $\sigma^{-1} \sim \text{Exp}(1)$ (hierarchical Bayes)
+\end{enumerate}
+All Bayes estimators will be calculated with respect to squared error loss (i.e., use the posterior mean).
+
+Here, the maximum likelihood estimator of $\sigma$ is the estimator that maximizes $p_\sigma(X)$, where we implicitly marginalize over the latent parameters $\theta_1,\ldots,\theta_n$ (called {\em random effects} in the frequentist model). You may use that the distribution of $X_{ij}$ given $\sigma$ is negative binomial:
+\[
+X_{ij} \mid \sigma \sim \text{NB}\left(k,\frac{1}{\sigma + 1}\right),
+\]
+where the $\text{NB}(k,p)$ distribution has pmf
+\[
+\binom{k+x-1}{x}(1-p)^xp^k, \quad \text{ on } x=0,1,2,\ldots,
+\]
+mean $\frac{k(1-p)}{p}$, and variance $\frac{k(1-p)}{p^2}$. 
+
+{\bf Note:} $X_{i1}$ and $X_{i2}$ are {\em not} independent conditional on $\sigma$ because they are correlated through $\theta_i$.
+
+
+\begin{enumerate}[label=(\alph*)]
+
+\item First, consider the estimator with fixed and known $\sigma$. Show that the Bayes estimator for $\theta_i$ is
+\[
+\delta_{i,\sigma}(X) = \frac{\sigma}{m\sigma + 1}\left(k+\sum_j X_{ij}\right) = \frac{\overline{X}_i + k/m}{1 + (\sigma m)^{-1}}, \quad \text{ where } \overline{X}_i = m^{-1}\sum_{j} X_{ij}.
+\]
+
+
+
+
+\item Show that the empirical Bayes posterior mean for $\theta_i$ is
+\[
+\frac{\overline X}{\overline{X} + k/m} (k/m + \overline{X}_i), \quad \text{ where } \overline{X}_i = m^{-1}\sum_{j} X_{ij} \quad \text{ and } \overline{X} = (nm)^{-1}\sum_{ij} X_{ij}.
+\]
+{\bf Hint:} To calculate the MLE, it may help to start with $m=1$, then make a sufficiency reduction remembering that if $Y\sim \text{Gamma}(k,\sigma)$ then $cY \sim \text{Gamma}(k,c\sigma)$ ($\sigma$ is a scale parameter).
+
+You may assume $\sum_{ij} X_{ij} > 0$ (though the formulae below would be basically correct in a limiting sense if the sum were zero, too).
+
+
+
+\item Now, consider the hierarchical Bayes problem where $\sigma^{-1}\sim \text{Exp}(1)$. Give an explicit algorithm for one full iteration of the Gibbs sampler, with closed-form updates. It may be helpful to look up the inverse gamma distribution on Wikipedia.
+
+
+
+
+
+\item Implement the Gibbs sampler in a programming language of your choice (R is recommended since it is easy to draw random draws from standard distributions; Python or Matlab will probably also work fine). For $k=m=3$ and $n=100$, download the matrix $X \in \RR^{n \times m}$, in \texttt{gibbspoisson.csv} from the course website and implement the Gibbs sampler (the standard version where you update all variables in every round; use 100 rounds of burn-in and take the next 10,000 rounds of sampling, without thinning). Make a trace plot of your draws from $\sigma$ and $\theta_1$ and include them in your homework submission. Report the following three estimators of $\theta_1$, to three significant digits:
+\begin{enumerate}[label=(\roman*)]
+\item the hierarchical Bayes estimator (for squared error loss),
+\item the empirical Bayes estimator, and
+\item the UMVU estimator for $\theta_1$ in the model where $\theta$ is fixed and unknown.
+\end{enumerate}
+
+
+
+\item Next, carry out a Monte Carlo simulation to estimate the Bayes risk conditional on $\sigma$, for four estimators: (i--iii) from part (b), plus the ``oracle Bayes'' estimator where the value of $\sigma$ is known. That is, for each estimator $\delta_1^{(\ell)}(X)$ of $\theta_1$, approximately evaluate:
+\[
+R^{(\ell)}(\sigma) = \EE[(\delta_1^{(\ell)}(X) - \theta_1)^2 \mid \sigma] = \EE\left[n^{-1}\sum_i(\delta_i^{(\ell)}(X) - \theta_i)^2 \mid \sigma\right],
+\]
+where the expectation is taken over $\theta$ and $X$ (but {\em not} $\sigma$, since we are conditioning on that). The second equality follows from the exchangeability over different values of $i$ (you do not need to prove it yourself, but you should use it to save yourself computation).
+
+{\bf Note:} for the hierarchical Bayes estimator, this does {\em not} mean you should hold $\sigma$ fixed in your MCMC chain: you should compute it as an analyst who did not know the value of $\sigma$ would, and just as you did in part (d).
+
+Use the values $\sigma = 0.1, 0.2, 0.5, 1, 2, 5, 10$ and include a $4\times 7$ table of risk values, each reported to at least 3 significant figures, in your answer.
+
+For each of the three non-oracle estimators, plot the relative excess risk
+\[
+\frac{R^{(\ell)}(\sigma)}{R^{(\text{oracle})}(\sigma)} - 1
+\]
+against $\sigma$ for the values above. Make analogous plots for the scenarios $(m,n) = (30,100)$, $(m,n)=(3,10)$, and $(m,n)=(30,10)$. I recommend using a log scale for the horizontal and vertical axis.
+
+{\bf Note:} This exercise should not take you an absurd amount of computer time; using 100 MC runs per value of $\sigma$ and the 7 values of $\sigma$ above, takes my three-year-old laptop computer less than three minutes to produce each of the three plots requested above. If it is taking your computer much much longer you are probably doing something very inefficiently.
+
+
+
+\end{enumerate}
+
+{\bf Moral:} The hierarchical Bayes and oracle Bayes do almost the same thing: get a highly precise estimate for $\sigma$ by pooling all $n$ problems, and then carrying out the Bayes rule at the estimated value. They perform almost as well as the oracle Bayes rule because they are effective at figuring out what the true value of $\sigma$ is. This is least true for $m=3,n=10$, because there simply aren't that many $\theta_i$ values from which to estimate $\sigma$. Note that from the perspective of estimating $\sigma$, increasing $n$ has a bigger effect on the accuracy of $\hat\sigma$ (empirical or hierarchical Bayes estimate) than increasing $m$: getting to see more $\theta_i$ values helps more than just getting to estimate each one more accurately. But increasing $m$ has a large effect on the absolute risk, because we observe each $\theta_i$ with a great deal of accuracy even before shrinking them toward the average $\theta$ value. This is also when the UMVU estimator does almost as well as oracle Bayes.
+\end{problem}
+
+
+
+
 \begin{problem}[Effective degrees of freedom]
+\label{prob:expected-df}
 
 We can write a standard Gaussian sequence model in the form
 \[
@@ -76,7 +181,7 @@ which uses optimism as a proxy for overfitting.
 
 For the following questions assume we also have a predictor matrix $X\in \RR^{n\times d}$, which is simply a matrix of fixed real numbers. Suppose that $d\leq n$ and $X$ has full column rank. 
 
-\begin{enumerate}[(a)]
+\begin{enumerate}[label=(\alph*)]
 \item Show that if $\hat\mu$ is differentiable with $\EE_\mu\|D\hat\mu(Y)\|_F < \infty$ then
 \[
 \sum_{i=1}^n \frac{\partial \hat\mu_i(Y)}{\partial Y_i}
@@ -106,6 +211,7 @@ for some $\rho \geq 0$. Show that the DF is $\sum_{j=1}^d \frac{\lambda_j}{\rho+
 \end{problem}
 
 \begin{problem}[Soft thresholding]
+\label{prob:soft-thresh}
 
 Consider the {\em soft thresholding operator} with parameter $\lambda \geq 0$, defined as
 \[
@@ -120,7 +226,7 @@ Note that, although we didn't prove it in class, Stein's lemma applies for conti
 
 Assume $X \sim N_d(\theta, I_d)$ for $\theta \in \RR^d$, which we will estimate via $\delta_\lambda(X) = (\eta_\lambda(X_1), \ldots, \eta_\lambda(X_{d}))$. Soft thresholding is sometimes used when we expect {\em sparsity}: a small number of relatively large $\theta_i$ values. $\lambda$ here is called a {\em tuning parameter} since it determines what version of the estimator we use, but doesn't have an obvious statistical interpretation.
 
-\begin{enumerate}[(a)]
+\begin{enumerate}[label=(\alph*)]
 \item Show that $\left|\{i:\; |X_i| > \lambda\}\right|$ is an unbiased estimator of the degrees of freedom of $\delta_\lambda$ (so, in a sense, the DF is the expected number of ``free variables'').
 
 
@@ -152,7 +258,7 @@ for $Z \sim N(0,1)$. It might also help to show that $\frac{\phi(\lambda-\theta_
   
 
 \item Compute and report the squared error loss $\|\delta(X) - \theta\|^2$ for the following four estimators:
-\begin{enumerate}[(i)]
+\begin{enumerate}[label=(\roman*)]
 \item the UMVU estimator $\delta_0(X) = X$,
 \item the optimally tuned soft-thresholding estimator $\delta_{\lambda^*}(X)$,
 \item the automatically tuned soft-thresholding estimator $\delta_{\hat{\lambda}(X)}(X)$, and
@@ -168,7 +274,11 @@ You do not need to compute the MSE. Intuitively, what do you think accounts for 
 \paragraph{Moral:} SURE gives us a reasonable way of selecting a tuning parameter for estimation problems, and can help us choose a tuning parameter that achieves the near optimal performance. Also, regularization methods that set a lot of parameters to zero can substantially reduce the MSE in sparse problems, by eliminating all the variance for most of the coordinates.
 \end{problem}
 
+
+
+
 \begin{problem}[Shrinking toward the average]
+\label{prob:shrinking-avg}
 
   Assume we observe data from a Gaussian sequence model $X \sim N_d(\theta, I_d)$ with $d \geq 4$, and we want to estimate $\theta\in \RR^d$ with low mean-squared error loss. Instead of shrinking toward zero, however, we want to shrink toward $\overline{X}$. This implements an inductive bias that the $\theta_i$ values should be close to each other, as opposed to assuming they should be close to zero.
 
@@ -191,48 +301,36 @@ leading to
 \delta_{\text{JS}_2}(X) = \overline{X} 1_d + \left(1 - \frac{d-3}{\|X - \overline{X} 1_d\|^2}\right) (X - \overline{X} 1_d)
 \]
 
-\begin{enumerate}[(a)]
+\begin{enumerate}[label=(\alph*)]
 \item As with the previous James--Stein estimator, we can motivate this estimator in a similar way by empirical Bayes in a model with $\theta_i \simiid N(\mu, \tau^2)$. If we want we can write $\zeta = (1+\tau^2)^{-1}$ as before. Show that $\delta_{\text{JS}_2}$ is the empirical Bayes estimator for this prior, where we estimate the hyperparameters $(\mu,\zeta)$ by UMVU.
+
+
+
+
 
 \item Derive an unbiased estimator for the risk $\text{MSE}(\theta; \delta_{\text{JS}_2})$. Your estimator should be a function of the data $X$, and should not involve any unknown parameters like $\mu$, $\zeta$, or $\theta$.
 
+
+
+
 \item Find an expression for the MSE of $\delta_{\text{JS}_2}$ as a function of $\theta$, and show that it dominates the MSE of $\delta_0(X) = X$ for all $\theta \in \RR^d$. Evaluate your expression in the case where $\theta_1 = \theta_2 = \cdots = \theta_d$.
 
-\item \optional If we make a change of variables to a certain $Z = f(X)$ with $Z \sim N_d(\mu, I_d)$, then $\delta_{\text{JS}_2}$ could be characterized as estimating $\mu_1$ as $Z_1$ (without any shrinkage), and estimating $\mu_{-1}=(\mu_2,\ldots,\mu_d)$ via the original James--Stein estimator on the $(d-1)$-variate normal $Z_{-1} \sim N_{d-1}(\mu_{-1},I_{d-1})$. Find such a transformation $f$ and use this construction to repeat part (c).
-\end{enumerate}
-
-\end{problem}
 
 
 
-\begin{problem}[Tweedie's formula]
-
-Besides James--Stein, another well-known empirical Bayes method is {\em Tweedie's formula} for doing Bayes estimation of natural parameters in exponential family models.
-
-Assume that the data come from a common $1$-parameter exponential family with a different parameter for each observation:
+\item Now make a change of variables to $Z = Q'X$, where $q_1 = d^{-1/2}1_d$ and $q_2,\ldots,q_d$ are any completion of an orthonormal basis for $\RR^d$, and $Q= [q_1 \cdots q_d] \in \RR^{d\times d}$. Show that
 \[
-X_i \simind p_{\eta_i}(x) = e^{\eta_i x - A(\eta)}h(x),
+Z \sim  N_d(\mu, I_d), \quad \text{ where } \mu_1 = d^{-1/2}\sum_i\theta_i.% \quad \text{ and } \|\theta\|^2 = \left(\begin{pmatrix}d^{-1/2}\sum_i\theta_i\\ \nu\end{pmatrix} 
 \]
+Show that $Q'\delta_{\text{JS}_2}(X)$, as an estimator of $\mu$, could be characterized as estimating $\mu_1$ as $Z_1$ (without any shrinkage), and estimating $\mu_{-1}=(\mu_2,\ldots,\mu_d)$ via the original James--Stein estimator on the $(d-1)$-variate normal $Z_{-1} \sim N_{d-1}(\mu_{-1},I_{d-1})$. Use this construction to re-derive the results in part (c).
 
-Additionally, assume $\eta_i \simiid \lambda(\eta)$ where $\lambda$ is an unknown density on $\RR$ (so this is a non-parametric model for the prior). Define the marginal
-\[
-q(x) = \int p_\eta(x) \lambda_0(\eta),
-\]
 
-\begin{enumerate}[(a)]
-
-\item Show that the posterior distribution $\lambda(\eta_i \mid x_i)$ follows a one-parameter exponential family model with sufficient statistic $\eta_i$ and normalizing constant $B(x_i) = \log(q(x_i)/h(x_i))$.
-
-\item Use part (a) to find the Bayes posterior mean of $\eta_i$ given $X_i$.
 
 \end{enumerate}
 
-\paragraph{Moral:} There are a variety of methods (beyond the scope of this course) to obtain nonparametric density estimators for the marginal density $q(x)$ when we observe $X_1,\ldots,X_n \simiid q$. This problem shows that such an estimator leads directly to {\em nonparametric} empirical Bayes estimators for $\eta_i$.
+\paragraph{Moral:} If we think of the James--Stein estimator as implementing an {\em inductive bias} where we believe $\|\theta\|$ to be small, then different variants of the James-Stein estimator allow for implementing different inductive biases, for example that the $\theta_i$ values should be near each other, or (in a later problem) that they should lie close to a regression line $w_i'\beta$ for covariates $w_i$.
+
 \end{problem}
-
-
-
-
 
 
 \bibliography{biblio}
