@@ -331,7 +331,7 @@ J(\eta) = \Var_\eta(X) =\theta(\eta)(1-\theta(\eta)) = n\frac{e^{\eta}}{(1+e^{\e
 </div>
 </div>
 </div>
-<p>If we multiply this by nearly any prior and then renormalize, we will essentially get back the likelihood again. The plot below shows the posterior for the uniform (flat) and Jeffreys on <span class="math inline">\(\theta\)</span>, as well as our subjective prior from above and a strongly biased prior corresponding to 100 pseudo-successes and no psuedo-failures.</p>
+<p>If we multiply this by nearly any prior and then renormalize, we will essentially get back the likelihood again. The plot below shows the posterior for the uniform (flat) and Jeffreys on <span class="math inline">\(\theta\)</span>, as well as our subjective prior from above and a strongly biased prior corresponding to 100 pseudo-successes and 0.1 psuedo-failures.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -341,6 +341,17 @@ J(\eta) = \Var_\eta(X) =\theta(\eta)(1-\theta(\eta)) = n\frac{e^{\eta}}{(1+e^{\e
 </div>
 </div>
 </div>
+<p>The posteriors converge even though these priors entail very different prior assumptions about <span class="math inline">\(\theta\)</span>, which we can see if we plot them (note the horizontal axis limits have changed to show the entire parameter space):</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bayes-interpretation_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These priors are very different, but what they all have in common is that they are roughly flat on the narrow interval <span class="math inline">\([0.5,0.515]\)</span>.</p>
 </section>
 </section>
 <section id="convenience-priors" class="level3" data-number="2.4">
