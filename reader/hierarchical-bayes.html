@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-09-28">
 
-<title>Hierarchical Bayes, Markov Chain Monte Carlo, and Empirical Bayes</title>
+<title>Bayesian computation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,23 +123,28 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#hierarchical-bayes" id="toc-hierarchical-bayes" class="nav-link active" data-scroll-target="#hierarchical-bayes"><span class="header-section-number">1</span> Hierarchical Bayes</a>
+  <li><a href="#directed-graphical-models" id="toc-directed-graphical-models" class="nav-link active" data-scroll-target="#directed-graphical-models"><span class="header-section-number">1</span> Directed Graphical Models</a></li>
+  <li><a href="#markov-chains" id="toc-markov-chains" class="nav-link" data-scroll-target="#markov-chains"><span class="header-section-number">2</span> Markov Chains</a></li>
+  <li><a href="#markov-chain-monte-carlo" id="toc-markov-chain-monte-carlo" class="nav-link" data-scroll-target="#markov-chain-monte-carlo"><span class="header-section-number">3</span> Markov Chain Monte Carlo</a>
   <ul class="collapse">
-  <li><a href="#example-predicting-batting-averages" id="toc-example-predicting-batting-averages" class="nav-link" data-scroll-target="#example-predicting-batting-averages"><span class="header-section-number">1.1</span> Example: Predicting Batting Averages</a></li>
-  <li><a href="#gaussian-hierarchical-model" id="toc-gaussian-hierarchical-model" class="nav-link" data-scroll-target="#gaussian-hierarchical-model"><span class="header-section-number">1.2</span> Gaussian Hierarchical Model</a></li>
-  <li><a href="#graphical-form" id="toc-graphical-form" class="nav-link" data-scroll-target="#graphical-form"><span class="header-section-number">1.3</span> Graphical Form</a></li>
-  </ul></li>
-  <li><a href="#markov-chain-monte-carlo-mcmc" id="toc-markov-chain-monte-carlo-mcmc" class="nav-link" data-scroll-target="#markov-chain-monte-carlo-mcmc"><span class="header-section-number">2</span> Markov Chain Monte Carlo (MCMC)</a>
+  <li><a href="#hierarchical-bayes" id="toc-hierarchical-bayes" class="nav-link" data-scroll-target="#hierarchical-bayes"><span class="header-section-number">3.1</span> Hierarchical Bayes</a>
   <ul class="collapse">
-  <li><a href="#definition-of-markov-chain" id="toc-definition-of-markov-chain" class="nav-link" data-scroll-target="#definition-of-markov-chain"><span class="header-section-number">2.1</span> Definition of Markov Chain</a></li>
-  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory"><span class="header-section-number">2.2</span> Theory</a></li>
+  <li><a href="#example-predicting-batting-averages" id="toc-example-predicting-batting-averages" class="nav-link" data-scroll-target="#example-predicting-batting-averages"><span class="header-section-number">3.1.1</span> Example: Predicting Batting Averages</a></li>
+  <li><a href="#gaussian-hierarchical-model" id="toc-gaussian-hierarchical-model" class="nav-link" data-scroll-target="#gaussian-hierarchical-model"><span class="header-section-number">3.1.2</span> Gaussian Hierarchical Model</a></li>
+  <li><a href="#graphical-form" id="toc-graphical-form" class="nav-link" data-scroll-target="#graphical-form"><span class="header-section-number">3.1.3</span> Graphical Form</a></li>
   </ul></li>
-  <li><a href="#gibbs-sampler" id="toc-gibbs-sampler" class="nav-link" data-scroll-target="#gibbs-sampler"><span class="header-section-number">3</span> Gibbs Sampler</a>
+  <li><a href="#markov-chain-monte-carlo-mcmc" id="toc-markov-chain-monte-carlo-mcmc" class="nav-link" data-scroll-target="#markov-chain-monte-carlo-mcmc"><span class="header-section-number">3.2</span> Markov Chain Monte Carlo (MCMC)</a>
   <ul class="collapse">
-  <li><a href="#gibbs-stationarity" id="toc-gibbs-stationarity" class="nav-link" data-scroll-target="#gibbs-stationarity"><span class="header-section-number">3.1</span> Gibbs Stationarity</a></li>
-  <li><a href="#implementation-details-matter" id="toc-implementation-details-matter" class="nav-link" data-scroll-target="#implementation-details-matter"><span class="header-section-number">3.2</span> Implementation Details Matter</a></li>
+  <li><a href="#definition-of-markov-chain" id="toc-definition-of-markov-chain" class="nav-link" data-scroll-target="#definition-of-markov-chain"><span class="header-section-number">3.2.1</span> Definition of Markov Chain</a></li>
+  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory"><span class="header-section-number">3.2.2</span> Theory</a></li>
   </ul></li>
-  <li><a href="#empirical-bayes" id="toc-empirical-bayes" class="nav-link" data-scroll-target="#empirical-bayes"><span class="header-section-number">4</span> Empirical Bayes</a></li>
+  <li><a href="#gibbs-sampler" id="toc-gibbs-sampler" class="nav-link" data-scroll-target="#gibbs-sampler"><span class="header-section-number">3.3</span> Gibbs Sampler</a>
+  <ul class="collapse">
+  <li><a href="#gibbs-stationarity" id="toc-gibbs-stationarity" class="nav-link" data-scroll-target="#gibbs-stationarity"><span class="header-section-number">3.3.1</span> Gibbs Stationarity</a></li>
+  <li><a href="#implementation-details-matter" id="toc-implementation-details-matter" class="nav-link" data-scroll-target="#implementation-details-matter"><span class="header-section-number">3.3.2</span> Implementation Details Matter</a></li>
+  </ul></li>
+  <li><a href="#empirical-bayes" id="toc-empirical-bayes" class="nav-link" data-scroll-target="#empirical-bayes"><span class="header-section-number">3.4</span> Empirical Bayes</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -149,7 +153,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hierarchical Bayes, Markov Chain Monte Carlo, and Empirical Bayes</h1>
+<h1 class="title">Bayesian computation</h1>
 </div>
 
 
@@ -157,12 +161,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 28, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -199,11 +197,19 @@ window.Quarto = {
 \newcommand{\Corr}{\textnormal{Corr}}
 \newcommand{\ep}{\varepsilon}
 \]</span></p>
-<section id="hierarchical-bayes" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="hierarchical-bayes"><span class="header-section-number">1</span> Hierarchical Bayes</h2>
+<section id="directed-graphical-models" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Directed Graphical Models</h1>
+</section>
+<section id="markov-chains" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Markov Chains</h1>
+</section>
+<section id="markov-chain-monte-carlo" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Markov Chain Monte Carlo</h1>
+<section id="hierarchical-bayes" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="hierarchical-bayes"><span class="header-section-number">3.1</span> Hierarchical Bayes</h2>
 <p>The full power of Bayes is realized in large, complex problems with repeat structure, allowing us to pool information across many observations.</p>
-<section id="example-predicting-batting-averages" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="example-predicting-batting-averages"><span class="header-section-number">1.1</span> Example: Predicting Batting Averages</h3>
+<section id="example-predicting-batting-averages" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="example-predicting-batting-averages"><span class="header-section-number">3.1.1</span> Example: Predicting Batting Averages</h3>
 <p>Predict a batter’s true batting average from <span class="math inline">\(n_i\)</span> at-bats, <span class="math inline">\(X_i\)</span> hits: <span class="math inline">\(X_i|\theta_i \sim \text{Binom}(n_i, \theta_i)\)</span></p>
 <p>Pool info across players <span class="math inline">\(i=1,\ldots,m\)</span> via hierarchical model:</p>
 <p><span class="math display">\[
@@ -219,8 +225,8 @@ X_i|\theta_i, n_i &amp;\sim \text{Binom}(n_i, \theta_i), \quad i=1,\ldots,m
 <p>Use all <span class="math inline">\(X_1,\ldots,X_m\)</span> to learn a good prior on <span class="math inline">\(\theta_i\)</span>.</p>
 <p>Note: There is always an equivalent model where we marginalize over <span class="math inline">\(\alpha, \beta\)</span> and just write a more complicated prior on <span class="math inline">\(\theta\)</span>. The hierarchical version may give better intuition or computational strategies.</p>
 </section>
-<section id="gaussian-hierarchical-model" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="gaussian-hierarchical-model"><span class="header-section-number">1.2</span> Gaussian Hierarchical Model</h3>
+<section id="gaussian-hierarchical-model" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="gaussian-hierarchical-model"><span class="header-section-number">3.1.2</span> Gaussian Hierarchical Model</h3>
 <p><span class="math display">\[
 \begin{aligned}
 \theta_i &amp;\sim N(\mu, \tau^2), \quad i=1,\ldots,d \\
@@ -267,8 +273,8 @@ B|X \sim \text{InvGamma}\left(\frac{n+\nu}{2}, \frac{\lambda + (n-1)S^2}{2}\righ
 <p>Pseudo-data: <span class="math inline">\(\nu, \lambda\)</span> with <span class="math inline">\(\nu \approx 2, \lambda \approx \nu\sigma^2\)</span></p>
 <p>Might want to truncate prior to <span class="math inline">\([\sigma^2, \infty)\)</span> if <span class="math inline">\(\lambda\)</span> small.</p>
 </section>
-<section id="graphical-form" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="graphical-form"><span class="header-section-number">1.3</span> Graphical Form</h3>
+<section id="graphical-form" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="graphical-form"><span class="header-section-number">3.1.3</span> Graphical Form</h3>
 <p>For hyperparameters <span class="math inline">\(\alpha, \beta\)</span>:</p>
 <pre><code>     α, β
     /  |  \
@@ -285,16 +291,16 @@ p(\alpha, \beta, \theta_1,\ldots,\theta_m, X_1,\ldots,X_m) = p(\alpha, \beta)\pr
 \]</span></p>
 </section>
 </section>
-<section id="markov-chain-monte-carlo-mcmc" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="markov-chain-monte-carlo-mcmc"><span class="header-section-number">2</span> Markov Chain Monte Carlo (MCMC)</h2>
+<section id="markov-chain-monte-carlo-mcmc" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="markov-chain-monte-carlo-mcmc"><span class="header-section-number">3.2</span> Markov Chain Monte Carlo (MCMC)</h2>
 <p>Hierarchical models are very flexible, but often create big computational headaches:</p>
 <p><span class="math display">\[
 \pi(\theta|x) = \frac{p(x|\theta)\pi(\theta)}{\int p(x|\theta)\pi(\theta)d\theta}
 \]</span></p>
 <p>Numerator is usually nice, denominator often intractable.</p>
 <p>Computational strategy: Set up a Markov chain with stationary distribution <span class="math inline">\(\pi(\theta|x)\)</span>, run it to get approximate samples from <span class="math inline">\(\pi(\theta|x)\)</span>.</p>
-<section id="definition-of-markov-chain" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="definition-of-markov-chain"><span class="header-section-number">2.1</span> Definition of Markov Chain</h3>
+<section id="definition-of-markov-chain" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="definition-of-markov-chain"><span class="header-section-number">3.2.1</span> Definition of Markov Chain</h3>
 <p>A stationary Markov chain with transition kernel <span class="math inline">\(Q(y|x)\)</span> and initial distribution <span class="math inline">\(\pi_0(x)\)</span> is a sequence of r.v.’s <span class="math inline">\(X_0, X_1, \ldots\)</span> where <span class="math inline">\(X_0 \sim \pi_0\)</span> and:</p>
 <p><span class="math display">\[
 P(X_{t+1} \in A | X_t, \ldots, X_0) = P(X_{t+1} \in A | X_t) = \int_A Q(y|X_t) dy
@@ -314,8 +320,8 @@ P(X_{t+1} \in A | X_t, \ldots, X_0) = P(X_{t+1} \in A | X_t) = \int_A Q(y|X_t) d
 \]</span></p>
 <p>A Markov chain with detailed balance is called reversible: <span class="math inline">\(X_{t-1} | X_t \sim X_{t+1} | X_t\)</span> if <span class="math inline">\(\pi_t = \pi\)</span>.</p>
 </section>
-<section id="theory" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="theory"><span class="header-section-number">2.2</span> Theory</h3>
+<section id="theory" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="theory"><span class="header-section-number">3.2.2</span> Theory</h3>
 <p>If a Markov chain with stationary distribution <span class="math inline">\(\pi\)</span> is:</p>
 <ol type="1">
 <li>Irreducible: <span class="math inline">\(\forall x,y, \exists n: P(X_n = y | X_0 = x) &gt; 0\)</span></li>
@@ -325,8 +331,8 @@ P(X_{t+1} \in A | X_t, \ldots, X_0) = P(X_{t+1} \in A | X_t) = \int_A Q(y|X_t) d
 <p>Strategy: Find <span class="math inline">\(Q\)</span> with stationary distribution <span class="math inline">\(\pi(\theta|x)\)</span>, start at any <span class="math inline">\(X_0\)</span>, run chain for a long time, then <span class="math inline">\(X_t\)</span> is approximately a sample from posterior for large <span class="math inline">\(t\)</span>.</p>
 </section>
 </section>
-<section id="gibbs-sampler" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="gibbs-sampler"><span class="header-section-number">3</span> Gibbs Sampler</h2>
+<section id="gibbs-sampler" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="gibbs-sampler"><span class="header-section-number">3.3</span> Gibbs Sampler</h2>
 <p>For parameter vector <span class="math inline">\(\theta = (\theta_1, \ldots, \theta_d)\)</span>:</p>
 <p>Algorithm: 1. Initialize <span class="math inline">\(\theta^{(0)}\)</span> 2. For <span class="math inline">\(t = 1, \ldots, T\)</span>: For <span class="math inline">\(j = 1, \ldots, d\)</span>: Sample <span class="math inline">\(\theta_j^{(t)} \sim p(\theta_j | \theta_{-j}^{(t-1)}, X)\)</span> Record <span class="math inline">\(\theta^{(t)}\)</span></p>
 <p>Variations: - Update one random coordinate <span class="math inline">\(J \sim \text{Unif}(1,\ldots,d)\)</span> - Update coordinates in random order</p>
@@ -335,8 +341,8 @@ P(X_{t+1} \in A | X_t, \ldots, X_0) = P(X_{t+1} \in A | X_t) = \int_A Q(y|X_t) d
 p(\theta_i | \theta_{-i}, X, \alpha) \propto p(\theta_i | \theta_{\text{pa}(i)}) \prod_{j \in \text{ch}(i)} p(\theta_j | \theta_i)
 \]</span></p>
 <p>Especially easy if using conjugate priors at all levels; often can be parallelized.</p>
-<section id="gibbs-stationarity" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="gibbs-stationarity"><span class="header-section-number">3.1</span> Gibbs Stationarity</h3>
+<section id="gibbs-stationarity" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="gibbs-stationarity"><span class="header-section-number">3.3.1</span> Gibbs Stationarity</h3>
 <p>Claim: If <span class="math inline">\(\pi_t = \pi(\theta|X)\)</span>, then <span class="math inline">\(\pi_{t+1} = \pi(\theta|X)\)</span>.</p>
 <p>Proof (sketch): Consider updating only one fixed coordinate <span class="math inline">\(j\)</span>: <span class="math inline">\(\theta_j^{(t+1)} \sim p(\theta_j | \theta_{-j}^{(t)}, X)\)</span> If <span class="math inline">\(\theta^{(t)} \sim \pi(\theta|X)\)</span>, then <span class="math inline">\(\theta^{(t+1)} \sim \pi(\theta|X)\)</span> Updating any coordinate preserves posterior distribution Updating coordinates in any order also does</p>
 <p>In theory: Pick initialization and valid kernel <span class="math inline">\(Q\)</span>, sample long enough, get <span class="math inline">\(\theta^{(t)} \sim \pi(\theta|X)\)</span> Do it again <span class="math inline">\(N\)</span> more times, get <span class="math inline">\(N\)</span> samples from <span class="math inline">\(\pi(\theta|X)\)</span></p>
@@ -345,8 +351,8 @@ p(\theta_i | \theta_{-i}, X, \alpha) \propto p(\theta_i | \theta_{\text{pa}(i)})
 <p>Better approach: Burn-in then convergence. Estimate posterior based on <span class="math inline">\(\theta^{(B+1)}, \ldots, \theta^{(B+N)}\)</span></p>
 <p>For function <span class="math inline">\(f(\theta)\)</span>: <span class="math inline">\(\hat{\mu}_f = \frac{1}{N} \sum_{t=B+1}^{B+N} f(\theta^{(t)})\)</span></p>
 </section>
-<section id="implementation-details-matter" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="implementation-details-matter"><span class="header-section-number">3.2</span> Implementation Details Matter</h3>
+<section id="implementation-details-matter" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="implementation-details-matter"><span class="header-section-number">3.3.2</span> Implementation Details Matter</h3>
 <p>Example: <span class="math display">\[
 \begin{aligned}
 \theta &amp;\sim N(0, 100) \\
@@ -366,8 +372,8 @@ B &amp;= \theta - \bar{X} \\
 <p>Gibbs: Directly sampling from posterior</p>
 </section>
 </section>
-<section id="empirical-bayes" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="empirical-bayes"><span class="header-section-number">4</span> Empirical Bayes</h2>
+<section id="empirical-bayes" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="empirical-bayes"><span class="header-section-number">3.4</span> Empirical Bayes</h2>
 <p>Back to Gaussian hierarchical model:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -384,6 +390,7 @@ X_i | \theta_i &amp;\sim N(\theta_i, \sigma^2)
 <p>Called Empirical Bayes: a hybrid approach in which hyperparameters are treated as fixed, others treated as random.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
