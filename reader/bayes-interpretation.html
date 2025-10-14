@@ -636,8 +636,10 @@ X_i \mid \theta &amp;\simind N(\theta_i,1)
 \]</span></p>
 <p>is simply <span class="math inline">\(\delta_{\hat\zeta}(X)\)</span>, where <span class="math inline">\(\hat\zeta = \EE[\zeta \mid X]\)</span> is the posterior mean of <span class="math inline">\(\zeta\)</span> given all the data. This case shows the very close relationship between hierarchical Bayes and empirical Bayes: here, the hierarchical Bayes solution itself amounts to plugging a (Bayes) estimate for the hyperparameter <span class="math inline">\(\zeta\)</span> into our formula for the optimal Bayes shrinkage rule if we knew <span class="math inline">\(\zeta\)</span>.</p>
 <p>To find <span class="math inline">\(\EE[\zeta \mid X]\)</span>, it is again helpful to consider the likelihood model with <span class="math inline">\(\theta\)</span> marginalized out. Then, we have <span class="math display">\[
+\begin{aligned}
 \zeta &amp;\sim \lambda_0^{(\zeta)}\\
 X_i \mid \zeta &amp;\simiid N(0, \zeta^{-1}),
+\end{aligned}
 \]</span> since <span class="math display">\[
 \Var(X_i \mid \zeta) = \Var(\theta_i \mid \zeta) + \EE[\Var(X_i \mid \zeta, \theta_i)] = \tau^2+1
 \]</span> The likelihood of <span class="math inline">\(X\)</span>, then, is <span class="math display">\[
@@ -658,17 +660,14 @@ X\mid \zeta \sim N_d(0,I_d/\zeta) = \frac{\zeta^{d/2}}{(2\pi)^{d/2}} e^{-\zeta\|
 \EE\left[\frac{1}{\|X\|^2}\right] = \EE\left[\frac{1}{Y}\right] \cdot \zeta.
 \]</span> For <span class="math inline">\(d&gt;2\)</span> we can calculate this expectation, which does not depend on <span class="math inline">\(\zeta\)</span>: <span class="math display">\[
 \begin{aligned}
-\EE[\frac{1}{Y}\right]
-&amp;= \int_0^\infty \frac{1}{y}\cdot \frac{1}{\Gamma(d/2)2^{d/2}} y^{d/2-1}e^{-y/2}\,dy\\
-&amp;= \frac{\Gamma((d-2)/2)2^{(d-2)/2}}{\Gamma(d/2)2^{d/2}} \int_0^\infty \frac{1}{\Gamma((d-2)/2)2^{(d-2)/2}} y^{(d-2)/2-1}e^{-y/2}\,dy\\
-&amp;= \frac{\Gamma((d-2)/2)2^{(d-2)/2}}{\Gamma(d/2)2^{d/2}},
+\EE\left[\frac{1}{Y}\right]
+&amp;= \int_0^\infty \frac{1}{y}\cdot \frac{1}{\Gamma\left(\frac{d}{2}\right)2^{d/2}} y^{d/2-1}e^{-y/2}\,dy\\[7pt]
+&amp;= \frac{\Gamma\left(\frac{d-2}{2}\right)\cdot 2^{(d-2)/2}}{\Gamma\left(\frac{d}{2}\right)\cdot 2^{d/2}} \cdot \int_0^\infty \frac{1}{\Gamma\left(\frac{d-2}{2}\right)2^{(d-2)/2}} y^{(d-2)/2-1}e^{-y/2}\,dy\\[7pt]
+&amp;= \frac{\Gamma\left(\frac{d-2}{2}\right)\cdot 2^{(d-2)/2}}{\Gamma\left(\frac{d}{2}\right)\cdot 2^{d/2}},
 \end{aligned}
 \]</span> since the last integrand is the <span class="math inline">\(\chi_{d-2}^2\)</span> density. Since <span class="math inline">\(\Gamma(x+1) = x\Gamma(x)\)</span> for all <span class="math inline">\(x&gt;0\)</span>, the final expression can be simplified to <span class="math inline">\(\frac{1}{d-2}\)</span>. As a result, <span class="math inline">\(\frac{d-2}{\|X\|^2}\)</span> is UMVU, giving empirical Bayes estimator <span class="math display">\[
 \delta_{\text{JS}}(X) = \left(1-\frac{d-2}{\|X\|^2}\right) X.
 \]</span> This estimator, called the James–Stein estimator, is very interesting in its own right, as we will see in two lectures.</p>
-<p>, is the multiplicative constant by which we must adjust <span class="math inline">\(1/\|X\|^2\)</span> to obtain the UMVU estimator.</p>
-<p><span class="math inline">\(\zeta^{-1}\)</span> is a scale parameter for <span class="math inline">\(\|X\|^2\)</span> <span class="math inline">\(\EE\left[\frac{d}{\|X\|^2}\right]\)</span> is certainly proportional to <span class="math inline">\(\zeta\)</span>. Hence, we only need to find the proportionality constant to obtain a UMVU estimator.</p>
-<p>We will study the empirical Bayes approaches to this problem in more detail when we discuss the James-Stein estimator.</p>
 
 
 </section>
