@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-10-17">
 
-<title>p-Values, Confidence Regions, and Misinterpreting Tests</title>
+<title>p-values, confidence regions, and (mis-)interpreting Tests</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,20 +123,23 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#p-values" id="toc-p-values" class="nav-link active" data-scroll-target="#p-values"><span class="header-section-number">1</span> p-Values</a>
+  <li><a href="#p-values" id="toc-p-values" class="nav-link active" data-scroll-target="#p-values">p-Values</a>
   <ul class="collapse">
-  <li><a href="#informal-definition" id="toc-informal-definition" class="nav-link" data-scroll-target="#informal-definition"><span class="header-section-number">1.1</span> Informal Definition</a></li>
-  <li><a href="#formal-definition" id="toc-formal-definition" class="nav-link" data-scroll-target="#formal-definition"><span class="header-section-number">1.2</span> Formal Definition</a></li>
-  <li><a href="#acceptreject-decisions" id="toc-acceptreject-decisions" class="nav-link" data-scroll-target="#acceptreject-decisions"><span class="header-section-number">1.3</span> Accept/Reject Decisions</a></li>
+  <li><a href="#informal-definition" id="toc-informal-definition" class="nav-link" data-scroll-target="#informal-definition">Informal definition</a></li>
+  <li><a href="#formal-definition" id="toc-formal-definition" class="nav-link" data-scroll-target="#formal-definition">Formal definition</a></li>
+  <li><a href="#super-uniformity" id="toc-super-uniformity" class="nav-link" data-scroll-target="#super-uniformity">Super-uniformity</a>
+  <ul class="collapse">
+  <li><a href="#acceptreject-decisions" id="toc-acceptreject-decisions" class="nav-link" data-scroll-target="#acceptreject-decisions">Accept/Reject Decisions</a></li>
   </ul></li>
-  <li><a href="#confidence-regions" id="toc-confidence-regions" class="nav-link" data-scroll-target="#confidence-regions"><span class="header-section-number">2</span> Confidence Regions</a>
+  <li><a href="#confidence-regions" id="toc-confidence-regions" class="nav-link" data-scroll-target="#confidence-regions">Confidence Regions</a>
   <ul class="collapse">
-  <li><a href="#duality-of-testsconfidence-sets" id="toc-duality-of-testsconfidence-sets" class="nav-link" data-scroll-target="#duality-of-testsconfidence-sets"><span class="header-section-number">2.1</span> Duality of Tests/Confidence Sets</a></li>
-  <li><a href="#confidence-intervalsbounds" id="toc-confidence-intervalsbounds" class="nav-link" data-scroll-target="#confidence-intervalsbounds"><span class="header-section-number">2.2</span> Confidence Intervals/Bounds</a></li>
+  <li><a href="#duality-of-testsconfidence-sets" id="toc-duality-of-testsconfidence-sets" class="nav-link" data-scroll-target="#duality-of-testsconfidence-sets">Duality of Tests/Confidence Sets</a></li>
+  <li><a href="#confidence-intervalsbounds" id="toc-confidence-intervalsbounds" class="nav-link" data-scroll-target="#confidence-intervalsbounds">Confidence Intervals/Bounds</a></li>
   </ul></li>
-  <li><a href="#misinterpreting-hypothesis-tests" id="toc-misinterpreting-hypothesis-tests" class="nav-link" data-scroll-target="#misinterpreting-hypothesis-tests"><span class="header-section-number">3</span> Misinterpreting Hypothesis Tests</a>
+  <li><a href="#misinterpreting-hypothesis-tests" id="toc-misinterpreting-hypothesis-tests" class="nav-link" data-scroll-target="#misinterpreting-hypothesis-tests">Misinterpreting Hypothesis Tests</a>
   <ul class="collapse">
-  <li><a href="#common-objections-to-hypothesis-testing" id="toc-common-objections-to-hypothesis-testing" class="nav-link" data-scroll-target="#common-objections-to-hypothesis-testing"><span class="header-section-number">3.1</span> Common Objections to Hypothesis Testing</a></li>
+  <li><a href="#common-objections-to-hypothesis-testing" id="toc-common-objections-to-hypothesis-testing" class="nav-link" data-scroll-target="#common-objections-to-hypothesis-testing">Common Objections to Hypothesis Testing</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -147,7 +149,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">p-Values, Confidence Regions, and Misinterpreting Tests</h1>
+<h1 class="title">p-values, confidence regions, and (mis-)interpreting Tests</h1>
 </div>
 
 
@@ -155,12 +157,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 17, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -197,22 +193,81 @@ window.Quarto = {
 \newcommand{\Corr}{\textnormal{Corr}}
 \newcommand{\ep}{\varepsilon}
 \]</span></p>
-<section id="p-values" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="p-values"><span class="header-section-number">1</span> p-Values</h2>
-<section id="informal-definition" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="informal-definition"><span class="header-section-number">1.1</span> Informal Definition</h3>
-<p>Suppose <span class="math inline">\(\phi(x)\)</span> rejects for <span class="math inline">\(T(x) &gt; c\)</span>. The p-value is:</p>
-<p><span class="math display">\[p(x) = \mathbb{P}_0(T(X) \geq T(x)_{\text{observed}}) = \mathbb{P}_0(T(X) \geq t)\]</span></p>
-<p>Example: <span class="math inline">\(X \sim N(\theta, 1)\)</span>, <span class="math inline">\(H_0: \theta = 0\)</span> vs <span class="math inline">\(H_1: \theta \neq 0\)</span></p>
-<p>Two-sided test rejects for large <span class="math inline">\(|T(X)| = |X|\)</span>:</p>
-<p><span class="math display">\[p(x) = \mathbb{P}_0(|X| \geq |x|) = 2(1 - \Phi(|x|))\]</span></p>
-<p>The two-sided p-value is <span class="math inline">\(p(X)\)</span>, where:</p>
-<p><span class="math display">\[p(x) = \mathbb{P}_0(|X| \geq |x|) = 2\min\{\Phi(x), 1-\Phi(x)\}\]</span></p>
+<p>As we have previously defined hypothesis tests, they are characterized by dichotomous accept/reject decisions after choosing a null hypothesis, a test statistic, and a critical threshold. In practice, however, it is rare that we need to make any such dichotomous decision; if our test statistic is large enough to reject <span class="math inline">\(H_0:\;\theta=0\)</span> at the <span class="math inline">\(\alpha = 0.05\)</span> level, we might still be interested in questions like: - Would we have rejected <span class="math inline">\(H_0\)</span> at a stricter <span class="math inline">\(\alpha\)</span> level, like <span class="math inline">\(\alpha = 0.01\)</span> or <span class="math inline">\(\alpha = 0.005\)</span>? - Have we established that <span class="math inline">\(\theta\)</span> is far from zero, or only that it isn’t exactly zero?</p>
+<p>These questions can be answered by <span class="math inline">\(p\)</span>-values and confidence regions, which enrich our dichotomous decision by respectively telling us about the outcome for other <span class="math inline">\(\alpha\)</span> values we could have used, and for other null hypotheses we could have tested.</p>
+<section id="p-values" class="level1">
+<h1>p-Values</h1>
+<section id="informal-definition" class="level2">
+<h2 class="anchored" data-anchor-id="informal-definition">Informal definition</h2>
+<p>For a test that rejects for large values of a test statistic <span class="math inline">\(T(X)\)</span>, the informal definition of a <span class="math inline">\(p\)</span>-value is: &gt; The probability for <span class="math inline">\(T(X)\)</span> to be at least as large as its realized value, if the null is true.</p>
+<p>That is, for a fixed value <span class="math inline">\(x\in\cX\)</span>, the <span class="math inline">\(p\)</span>-value <span class="math inline">\(p(x)\)</span> should be <span class="math inline">\(\PP_{H_0}(T(X)\geq T(x))\)</span>, or more precisely <span class="math display">\[
+p(x) = \sup_{\theta\in\Theta_0} \PP_{\theta}(T(X) \geq T(x)),
+\]</span> allowing for the possibility of a composite null. Then the random variable <span class="math inline">\(p(X)\)</span> is the <span class="math inline">\(p\)</span>-value.</p>
+<p><strong>Example: Binomial</strong> If <span class="math inline">\(X\sim \text{Binom}(n,\theta)\)</span> and we want to test <span class="math inline">\(H_0:\;\theta\leq 0.5\)</span> vs <span class="math inline">\(H_0:\;\theta &gt; 0.5\)</span>, the UMP test rejects for large values of <span class="math inline">\(X\)</span>. Thus, the <span class="math inline">\(p\)</span>-value is <span class="math display">\[
+p(x) = \sup_{\theta\leq 0.5} \PP_\theta(X\geq x) = \PP_{0.5}(X\geq x),
+\]</span> since <span class="math inline">\(X\)</span> is stochastically increasing and the probability is therefore maximized at the boundary.</p>
+<p><strong>Example: <span class="math inline">\(Z\)</span>-test</strong> If <span class="math inline">\(X\sim N(\theta,1)\)</span> and we are testing <span class="math inline">\(H_0:\;\theta = 0\)</span> vs <span class="math inline">\(H_1:\;\theta \neq 0\)</span>, the two-sided test rejects for large <span class="math inline">\(T(X)=|X|\)</span>. The two-sided <span class="math inline">\(p\)</span>-value is therefore <span class="math display">\[
+p(x) = \PP_0(|X|&gt;|x|) = 2(1-\Phi(|x|)).
+\]</span></p>
 </section>
-<section id="formal-definition" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="formal-definition"><span class="header-section-number">1.2</span> Formal Definition</h3>
-<p>Assume we have a test <span class="math inline">\(\phi_\alpha\)</span> for each significance level <span class="math inline">\(\alpha\)</span>: <span class="math inline">\(\mathbb{E}_0[\phi_\alpha(X)] \leq \alpha\)</span></p>
-<p>In the non-randomized case: <span class="math inline">\(\phi_\alpha(x) = 1\{x \in R_\alpha\}\)</span></p>
+<section id="formal-definition" class="level2">
+<h2 class="anchored" data-anchor-id="formal-definition">Formal definition</h2>
+<p>Not all tests are easily characterized as rejecting when some <span class="math inline">\(T(X)\)</span> is above a threshold; for example, a two-sided UMPU test rejects when some <span class="math inline">\(T(X)\)</span> is either large or small. Thus it is useful to have a more general definition:</p>
+<p>Assume we are testing <span class="math inline">\(H_0:\;\theta\in\Theta_0\)</span> vs <span class="math inline">\(H_1:\;\theta\in\Theta_1\)</span> in a model <span class="math inline">\(\cP\)</span> based on data <span class="math inline">\(X\)</span>, and that we have a test <span class="math inline">\(\phi_\alpha\)</span> for every significance <span class="math inline">\(\alpha \in [0,1]\)</span>: <span class="math display">\[
+\sup_{\theta\in\Theta_0} \EE_\theta \phi_\alpha(X) \leq \alpha.
+\]</span> Assume further that <span class="math inline">\(\phi_{\alpha}\)</span> is non-decreasing in <span class="math inline">\(\alpha\)</span> (when the test rejects for smaller/stricter <span class="math inline">\(\alpha\)</span>, it also rejects for larger/more lenient <span class="math inline">\(\alpha\)</span>): <span class="math display">\[
+\phi_{\alpha_1}(X) \leq \phi_{\alpha_2}(X) \quad \text{ if } \alpha_1\leq \alpha_2.
+\]</span></p>
+<p>Then, we can define the <span class="math inline">\(p\)</span>-value with respect to this family of tests as the value of <span class="math inline">\(\alpha\)</span> for which the test barely rejects: <span class="math display">\[
+p(x) = \sup \{\alpha:\; \phi_\alpha(x) &lt; 1\} = \inf \{\alpha:\; \phi_\alpha(x) = 1\},
+\]</span> and in terms of the rejection regions: <span class="math display">\[
+p(x) = \sup \{\alpha:\; x \notin R_\alpha\} = \inf\{\alpha:\; x \in R_\alpha\}.
+\]</span></p>
+<p><strong>Example: Exponential</strong> Suppose that we are testing <span class="math inline">\(H_0:\;\theta=1\)</span> vs <span class="math inline">\(H_1:\;\theta\neq 1\)</span> in the model <span class="math inline">\(X \sim \text{Exp}(\theta)\)</span>. We can use either the equal-tailed test, or the UMPU test. Consider a value <span class="math inline">\(x&gt;1\)</span>, which will be in the acceptance region (for sufficiently small <span class="math inline">\(\alpha\)</span>) or the right lobe of the rejection region (for sufficiently large <span class="math inline">\(\alpha\)</span>). For either test, the acceptance region’s right boundary decreases continuously with <span class="math inline">\(\alpha\)</span>, so the <span class="math inline">\(p\)</span>-value is the unique value of <span class="math inline">\(\alpha\)</span> for which <span class="math inline">\(x\)</span> is on the boundary. For the equal-tailed test, we have at that <span class="math inline">\(\alpha\)</span> value <span class="math display">\[
+\alpha/2 = \PP_1(X&gt;x) = e^{-x},
+\]</span> so <span class="math inline">\(p(x) = 2e^{-x}\)</span>. For the UMPU test <span class="math inline">\(p(x)\)</span> is defined implicitly as the value of <span class="math inline">\(\alpha\)</span> for which <span class="math inline">\(c_2(\alpha) = x\)</span>, which we can solve for numerically.</p>
+<p>This formal definition reduces to our informal definition if the test <span class="math inline">\(\phi_\alpha\)</span> rejects for large <span class="math inline">\(T(X)\)</span> and the critical threshold is tight:</p>
+<p><strong>Proposition:</strong> Assume that for each <span class="math inline">\(\alpha\)</span>, we reject for large <span class="math inline">\(T(X)\)</span>, taking the threshold <span class="math inline">\(c_\alpha\)</span> as small as possible while achieving Type I error control:[^1] <span class="math display">\[
+c_\alpha = \min \left\{c:\; \PP_\theta(T(X) &gt; c) \leq \alpha, \text{ for all } \theta\in\Theta_0 \right\},
+\]</span> noting that the minimum is well-defined because (complementary) CDFs are right-continuous.</p>
+<p>At the boundary, we either</p>
+<ul>
+<li><p>(non-randomized <span class="math inline">\(\phi\)</span>) reject if <span class="math inline">\(\PP_\theta(T(X) \geq c_\alpha) \leq \alpha\)</span> for all <span class="math inline">\(\theta\in\Theta_0\)</span>, or</p></li>
+<li><p>(randomized <span class="math inline">\(\phi\)</span>) reject with probability <span class="math display">\[
+\gamma_\alpha = \max\left\{ \gamma:\; \PP_\theta(T &gt; c_\alpha) + \gamma\PP_\theta(T = c_\alpha)  \leq \alpha, \forall \theta\in\Theta_0\right\}
+\]</span></p></li>
+</ul>
+<p>Then the two definitions of <span class="math inline">\(p(x)\)</span> coincide.</p>
+<p><em>Proof:</em> In the non-randomized case, define <span class="math inline">\(\gamma_\alpha = 1\)</span> if we reject at the boundary and <span class="math inline">\(0\)</span> otherwise.</p>
+<p>Let <span class="math inline">\(p_1(x) = \sup_{\theta\in\Theta_0} \PP_\theta(T(X)\geq T(x))\)</span>, and <span class="math inline">\(p_2(x) = \sup\{\alpha:\; \phi_\alpha(x) &lt; 1\}\)</span>. We have <span class="math display">\[
+\begin{aligned}
+p_1(x) &gt; \alpha
+&amp;\iff \PP_\theta(T(X) \geq T(x)) &gt; \alpha, \text{ for some } \theta\in\Theta_0\\
+&amp;\iff c_\alpha &gt; x, \text{ or } c_\alpha = x \text{ and } \gamma_\alpha &lt; 1\\
+&amp;\iff \phi_\alpha(x) &lt; 1.
+\end{aligned}
+\]</span> But then <span class="math display">\[
+p_2(x) = \sup\{\alpha:\; p_1(x) &gt; \alpha\} = \alpha,
+\]</span> as desired.<span class="math inline">\(\blacksquare\)</span></p>
+<!-- ### Randomized $p$-values -->
+<!-- We do not usually bother to randomize the $p$-value, but if we want to, we can augment the data with a uniform random variable $U \sim \text{Unif}[0,1]$ independently of $X$, and define a new test on the augmented sample space: -->
+<!-- $$ -->
+<!-- \tilde\phi_\alpha(x,u) = 1\{\phi_\alpha(x) > 1-u\}. -->
+<!-- $$ -->
+<!-- The test $\tilde\phi$ has conditional rejection probability $\phi_\alpha(x)$ given $X=x$,  so -->
+<!-- $$ -->
+<!-- \EE_\theta \tilde\phi_\alpha(X,U) = \EE_\theta \phi_\alpha(X), -->
+<!-- $$ -->
+<!-- and it is is monotone in $\alpha$ if $\phi_\alpha$ was. Then we can define  -->
+</section>
+<section id="super-uniformity" class="level2">
+<h2 class="anchored" data-anchor-id="super-uniformity">Super-uniformity</h2>
+<p>The <span class="math inline">\(p\)</span>-value for any valid test <span class="math inline">\(\phi_\alpha\)</span> is <strong>super-uniform</strong> on the null, meaning it is stochastically larger than uniform: <span class="math display">\[
+\PP_\theta( p(X) \leq \alpha ) \leq \alpha, \text{ for all } \theta\in\Theta_0.
+\]</span> Note that <span class="math inline">\(p(x) &gt; \alpha\)</span> if and only</p>
+<p>To see why, for any <span class="math inline">\(\theta\in\Theta_0\)</span> we must have <span class="math display">\[
+\PP_\theta( p(X) &gt; \alpha ) = \PP_\theta( \phi_{\alpha+\ep}(X) &lt; 1)
+\]</span></p>
 <p>Assume tests are monotone in <span class="math inline">\(\alpha\)</span>: if <span class="math inline">\(\alpha \leq \alpha'\)</span>, then <span class="math inline">\(\phi_\alpha(x) \leq \phi_{\alpha'}(x)\)</span></p>
 <p>(In non-randomized case: <span class="math inline">\(R_\alpha \subseteq R_{\alpha'}\)</span>)</p>
 <p>Then:</p>
@@ -226,14 +281,13 @@ window.Quarto = {
 <p>Example: <span class="math inline">\(X \sim N(\theta, I_d)\)</span>, <span class="math inline">\(H_0: \theta = 0\)</span> vs <span class="math inline">\(H_1: \theta \neq 0\)</span></p>
 <p>We can use <span class="math inline">\(T(x) = \|x\|_2^2\)</span> (<span class="math inline">\(\chi^2\)</span> test) or <span class="math inline">\(T(x) = \max_i |x_i|\)</span> (max test)</p>
 <p>Very different p-values, power if <span class="math inline">\(d\)</span> large Choice reflects belief about whether <span class="math inline">\(\theta\)</span> is sparse</p>
-</section>
-<section id="acceptreject-decisions" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="acceptreject-decisions"><span class="header-section-number">1.3</span> Accept/Reject Decisions</h3>
+<section id="acceptreject-decisions" class="level3">
+<h3 class="anchored" data-anchor-id="acceptreject-decisions">Accept/Reject Decisions</h3>
 <p>Accept/reject decisions are not interesting Usually, we care how big <span class="math inline">\(\theta\)</span> is Tiny p-value doesn’t imply big <span class="math inline">\(\theta\)</span> Big p-value doesn’t imply small <span class="math inline">\(\theta\)</span> either</p>
 </section>
 </section>
-<section id="confidence-regions" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="confidence-regions"><span class="header-section-number">2</span> Confidence Regions</h2>
+<section id="confidence-regions" class="level2">
+<h2 class="anchored" data-anchor-id="confidence-regions">Confidence Regions</h2>
 <p>Definition: <span class="math inline">\(C: \cX \to \cP(\Theta)\)</span> is a <span class="math inline">\(1-\alpha\)</span> confidence set for <span class="math inline">\(g(\theta)\)</span> if:</p>
 <p><span class="math display">\[\mathbb{P}_\theta(C(X) \ni g(\theta)) \geq 1-\alpha \quad \forall \theta \in \Theta\]</span></p>
 <p>We say <span class="math inline">\(C(x)\)</span> covers <span class="math inline">\(g(\theta)\)</span> if <span class="math inline">\(C(x) \ni g(\theta)\)</span></p>
@@ -241,8 +295,8 @@ window.Quarto = {
 <p><span class="math inline">\(\inf_\theta \mathbb{P}_\theta(C(X) \ni g(\theta))\)</span> is confidence level</p>
 <p>Note: <span class="math inline">\(C(X)\)</span> is random, not <span class="math inline">\(g(\theta)\)</span></p>
 <p>Often misinterpreted as Bayesian guarantee Say “<span class="math inline">\(C(x)\)</span> has a 95% chance of covering” Not “<span class="math inline">\(g(\theta)\)</span> has a 95% chance of being in <span class="math inline">\(C\)</span>” NEVER “95% chance <span class="math inline">\(g(\theta) \in [0.5, 1.5]\)</span>” e.g.</p>
-<section id="duality-of-testsconfidence-sets" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="duality-of-testsconfidence-sets"><span class="header-section-number">2.1</span> Duality of Tests/Confidence Sets</h3>
+<section id="duality-of-testsconfidence-sets" class="level3">
+<h3 class="anchored" data-anchor-id="duality-of-testsconfidence-sets">Duality of Tests/Confidence Sets</h3>
 <p>Suppose we have a level <span class="math inline">\(\alpha\)</span> test <span class="math inline">\(\phi(\cdot, a)\)</span> of <span class="math inline">\(H_0: g(\theta) = a\)</span> vs <span class="math inline">\(H_1: g(\theta) \neq a\)</span>, <span class="math inline">\(\forall a \in \Theta\)</span></p>
 <p>We can use it to make a confidence set for <span class="math inline">\(g(\theta)\)</span>:</p>
 <p>Let <span class="math inline">\(C(X) = \{a: \phi(X, a) = 0\}\)</span> (all non-rejected values of <span class="math inline">\(a\)</span>)</p>
@@ -254,8 +308,8 @@ window.Quarto = {
 <p><span class="math display">\[\mathbb{E}_\theta[\phi(X)] = \mathbb{P}_\theta(a \notin C(X)) = \mathbb{P}_\theta(C(X) \not\ni g(\theta)) \leq \alpha\]</span></p>
 <p>This is called inverting a test.</p>
 </section>
-<section id="confidence-intervalsbounds" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="confidence-intervalsbounds"><span class="header-section-number">2.2</span> Confidence Intervals/Bounds</h3>
+<section id="confidence-intervalsbounds" class="level3">
+<h3 class="anchored" data-anchor-id="confidence-intervalsbounds">Confidence Intervals/Bounds</h3>
 <p>If <span class="math inline">\(C(X) = [C_L(X), C_U(X)]\)</span>, we say: - <span class="math inline">\(C(X)\)</span> is a confidence interval (CI) - <span class="math inline">\(C_L(X)\)</span> is a lower confidence bound (LCB) - <span class="math inline">\(C_U(X)\)</span> is an upper confidence bound (UCB)</p>
 <p>We usually get LCB, UCB by inverting a one-sided test in appropriate direction Called uniformly most accurate (UMA) if test UMP</p>
 <p>Get CI by inverting a two-sided test Called UMAU if test is UMPU</p>
@@ -271,8 +325,8 @@ window.Quarto = {
 <p>Similar for UMPU 2-sided test</p>
 </section>
 </section>
-<section id="misinterpreting-hypothesis-tests" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="misinterpreting-hypothesis-tests"><span class="header-section-number">3</span> Misinterpreting Hypothesis Tests</h2>
+<section id="misinterpreting-hypothesis-tests" class="level2">
+<h2 class="anchored" data-anchor-id="misinterpreting-hypothesis-tests">Misinterpreting Hypothesis Tests</h2>
 <p>Hypothesis tests ubiquitous in science Common misinterpretations:</p>
 <ol type="1">
 <li>p &lt; 0.05, therefore there is an effect (or the effect size = the estimate)</li>
@@ -285,8 +339,8 @@ window.Quarto = {
 <p>Interpreting tests is not easy or automatic Hypothesis tests let us ask specific questions under specific modeling assumptions Interpreting them requires care and experience</p>
 <p>Top-tier medical journals let people publish claims reporting p-values without saying what model was used or what test was employed Pretty bad when you think about it</p>
 <p>Hyp. tests can be a good companion to critical thinking, never a substitute All models are wrong, some are useful, but need experience and theory to understand when assumptions do or don’t cause real trouble</p>
-<section id="common-objections-to-hypothesis-testing" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="common-objections-to-hypothesis-testing"><span class="header-section-number">3.1</span> Common Objections to Hypothesis Testing</h3>
+<section id="common-objections-to-hypothesis-testing" class="level3">
+<h3 class="anchored" data-anchor-id="common-objections-to-hypothesis-testing">Common Objections to Hypothesis Testing</h3>
 <ol type="1">
 <li><p>Why should I test <span class="math inline">\(\theta = 0\)</span>? Is <span class="math inline">\(\theta\)</span> ever exactly 0?</p>
 <p>A: a. Test <span class="math inline">\(H_0: |\theta| &lt; \epsilon\)</span> if you want If <span class="math inline">\(\sigma_{\hat{\theta}} \ll \epsilon\)</span>, not much difference</p>
@@ -299,6 +353,7 @@ window.Quarto = {
 </ol>
 
 
+</section>
 </section>
 </section>
 
