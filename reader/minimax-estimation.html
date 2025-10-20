@@ -395,7 +395,7 @@ window.Quarto = {
 \newcommand{\eqD}{\stackrel{D}{=}}
 \newcommand{\indep}{\perp\!\!\!\!\perp}
 \DeclareMathOperator*{\minz}{minimize\;}
-\DeclareMathOperator*{\maxz}{minimize\;}
+\DeclareMathOperator*{\maxz}{maximize\;}
 \DeclareMathOperator*{\argmin}{argmin\;}
 \DeclareMathOperator*{\argmax}{argmax\;}
 \newcommand{\Var}{\textnormal{Var}}
@@ -460,7 +460,7 @@ r_\Lambda \leq r^* \leq \sup_\theta R(\theta;\delta_\Lambda) = r^*,
 </div>
 <p>Thus, <span class="math inline">\(\delta_\Lambda(X)=\tanh(X)\)</span> is also minimax for this problem.</p>
 <p><strong>Note:</strong> A common mistake students make is to come up with a prior <span class="math inline">\(\Lambda\)</span>, then calculate <span class="math inline">\(r_\Lambda\)</span> and observe that it does not depend on <span class="math inline">\(\theta\)</span>. We can apply our theorem if <span class="math inline">\(R(\theta;\delta_\Lambda)\)</span> is constant, but we haven’t shown anything if we just show that <span class="math inline">\(r_\Lambda\)</span> is constant. <span class="math inline">\(r_\Lambda\)</span> for <em>any</em> prior will not depend on <span class="math inline">\(\theta\)</span>, for the simple reason that we have integrated it out.</p>
-<p><strong>Example (Binomial):</strong> As a more prosaic example, consider estimating <span class="math inline">\(\theta\)</span> with squared error loss, in the model <span class="math inline">\(X\sim \text{Binom}(n,\theta)\)</span>. Since we know that the Bayes estimator for the <span class="math inline">\(\text{Beta}(\alpha,\beta)\)</span> prior is <span class="math inline">\(\frac{X+\alpha}{n+\alpha+\beta}\)</span>, we can see whether one of the Bayes estimators in this class has a constant risk function. If one does, it should be a symmetric prior, so we can try <span class="math inline">\(\alpha=\beta\)</span>, so let <span class="math inline">\(\delta_\alpha=\frac{X+\alpha}{X+2\alpha}\)</span>.</p>
+<p><strong>Example (Binomial):</strong> As a more prosaic example, consider estimating <span class="math inline">\(\theta\)</span> with squared error loss, in the model <span class="math inline">\(X\sim \text{Binom}(n,\theta)\)</span>. Since we know that the Bayes estimator for the <span class="math inline">\(\text{Beta}(\alpha,\beta)\)</span> prior is <span class="math inline">\(\frac{X+\alpha}{n+\alpha+\beta}\)</span>, we can see whether one of the Bayes estimators in this class has a constant risk function. If one does, it should be a symmetric prior, so we can try <span class="math inline">\(\alpha=\beta\)</span>, so let <span class="math inline">\(\delta_\alpha=\frac{X+\alpha}{n+2\alpha}\)</span>.</p>
 <p>To calculate the MSE, we first calculate the mean and bias of <span class="math inline">\(\delta_\alpha(X)\)</span> as <span class="math display">\[
 \EE_\theta \left[\frac{X+\alpha}{n+2\alpha}\right] = \frac{n\theta +\alpha}{n+2\alpha} \;\;\Longrightarrow\;\; \text{Bias}(\theta;\delta_\alpha) = \frac{\alpha (1-2\theta)}{n+2\alpha},
 \]</span> and the variance as <span class="math display">\[
