@@ -357,6 +357,12 @@ window.Quarto = {
  <span class="menu-text">p-values, confidence regions, and (mis-)interpreting Tests</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reader/testing-nuisance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing with Nuisance Parameters</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -447,7 +453,7 @@ window.Quarto = {
 <h2 data-number="2" class="anchored" data-anchor-id="one-sided-testing"><span class="header-section-number">2</span> One-sided testing</h2>
 <p>Last time, we showed that if the family <span class="math inline">\(\cP\)</span> has MLR in the statistic <span class="math inline">\(T(X)\)</span>, then the one-sided test that rejects for large <span class="math inline">\(T(X)\)</span> is UMP for testing <span class="math inline">\(H_0:\;\theta\leq \theta_0\)</span> vs <span class="math inline">\(H_1:\;\theta &gt; \theta_0\)</span>, because:</p>
 <ol type="i">
-<li><p>it is simultaneously the likelihood ratio test for <span class="math inline">\(H_0:\;\theta = \theta_0\)</span> vs <span class="math inline">\(H_1:\;\theta = \theta_1\)</span>, for every <span class="math inline">\(\theta_1 &gt; 0\)</span>, and</p></li>
+<li><p>it is simultaneously the likelihood ratio test for <span class="math inline">\(H_0:\;\theta = \theta_0\)</span> vs <span class="math inline">\(H_1:\;\theta = \theta_1\)</span>, for every <span class="math inline">\(\theta_1 &gt; \theta_0\)</span>, and</p></li>
 <li><p>it controls the Type I error for all <span class="math inline">\(\theta &lt; \theta_0\)</span>.</p></li>
 </ol>
 <p>Recall that a test <em>rejects for large <span class="math inline">\(T(X)\)</span></em> if it is of the form <span class="math display">\[\phi(X) = \begin{cases} 1 &amp;\quad \text{ if } T(X) &gt; c \\ 0 &amp;\quad \text{ if } T(X) &lt; c\\ \gamma &amp;\quad \text{ if } T(X) = c\end{cases},\]</span> where the critical threshold <span class="math inline">\(c\)</span> is the <em>upper-<span class="math inline">\(\alpha\)</span> quantile at the boundary</em> <span class="math display">\[
