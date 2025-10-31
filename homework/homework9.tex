@@ -45,9 +45,9 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 9 \\
-  {\large {\bf Due on}: Friday, Nov. 8}}
+  {\large {\bf Due on}: Wednesday, Nov. 5}}
 \date{}
 
 \maketitle
@@ -78,41 +78,17 @@ Find the UMPU level-$\alpha$ test of $H_0$ in part (a), show that the test stati
 
 \item Find the conditional distribution of your test statistic for general $\theta$. Note you do not need to find a closed-form expression for the normalizing constant.
 
+
+
 \item Suppose $n_0=n_1=40$, $X_0=18$ and $X_1=7$. Give a $95\%$ confidence interval for the odds ratio $\rho$ by numerically inverting the two-sided,
 equal-tailed, conditional test of $H_0:\; \rho=\rho_0$ vs. $H_1:\; \rho \neq \rho_0$. Don't randomize the interval, just return the conservative non-randomized interval. (Hint: it is equivalent to set up the problem in terms of $\theta$, and may be a little easier to think about that way.)
 
 
 \end{enumerate}
 
-{\bf Note:} Fisher's exact test is almost certainly the most important non-Gaussian example of a UMPU test with nuisance parameters, and has been used in countless clinical trials and observational studies. For example, we might give $n_1$ cardiac disease patients a new drug and give $n_0$ a placebo, then observe how many patients in each group suffer a heart attack within the next 5 years.
+\paragraph{Moral:} Fisher's exact test is almost certainly the most important non-Gaussian example of a UMPU test with nuisance parameters, and has been used in countless clinical trials and observational studies. For example, we might give $n_1$ cardiac disease patients a new drug and give $n_0$ a placebo, then observe how many patients in each group suffer a heart attack within the next 5 years. It can be derived directly from the simple tools we are learning in class.
 \end{problem}
 
-\begin{problem}[Comparing variances]
-\label{prob:comparing-variances}
-Consider testing $H_0:\; \sigma^2 \leq \tau^2$ vs. $H_1:\; \sigma^2 > \tau^2$ in the two-sample Gaussian model with
-\[
-  X_1,\ldots,X_n \simiid N(\mu,\sigma^2), \quad Y_1,\ldots,Y_m\simiid N(\nu,\tau^2),
-\]
-where $X$ is independent of $Y$ and all parameters are unknown.
-
-Define the sample mean and sample variance as
-\[
-\overline X = \frac{1}{n}\sum_{i=1}^n X_i,  \quad S_X^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i-\overline X)^2,
-\]
-and define $\overline Y$ and $S_Y^2$ analogously.
-
-\begin{enumerate}[(a)]
-\item Show that $S_X^2/S_Y^2 \sim F_{n-1,m-1}$ if $\sigma^2=\tau^2$ (i.e., on the boundary of the null).
-
-
-
-\item Show that the test that rejects for (marginally) large values of $S_X^2/S_Y^2$ is UMPU (Hint: it may be helpful to recall that $\overline X, S_X^2, \overline Y,$ and $S_Y^2$ are mutually independent by Basu's theorem, and that ${(n-1)S_X^2 = \|X\|^2 - n\overline X^2}$.)
-
-
-
-%%Maybe next year ask for a confidence interval or confidence bound? Maybe do random effects ANOVA?
-\end{enumerate}
-\end{problem}
 
 
 \begin{problem}[One-sample $t$-interval]
@@ -138,6 +114,9 @@ We showed in class that the one-sided UMPU test for $H_0:\;\mu \leq 0$ vs. $H_1:
 
 
 \end{enumerate}
+
+\paragraph{Moral:} The $t$-test of $\mu=0$ that we are familiar with can be derived from the theory of UMPU conditional testing, but we need to additionally use the location family structure to get a conditional interval.
+
 \end{problem}
 
 \begin{problem}[McNemar's test]
@@ -163,7 +142,7 @@ Write $\pi_X = \PP(X_i=1) = \pi_{1,0}+\pi_{1,1}$ and $\pi_Y = \PP(Y_i=1) = \pi_{
 
 (Note: This test is called McNemar's test; it is very useful for clinical trials with matched pairs of subjects, and also for comparing the performance of different classifiers on a held-out sample.)
 
-  {\bf Moral:} When we have paired data, we can often make much more precise comparisons between two distributions; even more precise than our ability to infer things about either of the distributions individually. This is often worth taking into account if we are designing an experiment: for example, if we match patients into pairs on demographic characteristics and then randomize a treatment/placebo assignment within each pair, we may get a very good inference about whether the treatment is better than the placebo, much better than we would get if we randomly assigned all $2n$ subjects independently of each other.
+\paragraph{Moral:} When we have paired data, we can often make much more precise comparisons between two distributions; even more precise than our ability to infer things about either of the distributions individually. This is often worth taking into account if we are designing an experiment: for example, if we match patients into pairs on demographic characteristics and then randomize a treatment/placebo assignment within each pair, we may get a very good inference about whether the treatment is better than the placebo, much better than we would get if we randomly assigned all $2n$ subjects independently of each other.
 \end{problem}
 
 \begin{problem}[Nonparametric tests]
@@ -184,7 +163,7 @@ In this problem you will design tests for two nonparametric hypothesis testing p
 
 Note that the alternative is defined a little vaguely in each part above. If that troubles you, we could formally take the alternative be ``$P_i$ are arbitrary but not all equal'' in part (a), or ``$P \neq P_X \times P_Y$'' in part (b). The alternative hypotheses as I've defined them informally are meant to suggest which alternatives to prioritize when you design your test.
 
-{\bf Moral:} We can often design our own nonparametric tests by conditioning on an appropriate sufficient statistic for the null distribution.
+\paragraph{Moral:} We can often design our own nonparametric tests by conditioning on an appropriate sufficient statistic for the null distribution.
 \end{problem}
 
 
