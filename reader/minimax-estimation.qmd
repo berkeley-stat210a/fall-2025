@@ -9,155 +9,190 @@ format:
 
 {{< include latex-macros.tex >}}
 
-## Minimax Risk Estimator
+$\DeclareMathOperator*{\minimize}{\textnormal{minimize}}$
 
-### Definition of Minimax Risk
+# Minimax risk and estimator
 
-The last idea for choosing an estimator: worst-case risk.
+## Definitions
 
-Minimize $\sup_\theta R(\theta, \delta)$
+Since introducing the basic problem in [Lecture 3](estimation.qmd) of how to choose between estimators, we have studied two possible answers: First, to constrain our choice of estimator to be unbiased, which in the presence of a complete sufficient statistic narrows our choices to (at most) one good unbiased estimator for any estimand; and second, to summarize risk functions by their average-case risk, which leads us to Bayes estimators. In this lecture, we will consider another idea: to minimize the worst-case risk:
+$$
+\minimize_{\delta} \sup_{\theta\in\Theta} R(\theta;\delta)
+$$
+The (possibly unattainable) infimum of all estimators' sup-risks is called the **minimax risk** of the estimation problem
+$$
+r^* = \inf_\delta \sup_\theta R(\theta;\delta),
+$$
+and an estimator $\delta^*$ is called **minimax** if it achieves the minimax risk, i.e. if
+$$
+\sup_\theta R(\theta; \delta^*) = r^*.
+$$
+Whether or not a minimax estimator exists, or we want to use it, it can be informative to investigate a problem's minimax risk as a measure of how difficult the problem is, and in particular how it changes with the sample size, problem dimension, or other problem parameters. Thus, it is useful to be able to bound $r^*$ from above and below.
 
-The minimum achievable sup risk is called the minimax risk of the estimation problem:
+## Game theoretic interpretation
 
-$$r = \inf_\delta \sup_\theta R(\theta, \delta)$$
+We can think of the minimax risk as the expected payoff in an adversarial zero-sum game between the analyst, who chooses the estimator to make the risk as small as possible, and "Nature," who waits to see what estimator the analyst chooses and then assigns the parameter to make the risk as large as possible. If the analyst plays first and selects the estimator $\delta$, then Nature will always select the value of $\theta$ that maximizes $R(\theta;\delta)$; then $r^*$ corresponds to the attained risk in this game, and $\delta^*$ to the analyst's optimal move.
 
-An estimator $\delta$ is called minimax if it achieves the minimax risk, i.e.,
+What if Nature played first? If the analyst could know $\theta$ while choosing $\delta$, the problem would be too easy, but it becomes more interesting if we allow Nature to choose a *mixed strategy* of sampling $\theta \sim \Lambda$. Then, an analyst who could see the prior (but not the realized value of $\theta$) would play the Bayes estimator $\delta_\Lambda$ and attain the Bayes risk.
 
-$$\sup_\theta R(\theta, \delta) = r$$
+Intuitively, the analyst is in a better position when playing second than when playing first, and indeed the Bayes risk for any $\Lambda$ is a lower bound for the minimax risk: 
+$$
+r_\Lambda \;=\; \inf_{\delta} \int_\Theta R(\theta;\delta)\;d\Lambda(\theta) \;\leq\; \inf_{\delta} \sup_\theta R(\theta; \delta) \;=\; r^*,
+$$
+since any estimator's average-case risk is no larger than its worst-case risk.
 
-### Game Theory Interpretation
-
-1. Analyst chooses estimator $\delta$
-2. Nature chooses parameter $\theta$ to maximize risk
-
-Note: Nature chooses $\theta$ adversarially, not $X$.
-
-Compare to Bayes where Nature chooses prior from a known distribution (Nature plays a specific mixed strategy).
-
-We will look for Nature's Nash equilibrium strategy.
+To optimize this lower bound on $r^*$, we can try to find Nature's Nash equilibrium strategy.
 
 ## Least Favorable Priors
 
-Minimax is closely related to Bayes.
+Since $r_\Lambda$ for any prior $\Lambda$ lower-bounds the minimax risk, we have $\sup_\Lambda r_\Lambda \leq r^*$. If a prior $\Lambda^*$ attains this supremum, we call it **least favorable prior**. When the supremum is not attainable by any prior, we can still attain it in the limit by defining a sequence of priors $\Lambda_1,\Lambda_2,\ldots$ with $r_{\Lambda_n}\to \sup_\Lambda r_\Lambda$; such a sequence is called a least favorable sequence of priors.
 
-Key observation: average case risk ≤ worst case risk
+Since $\sup_\theta R(\theta;\delta)$ for any estimator $\delta$ is also an upper bound for $r^*$, one way to show that we have a least favorable prior and a minimax estimator is to show that the Bayes risk $r_\Lambda$ and the sup-risk of  the Bayes estimator $\delta_\Lambda$ give matching lower and upper bounds:
 
-For proper prior $\pi$, the Bayes risk is:
+**Theorem:** Suppose that $r_\Lambda$ and $\delta_\Lambda$ are the Bayes risk and Bayes estimator for a prior $\Lambda$, and assume that $r_\Lambda = \sup_\theta R(\theta;\delta_\Lambda)$. Then $\delta_\Lambda$ is minimax, $\Lambda$ is least favorable, and $r_\Lambda = r^*$.
 
-$$r(\pi) = \int_\Theta R(\theta, \delta_\pi) d\pi(\theta)$$
+Moreover, if $\delta_\Lambda$ is the unique Bayes estimator for $\Lambda$ (up to $\stackrel{\text{a.s.}}{=}$) then it is the unique minimax estimator.
 
-$$\leq \int_\Theta \sup_\theta R(\theta, \delta) d\pi(\theta) = \sup_\theta R(\theta, \delta)$$
+*Proof:*
+1. For any other estimator $\delta$, we have
+$$
+\begin{aligned}
+\sup_\theta R(\theta;\delta) 
+&\geq \int R(\theta;\delta)\,d\Lambda(\theta)\\
+&\geq r_\Lambda\\
+&= \sup_\theta R(\theta;\delta_\Lambda),
+\end{aligned}
+$$
+so $\delta_\Lambda$ is minimax. If $\delta_\Lambda$ is the unique Bayes estimator, then the second inequality is strict, so $\delta_\Lambda$ is the unique minimax estimator.
 
-If $\delta_\pi$ is Bayes, then $r(\pi) = \inf_\delta \int_\Theta R(\theta, \delta) d\pi(\theta)$
+Moreover, we have 
+$$
+r_\Lambda \leq r^* \leq \sup_\theta R(\theta;\delta_\Lambda) = r^*,
+$$
+so $r_\Lambda=r^*$ and $\Lambda$ is optimizing the lower bound.$\blacksquare$
 
-Bayes risk of any Bayes estimator lower bounds $r$.
+This theorem shows that any Bayes estimator is minimax if its average-case risk is the same as its worst-case risk. The simplest way this could be true is if the risk function is constant.
 
-Least favorable prior $\pi$ gives best lower bound: $r(\pi) = \sup_\pi r(\pi)$
+More generally, it could be true if the prior puts all of its mass on parameter values that attain the worst-case risk, as in the following example:
 
-Sup risk of any estimator upper bounds $r$:
+**Example:** We observe $X\sim N(\theta,1)$ where $|\theta|\geq 1$, and we want to estimate $g(\theta)=\text{sgn}(\theta)$ under squared-error loss. Let $\Lambda$ be the prior that puts mass $1/2$ on $\theta=1$ and $\theta=-1$, and no mass anywhere else. The posterior probability that $\theta=1$ is given by
+$$
+\PP(\theta=1\mid X=x) = \frac{\phi(x-1)}{\phi(x-1)+\phi(x+1)},
+$$
+so the Bayes estimator is
+$$
+\EE_\Lambda[g(\theta) \mid X=x] = \frac{\phi(x-1) - \phi(x+1)}{\phi(x-1)+\phi(x+1)} = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}} = \tanh(x).
+$$
+We can plot the risk function for this estimator below to verify that it attains its sup-risk at both $\theta=-1$ and $\theta=1$, and therefore on the entire support of $\Lambda$:
 
-$$\sup_\theta R(\theta, \delta) \geq r \geq \sup_\pi r(\pi)$$
+```{r, echo=FALSE}
+z <- rnorm(1E5)
+thet.max <- 3
+curve(sapply(x, function(theta) mean( (tanh(theta+z)-1)^2)), 1,thet.max, xlim=c(-thet.max,thet.max), ylim=c(0,.5),
+      xlab=expression(theta),ylab=expression(R(theta*"; "*delta[Lambda])), main=expression("Risk function for "*delta[Lambda](X)==tanh(X)))
+curve(sapply(x, function(theta) mean( (tanh(-theta+z)-1)^2)), -thet.max,-1, add=TRUE)
+abline(v=c(-1,1),lty=2)
+points(x=c(-1,1), y=rep(mean( (tanh(1+z)-1)^2),2), pch=16)
+```
 
-Can exhibit minimax est. & LF prior by finding $\pi$ and $\delta$ that collapse these inequalities.
+Thus, $\delta_\Lambda(X)=\tanh(X)$ is also minimax for this problem.
 
-### Theorem
+**Note:** A common mistake students make is to come up with a prior $\Lambda$, then calculate $r_\Lambda$ and observe that it does not depend on $\theta$. We can apply our theorem if $R(\theta;\delta_\Lambda)$ is constant, but we haven't shown anything if we just show that $r_\Lambda$ is constant. $r_\Lambda$ for *any* prior will not depend on $\theta$, for the simple reason that we have integrated it out.
 
-If $R(\delta_\pi) = \sup_\theta R(\theta, \delta_\pi)$ with Bayes estimator $\delta_\pi$, then:
+**Example (Binomial):** As a more prosaic example, consider estimating $\theta$ with squared error loss, in the model $X\sim \text{Binom}(n,\theta)$. Since we know that the Bayes estimator for the $\text{Beta}(\alpha,\beta)$ prior is $\frac{X+\alpha}{n+\alpha+\beta}$, we can see whether one of the Bayes estimators in this class has a constant risk function. If one does, it should be a symmetric prior, so we can try $\alpha=\beta$, so let $\delta_\alpha=\frac{X+\alpha}{n+2\alpha}$.
 
-a) $\delta_\pi$ is minimax
-b) If $\delta_\pi$ is unique Bayes (up to $\pi$-a.e.), it is unique minimax
-c) $\pi$ is least favorable
+To calculate the MSE, we first calculate the mean and bias of $\delta_\alpha(X)$ as
+$$
+\EE_\theta \left[\frac{X+\alpha}{n+2\alpha}\right] = \frac{n\theta +\alpha}{n+2\alpha} \;\;\Longrightarrow\;\; \text{Bias}(\theta;\delta_\alpha) = \frac{\alpha (1-2\theta)}{n+2\alpha},
+$$
+and the variance as
+$$
+\Var_\theta \left(\frac{X+\alpha}{n+2\alpha}\right) =  \frac{\Var_\theta(X)}{(n+2\alpha)^{2}} = \frac{n\theta(1-\theta)}{(n+2\alpha)^{2}}.
+$$
 
-Proof:
+Thus, the MSE is
+$$
+\begin{aligned}
+\text{MSE}(\theta;\delta_\alpha) 
+&= \frac{\alpha^2(1-2\theta)^2+ n\theta(1-\theta)}{(n+2\alpha)^{2}} \\[7pt]
+&= \frac{\alpha^2+(n-4\alpha^2)\theta(1-\theta)}{(n+2\alpha)^{2}}.
+\end{aligned}
+$$
+Setting $\alpha^* = \sqrt{n}/2$ eliminates the dependence on $\theta$, giving constant MSE of 
+$$
+R(\theta;\delta_{\alpha^*})=\left(\frac{\alpha^*}{n+2\alpha^*}\right)^2 = \frac{n}{4(n+\sqrt{n})^2}
+$$
+Since $\delta_{\alpha^*}$ is the unique Bayes estimator for $\Lambda^*=\text{Beta}(\alpha^*,\alpha^*)$, we can conclude that it is the unique minimax estimator, and $\Lambda^*$ is least favorable with $r^*=r_{\Lambda^*}=\frac{n}{4(n+\sqrt{n})^2}$.
 
-a) Any other $\delta$:
-   $$\sup_\theta R(\theta, \delta) \geq \int R(\theta, \delta) d\pi(\theta) \geq$$
-   $$\int R(\theta, \delta_\pi) d\pi(\theta) = r(\pi) = \sup_\theta R(\theta, \delta_\pi)$$
-   $r$ is minimax risk, $\delta_\pi$ is minimax
+In particular, for $n=16$, we have $\alpha^*=2$ and $\delta_{\alpha^*}(X) = \frac{X+2}{X+4}$, as claimed in [Lecture 3](estimation.qmd).
 
-b) Replace $\geq$ with $=$ in 2nd inequality ⟹ $\delta = \delta_\pi$ $\pi$-a.e.
+Note that while we can consider $\Lambda^*$ as a kind of "objective prior" in that it is chosen without reference to anyone's subjective opinion, it is very different from the Jeffreys prior $\text{Beta}\left(\frac{1}{2},\frac{1}{2}\right)$, which puts greatest weight on $\theta$ near $0$ and $1$ (where the Fisher information is greatest). By contrast, $\Lambda^*$ places greatest weight near $\theta=\frac{1}{2}$, where the problem of estimating $\theta$ is the most difficult (at least, as measured by squared error in the probability parameter).
 
-c) Any other prior $\pi'$:
-   $$\inf_\delta r(\pi') \leq \int R(\theta, \delta_\pi) d\pi'(\theta)$$
-   $$\leq \sup_\theta R(\theta, \delta_\pi) = r(\pi)$$
+```{r, echo=FALSE}
+n <- 400
+curve(dbeta(x, sqrt(n)/2,sqrt(n)/2), main=expression("Least favorable and Jeffreys priors, n = "*400), xlab=expression(theta), ylab=expression(lambda(theta)))
+curve(dbeta(x, 1/2,1/2), add=TRUE, col="red")
+legend("topleft",lty=1,col=1:2,legend=c("Least favorable prior","Jeffreys prior"))
+```
 
-The above theorem gives a checkable condition: does avg risk = sup risk?
+Unfortunately, this is quite a bad estimator throughout most of the parameter space, at least for large $n$. Consider comparing the minimax estimator to the UMVU estimator $\delta_0 = X/n$, whose MSE is $\frac{\Var_\theta(X)}{n^2}=\frac{\theta(1-\theta)}{n}$:
+$$
+\frac{\text{MSE}(\theta;\delta_{0})}{\text{MSE}(\theta;\delta_{\alpha^*})} = \frac{\theta(1-\theta)/n}{n/4(n+\sqrt{n})^2} = 4\theta(1-\theta)\cdot (1+n^{-1/2})^2.
+$$
+This ratio is maximized at $\theta=\frac{1}{2}$, where the UMVU estimator is indeed suboptimal by a factor of $(1+n^{-1/2})^2\approx 1+2n^{-1/2}$ --- so the advantage increasingly minuscule as $n$ gets large. But elsewhere in the parameter space, the UMVU is dramatically better: at $\theta = 0.01$, the ratio is about $0.04$ so the UMVU estimator is beating the minimax estimator by a factor of $\approx 25$, at least for large $n$. The issue here is that the minimax estimator is overwhelmingly focusing on doing well in the center of the parameter space, where it is hardest to estimate $\theta$, at least as measured by MSE, and paying a severe price in easier regions of the parameter space.
 
-Note: If $R(\theta, \delta_\pi)$ is constant, it doesn't prove anything.
-
-1. $R(\theta, \delta_\pi)$ is constant
-2. Also $R(\theta, \delta_\pi) = \sup_\theta R(\theta, \delta_\pi) = r(\pi)$
-
-### Example: Binomial
-
-$X \sim \text{Binom}(n, \theta)$, estimate $\theta$ with squared error
-
-Try Beta($\alpha, \beta$), hope to get one with constant risk
-
-$$\delta_\pi(X) = \frac{X + \alpha}{n + \alpha + \beta}$$
-
-$$R(\theta, \delta_\pi) = \mathbb{E}[\theta^2] - \mathbb{E}[\delta_\pi(X)^2] + \text{Var}(\delta_\pi(X))$$
-
-$$= \theta - \frac{(\alpha + \beta + n + 1)(\alpha + n\theta)^2}{(\alpha + \beta + n)^2(n + \alpha + \beta + 1)} + \frac{(\alpha + n\theta)(\beta + n(1-\theta))}{(\alpha + \beta + n)^2(n + \alpha + \beta + 1)}$$
-
-Set $\alpha + \beta = n + 2$, $\alpha + \beta = \frac{n}{2}$
-
-$$\beta = \frac{n+2}{2}, \alpha = \frac{n+2}{2}$$
-
-Beta($\frac{n+2}{2}, \frac{n+2}{2}$) is LF, $\delta_\pi$ is minimax
-
-We got lucky.
-
-Question: Why so much prior weight on $\theta \approx \frac{1}{2}$?
+```{r, echo=FALSE}
+n <- 400
+curve(x*(1-x)/n, main=expression("MSE for minimax and UMVU estimators, n = "*400), xlab=expression(theta), ylab=expression(MSE(theta*";"*delta)), col="red")
+abline(h=n/4/(n+sqrt(n))^2)
+legend("bottomright",lty=1,col=1:2,legend=c("Minimax estimator","UMVU estimator"))
+```
 
 ## Least Favorable Sequence
 
-Sometimes there is no least favorable prior, e.g., if parameter space isn't compact.
+Sometimes there is no least favorable prior, because $\sup_\Lambda r_\Lambda$ is not attainable, but a sequence $\Lambda_1,\Lambda_2,\ldots$ is least favorable in the sense defined above, that $\lim_n r_{\Lambda_n} = \sup_\Lambda r_\Lambda$.
 
-$X \sim N(\theta, 1)$: LF prior should spread mass everywhere, but that is not a proper prior.
+**Theorem:** Suppose $\delta$ is an estimator and $\Lambda_1,\Lambda_2,\ldots$ is a sequence of priors such that
+$$
+\sup_\theta R(\theta;\delta) = \lim_{n\to\infty} r_{\Lambda_n}.
+$$
+Then $\delta$ is minimax, the sequence is least favorable, and $r^* = \lim_n r_{\Lambda_n}$.
 
-Definition: A sequence $\{\pi_n\}$ is LF if $r(\pi_n) \to \sup_\pi r(\pi)$
+*Proof:* Our proof follows the same structure as our previous theorem. For another estimator $\tilde\delta$, and any $n$,
+$$
+\begin{aligned}
+\sup_\theta R(\theta;\tilde\delta)
+&\geq \int R(\theta; \tilde\delta)\,d\Lambda_n(\theta)\\
+&\geq r_{\Lambda_n}
+\end{aligned}
+$$
+As a result, we have
+$$
+\sup_\theta R(\theta;\tilde\delta) \geq \lim_{n\to\infty} r_{\Lambda_n} = \sup_\theta R(\theta;\delta),
+$$
+and $\delta$ is minimax. Moreover,
+$$
+\lim_{n\to\infty} r_{\Lambda_n} \leq r^* \leq \sup_\theta R(\theta;\delta) = \lim_{n\to\infty} r_{\Lambda_n},
+$$
+so the sequence is least favorable and $\lim_{n\to\infty} r_{\Lambda_n}=r^*$. $\blacksquare$
 
-### Theorem
+## Bounding the minimax risk
 
-Suppose $\{\pi_n\}$ is a prior sequence and $\delta$ satisfies $\sup_\theta R(\theta, \delta) = \lim_n r(\pi_n)$. Then:
+Outside of simple examples, it's often difficult to find minimax estimators in finite samples, but minimax bounds are very commonly used in statistical theory to characterize the hardness of a problem.
 
-a) $\delta$ is minimax
-b) $\{\pi_n\}$ is LF
+### Application 1: near-optimal estimators.
+As one application, we might exhibit an estimator that has other nice properties such as ease of calculation, unbiasedness, an appealing functional form, or a natural inductive bias that we expect to make it perform well in certain settings of interest. It is also nice if we can show that the estimator is not far from minimax optimal.
 
-Proof:
+We can do this by calculating our estimator's sup-risk and comparing it to the Bayes risk of any Bayes estimator. If (say) the former is only $10\%$ greater than the latter, then we can say our estimator is within $10\%$ of minimax optimality.  
 
-a) Other est. $\delta'$. Then $\forall n$:
-   $$\sup_\theta R(\theta, \delta') \geq \int R(\theta, \delta') d\pi_n(\theta) \geq r(\pi_n)$$
-   $$\geq \lim_n r(\pi_n) = \sup_\theta R(\theta, \delta)$$
+### Application 2: Problem Hardness.
+Another common application of minimaxity is to quantify the difficulty of a problem in some asymptotic regime; i.e. the hardness of a sequence of problems indexed by an asymptotic parameter $n$ (commonly the sample size). If we can find an upper bound by calculating or bounding the sup-risk of an estimator $\delta_n$, and also a lower bound by calculating or bounding the Bayes risk for a prior $\Lambda_n$, then we can sandwich the minimax risk $r_n^*$ as
+$$
+r_{\Lambda_n} \leq r_n^* \leq \sup_\theta R_n(\theta; \delta_n).
+$$
+If the upper and lower bounds shrink (or grow) at the same rate in $n$, then $r_n^*$ must also shrink (or grow) at that rate. This rate is called the problem's **minimax rate**.
 
-b) Prior $\pi$:
-   $$r(\pi) = \inf_\delta \int R(\theta, \delta) d\pi(\theta) \leq \int R(\theta, \delta) d\pi(\theta)$$
-   $$\leq \sup_\theta R(\theta, \delta) = \lim_n r(\pi_n)$$
+A caveat for this approach is that calculating a problem's minimax risk may inappropriately focus attention on a small corner of the parameter space where the problem is especially hard. It's possible that it matters more what is happening elsewhere.
 
-### Basic Picture
-
-- $\sup_\theta R(\theta, \delta)$ (generic $\delta$)
-- $\inf_\delta \sup_\theta R(\theta, \delta)$ (minimax risk)
-- $\sup_\pi r(\pi)$ (if LF prior exists)
-- $r(\pi)$ (generic $\pi$)
-
-If minimax est. exists: $\inf_\delta \sup_\theta R(\theta, \delta) = \sup_\theta R(\theta, \delta^*)$
-
-If LF prior exists: $\sup_\pi r(\pi) = r(\pi^*)$
-
-## Practical Applications
-
-Minimax estimators are very hard to find, but minimax bounds are often used in statistical theory to characterize hardness, especially lower bounds.
-
-### Approach 1: Near-optimal Estimators
-
-1. Propose practical estimator $\delta$
-2. Find $\pi$ for which $r(\pi)$ close to $\sup_\theta R(\theta, \delta)$ (or same rate, or asymptotically)
-3. Conclude $\delta$ can't be improved much
-
-### Approach 2: Problem Hardness
-
-Quantify hardness of a problem by its minimax rate in some asymptotic regime.
 
 Caveat: A problem might be easy throughout most of parameter space but very hard in some bizarre corner we never encounter in practice.

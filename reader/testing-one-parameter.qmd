@@ -17,7 +17,7 @@ This lecture concerns the general problem of testing with one real parameter. We
 
 Last time, we showed that if the family $\cP$ has MLR in the statistic $T(X)$, then the one-sided test that rejects for large $T(X)$ is UMP for testing $H_0:\;\theta\leq \theta_0$ vs $H_1:\;\theta > \theta_0$, because:
 
-(i) it is simultaneously the likelihood ratio test for $H_0:\;\theta = \theta_0$ vs $H_1:\;\theta = \theta_1$, for every $\theta_1 > 0$, and
+(i) it is simultaneously the likelihood ratio test for $H_0:\;\theta = \theta_0$ vs $H_1:\;\theta = \theta_1$, for every $\theta_1 > \theta_0$, and
 
 (ii) it controls the Type I error for all $\theta < \theta_0$.
 
@@ -29,7 +29,7 @@ c_\alpha = \min \{c \in \RR:\; \PP_{\theta_0}(T(X) > c) \leq \alpha\}
 $$
 and the randomization parameter $\gamma$ is used to "top off" the Type I error rate if $T(X)$ is discrete and $\PP_{\theta_0}(T(X) > c_\alpha) < \alpha$. In the rest of this section we will ignore randomization and assume that we just accept a conservative test in case $\PP_{\theta_0}(T(X) > c_\alpha) < \alpha$ (as is generally done in practice).
 
-A generic one-parameter model $\cP$ does not have MLR in any statistic $T(X)$; e.g. the LRT for testing $\theta_0$ vs $\theta_1=\theta_0 + 1$ does not coincide with the LRT for testing $\theta_0$ vs $\theta_1=\theta_0 +  2$. Then we cannot maximize power for both alternative values $\theta_0+1$ and $\theta_0+2$ simultaneously.
+A generic one-parameter model $\cP$ does not have MLR in any statistic $T(X)$; e.g. the LRT for testing $\theta=0$ vs $\theta=1$ does not coincide with the LRT for testing $\theta=0$ vs $\theta=  2$. Then we cannot maximize power for both alternative values $1$ and $2$ simultaneously.
 
 In such cases, we could still come up with a test that rejects for large values of some other test statistic $T(X)$, that tends to be larger when $\theta$ is larger. Formally, we say that $T(X)$ is *stochastically increasing in $\theta$* if $\PP_\theta(T(X) > c)$ is non-decreasing in $\theta$, for every $c \in \RR$. The power function of $\phi(X) = 1\{T(X) > c_\alpha\}$, then, is also non-decreasing in $\theta$, and $\phi(X)$ is a valid test of $H_0:\;\theta\leq \theta_0$ vs $H_1:\;\theta > \theta_0$.
 
@@ -38,8 +38,8 @@ In such cases, we could still come up with a test that rejects for large values 
 Suppose we observe $X_1,\ldots,X_n \simiid P_\theta$ for large $n$, and we want to test $H_0:\;\theta\leq \theta_0$ vs $H_1:\;\theta > \theta_0$, but $\cP$ does not have MLR so we cannot maximize the power over the entirety of $H_1$. One idea is to use the heuristic of maximizing the power for alternatives near $\theta_0$; if $n$ is large, then we have a lot of information about $\theta$ so our power will be close to $1$ no matter what we do. So we might prioritize maximizing the power at $\theta_0 + \varepsilon$ for small $\varepsilon$.
 
 The LRT for $\theta_0$ vs $\theta_0 + \varepsilon$ rejects for large values of 
-$$ \frac{p_{\theta_0+\varepsilon}(X)}{p_{\theta_0}(X)} =\exp\{\ell(\theta_0+\varepsilon; X) - \ell(\theta_0; X)\} \approx e^{\varepsilon \dot\ell(\theta_0;X)},$$
-which is equivalent to rejecting for large values of $\dot\ell(\theta_0;X)$. Using the score statistic can give simple and appealing tests in certain situations.
+$$ \log\frac{p_{\theta_0+\varepsilon}(X)}{p_{\theta_0}(X)} =\ell(\theta_0+\varepsilon; X) - \ell(\theta_0; X)\approx \varepsilon \dot\ell(\theta_0;X),$$
+so a natural idea is to reject for large values of $S_{\theta_0}(X)=\dot\ell(\theta_0;X)$, provided we can show that the power of that test is monotone, for example because $S_{\theta_0}(X)$ is stochastically increasing in $\theta$. Using the score statistic can give simple and appealing tests in certain situations.
 
 **Example: Laplace**
 
@@ -52,32 +52,34 @@ so the optimal test rejects for large $\sum_i T_{\theta_1}(X_i)$, where
 $$
 T_{\theta}(x) = \begin{cases} -1 & \text{ if } x \leq 0 \\ \frac{2x}{\theta} -1 & \text{ if } 0 \leq x \leq \theta \\ +1 &\text{ if } x \geq \theta \end{cases}.
 $$
-We can visualize the univariate version of the test statistic $T_{\theta}(x)$ for several different values of $\theta>0$:
+We can visualize the univariate version of the test statistic $T_{\theta_1}(x)$ for several different values of $\theta_1>0$:
 
 ```{r, echo=FALSE}
 T.theta <- function(x, theta) {
   pmax(-1, pmin(1, 2*x/theta-1))
 }
-curve(T.theta(x, 0.2), from=-1, to = 3, , col="red", main="Univariate test statistic", xlab="x", ylab=expression(T[theta](x)), n=1001)
+curve(T.theta(x, 0.2), from=-1, to = 3, , col="red", main="Univariate test statistic", xlab="x", ylab=expression(T[theta[1]](x)), n=1001)
 grid()
 curve(T.theta(x, 1), add=TRUE, col="blue", n=1001, lty=2)
 curve(T.theta(x, 2), add=TRUE, n=1001, lty=3)
-legend("bottomright",legend=c(expression(theta==2), expression(theta==1), expression(theta==0.2)), lty=3:1,col=c("black","blue","red"))
+legend("bottomright",legend=c(expression(theta[1]==2), expression(theta[1]==1), expression(theta[1]==0.2)), lty=3:1,col=c("black","blue","red"))
 ```
 Note that this test implicitly caps the influence of any single observation $X_i$. Once $X_i > \theta_1$, it gives the same evidence in favor of $\theta_1$ and against $\theta_0$ regardless of how much it exceeds $\theta_1$. Compare this with the sample mean, where the influence of a single observation $X_i$ is unbounded.  It is easy to see that $f(X_i)$ is stochastically increasing in $\theta$ for *any* non-decreasing function $f$, so any LRT gives a valid level-$\alpha$ test on the entire null distribution.
 
 If we take $\theta_1\downarrow 0$, the univariate test statistic approaches 
 $$
-T_0(x) = \begin{cases} -1 & \text{ if } x \leq 0\\ +1 &\text{ if } x > 0\end{cases},
+T_{0^+}(x) = \begin{cases} -1 & \text{ if } x \leq 0\\ +1 &\text{ if } x > 0\end{cases},
 $$
 which gives the score test since 
 $$
-\dot{\ell}(\theta;X) = \frac{d}{d\theta} \sum_i -|X_i-\theta| = \sum_i T_0(X_i) 
+S_0(X) = \dot{\ell}(0;X) = \left.\frac{d}{d\theta} \sum_i -|X_i-\theta|\right|_{\theta=0} = \sum_i T_{0^+}(X_i) 
 $$
-This is equivalent to rejecting for large values of $S(X) = \#\{X_i > 0\}$, simply the number of positive $X_i$ values.
+This test is called the **sign test**, and it is equivalent to rejecting when the number of positive $X_i$ values is larger than a binomial threshold, since:
+$$
+B(X) = \frac{S_0(X)+n}{2} = \#\{X_i > 0\} \stackrel{H_0}{\sim} \text{Binom}\left(n,\frac{1}{2}\right).
+$$
 
-
-We can also plot the power curves for $n = 100$ and $\alpha = 0.1$, for these tests and for the test that rejects for large values of $\sum_i X_i$. As we see, the score test performs noticeably better than the test that rejects for large values of the sample mean $\overline{X}$. But the LRT for $\theta_1 = 0.2$ seems to do best for this value of $n$, since $\theta_1 = 0.2$ is a moderately hard alternative value for which the power is intermediate.
+We can also plot the power curves for $n = 100$ and $\alpha = 0.1$, for these tests and for the test that rejects for large values of $\sum_i X_i$. As we see, the score test performs noticeably better than the test that rejects for large values of the sample mean $\overline{X}$, especially at "moderately hard" alternative values like $\theta_1=0.2$. But the LRT for $\theta_1 = 0.2$ does even better there, as it must since it is optimal for that alternative.
 
 ```{r, echo=FALSE, cache=TRUE}
 T.theta <- function(x, theta) {
@@ -89,7 +91,8 @@ nrep <- 1e4
 Z <- matrix(rexp(n*nrep) * sign(rnorm(n*nrep)), nrow=nrep)
 theta1.values <- c(2, 1, 0.2, 0)
 
-theta.grid <- c(seq(-.2,.6,by=.02),seq(0.6,1.2,by=.1))
+theta.grid <- c(seq(-.2,.6,by=.01),seq(0.6,1.2,by=.1))
+theta.grid <- seq(-.2,.6,by=.002)
 power <- matrix(NA, nrow=length(theta.grid), ncol=length(theta1.values)+1)
 power.func <- function(Z, theta, theta1.opt, cutoff, gamma) {
   Tmat <- matrix(T.theta(Z+theta, theta1.opt), nrow=nrep)
@@ -113,15 +116,15 @@ grid()
 abline(h=c(0,alpha,1),lty=3)
 abline(v=0,lty=3)
 axis(2,at=alpha,labels = expression(alpha))
-legend("bottomright",legend=c(expression(Sigma[i] *T[2](X[i])), expression(Sigma[i] *T[1](X[i])), expression(Sigma[i] *T[0.2](X[i])), expression(S(X)), expression(Sigma[i] *X[i])), lty=c(2,2,2,1,1), lwd=c(1,1,1,2,2), col=c("black","blue","red","darkgreen","purple"))
+legend("bottomright",legend=c(expression(Sigma[i] *T[2](X[i])), expression(Sigma[i] *T[1](X[i])), expression(Sigma[i] *T[0.2](X[i])), expression(S[0](X)), expression(Sigma[i] *X[i])), lty=c(2,2,2,1,1), lwd=c(1,1,1,2,2), col=c("black","blue","red","darkgreen","purple"))
 ```
 
 
 ### The sign test as a nonparametric test
 
-The test based on the statistic $S(X) = \#\{X_i > 0\}$ is called the *sign test*, and is generally an appealing test for a *nonparametric* testing problem. Suppose $X_1,\ldots,X_n \simiid F$, where $F$ represents an unknown cdf for their distribution. Assume for simplicity that $F$ is continuous and strictly increasing on its support, so that the median $\theta(F) = F^{-1}(1/2)$ is well-defined, and consider testing $H_0:\; \theta(F) \leq 0$ vs $H_1:\; \theta(F) > 0$.
+The test based on the binomial statistic $S_0(X)$ (or $B(X)$) is called the *sign test*, and is generally an appealing test for a *nonparametric* testing problem. Suppose $X_1,\ldots,X_n \simiid F$, where $F$ represents an unknown cdf for their distribution. Assume for simplicity that $F$ is continuous and strictly increasing on its support, so that the median $\theta(F) = F^{-1}(1/2)$ is well-defined, and consider testing $H_0:\; \theta(F) \leq 0$ vs $H_1:\; \theta(F) > 0$.
 
-Then $S(X) \sim \text{Binom}(n, 1-F(0))$, where the probability parameter $1-F(0)$ is no more than $1/2$ if $H_0$ is true, but strictly greater than $1/2$ if $H_1$ is true. Then the test that rejects when $S(X)$ is above the upper $1-\alpha$ quantile of the $\text{Binom}(n,1/2)$ distribution (randomizing at the boundary if desired) is level-$\alpha$ on $H_0$.
+Then $B(X) \sim \text{Binom}(n, 1-F(0))$, where the probability parameter $1-F(0)$ is no more than $1/2$ if $H_0$ is true, but strictly greater than $1/2$ if $H_1$ is true. Then the test that rejects when $S(X)$ is above the upper $1-\alpha$ quantile of the $\text{Binom}(n,1/2)$ distribution (randomizing at the boundary if desired) is level-$\alpha$ on $H_0$.
 
 ## Two-sided alternatives
 
@@ -211,6 +214,304 @@ c2.unbiased <- -log(alpha-alpha1)
 curve(pexp(c1.unbiased, rate=1/x) + pexp(c2.unbiased, rate=1/x, lower.tail=FALSE), add=TRUE, col="red")
 axis(2,at=alpha,labels=expression(alpha))
 legend("bottomright", lty=1,col=1:2, legend=c("Equal-tailed test", "Unbiased test"))
+```
+
+
+The following widget gives the range of options for two-tailed tests of the point hypothesis $H_0:\;\theta = 1$ for the Gamma distribution with shape parameter $k$ and scale parameter $\theta$:
+
+```{ojs}
+//| echo: false
+
+// Import gamma distribution functions
+jStat = require("https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js")
+
+// Define gamma PDF
+gammaPDF = (x, k, theta) => {
+  if (x <= 0) return 0;
+  return Math.pow(x, k-1) * Math.exp(-x/theta) / (Math.pow(theta, k) * jStat.gammafn(k));
+}
+
+// Define gamma CDF using jStat
+gammaCDF = (x, k, theta) => {
+  if (x <= 0) return 0;
+  return jStat.gamma.cdf(x, k, theta);
+}
+
+// Define gamma quantile using jStat
+gammaQuantile = (p, k, theta) => {
+  return jStat.gamma.inv(p, k, theta);
+}
+
+// Fixed parameters
+alpha = 0.1
+
+// Interactive controls
+viewof k = Inputs.range([0.5, 10], {value: 2, step: 0.1, label: "k (shape)"})
+
+// For unbiased test, we need E[X | X in rejection region] = k
+// This requires finding alpha1 such that the conditional expectation equals k
+getUnbiasedAlpha1 = (k) => {
+  // Function to compute E[X | X <= c1 or X >= c2] for given alpha1
+  const conditionalExpectation = (a1) => {
+    const a2 = alpha - a1;
+    const c1 = gammaQuantile(a1, k, 1);
+    const c2 = gammaQuantile(1 - a2, k, 1);
+    
+    // E[X * I(X <= c1)] for Gamma(k, 1)
+    // This is the incomplete gamma function times k
+    const leftExpectation = k * gammaCDF(c1, k + 1, 1);
+    
+    // E[X * I(X >= c2)] for Gamma(k, 1)
+    const rightExpectation = k * (1 - gammaCDF(c2, k + 1, 1));
+    
+    // Total expectation in rejection region divided by total probability
+    return (leftExpectation + rightExpectation) / alpha;
+  };
+  
+  // Use bisection to find alpha1 where conditional expectation equals k
+  let low = 0.001;
+  let high = alpha - 0.001;
+  let mid;
+  const tolerance = 0.0001;
+  const maxIter = 50;
+  
+  for (let i = 0; i < maxIter; i++) {
+    mid = (low + high) / 2;
+    const condExp = conditionalExpectation(mid);
+    
+    if (Math.abs(condExp - k) < tolerance) {
+      break;
+    }
+    
+    // For Gamma, increasing alpha1 typically decreases conditional expectation
+    if (condExp > k) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+  
+  return mid;
+}
+
+// Calculate the unbiased value for current k
+unbiasedAlpha1 = getUnbiasedAlpha1(k)
+
+// Create the slider
+viewof alpha1 = Inputs.range([0, alpha], {
+  value: alpha / 2, 
+  step: 0.001, 
+  label: "α₁ (left tail mass)"
+})
+
+// Calculate alpha2 (right tail mass)
+alpha2 = alpha - alpha1
+
+// Calculate critical values under null (theta = 1)
+c1 = gammaQuantile(alpha1, k, 1)
+c2 = gammaQuantile(1 - alpha2, k, 1)
+
+// Generate data for null distribution plot
+nullData = {
+  const xMin = 0;
+  const xMax = gammaQuantile(0.999, k, 1);
+  const numPoints = 1000;
+  const dx = (xMax - xMin) / (numPoints - 1);
+  
+  return Array.from({length: numPoints}, (_, i) => {
+    const x = xMin + i * dx;
+    const density = gammaPDF(x, k, 1);
+    const inRejection = (x <= c1 || x >= c2);
+    return {
+      x: x,
+      density: density,
+      densityRej: inRejection ? density : 0
+    };
+  });
+}
+
+// Power function calculation
+powerFunction = (theta) => {
+  // Power = P(reject H0 | theta) = P(X <= c1 | theta) + P(X >= c2 | theta)
+  return gammaCDF(c1, k, theta) + (1 - gammaCDF(c2, k, theta));
+}
+
+// Generate data for power function plot
+powerData = {
+  const thetaMin = 0.1;
+  const thetaMax = 3;
+  const numPoints = 300;
+  const dtheta = (thetaMax - thetaMin) / (numPoints - 1);
+  
+  return Array.from({length: numPoints}, (_, i) => {
+    const theta = thetaMin + i * dtheta;
+    return {
+      theta: theta,
+      power: powerFunction(theta)
+    };
+  });
+}
+
+// Left panel: Null distribution with rejection region
+leftPlot = Plot.plot({
+  width: 400,
+  height: 400,
+  marginTop: 60,
+  marginLeft: 100,
+  marginBottom: 100,
+  marginRight: 40,
+  style: { fontSize: "18px" },
+  
+  x: {
+    domain: [0, Math.max(...nullData.map(d => d.x))],
+    label: "x",
+    labelAnchor: "center",
+    labelOffset: 60,
+    labelArrow: "none"
+  },
+  y: {
+    domain: [0, Math.max(...nullData.map(d => d.density)) * 1.15],
+    label: "p₁(x)",
+    labelAnchor: "center",
+    labelOffset: 70,
+    labelArrow: "none"
+  },
+  
+  marks: [
+    // Fill rejection region
+    Plot.areaY(nullData, {x: "x", y: "densityRej", fill: "red", opacity: 0.3}),
+    // Null density curve
+    Plot.line(nullData, {x: "x", y: "density", stroke: "steelblue", strokeWidth: 2}),
+    // Critical values
+    Plot.ruleX([c1], {stroke: "red", strokeWidth: 1.5, strokeDasharray: "5,5"}),
+    Plot.ruleX([c2], {stroke: "red", strokeWidth: 1.5, strokeDasharray: "5,5"}),
+    Plot.ruleY([0]),
+    
+    // Title above plot
+    Plot.text(["Null Distribution (θ=1)"], {
+      x: Math.max(...nullData.map(d => d.x))/2, 
+      y: Math.max(...nullData.map(d => d.density)) * 1.12,
+      fontSize: 16, 
+      fontWeight: "bold", 
+      textAnchor: "middle"
+    }),
+    
+    // Annotations for critical values (moved lower)
+    Plot.text([`c₁=${c1.toFixed(2)}`], {
+      x: c1, 
+      y: -Math.max(...nullData.map(d => d.density)) * 0.15,
+      fontSize: 14,
+      textAnchor: "middle"
+    }),
+    Plot.text([`c₂=${c2.toFixed(2)}`], {
+      x: c2, 
+      y: -Math.max(...nullData.map(d => d.density)) * 0.15,
+      fontSize: 14,
+      textAnchor: "middle"
+    })
+  ]
+})
+
+// Right panel: Power function
+rightPlot = Plot.plot({
+  width: 400,
+  height: 400,
+  marginTop: 60,
+  marginLeft: 100,
+  marginBottom: 100,
+  marginRight: 40,
+  style: { fontSize: "18px" },
+  
+  x: {
+    domain: [0, 3],
+    label: "θ (scale parameter)",
+    labelAnchor: "center",
+    labelOffset: 60,
+    labelArrow: "none"
+  },
+  y: {
+    domain: [0, 1],
+    label: "Power",
+    labelAnchor: "center",
+    labelOffset: 70,
+    labelArrow: "none"
+  },
+  
+  marks: [
+    // Power function curve
+    Plot.line(powerData, {x: "theta", y: "power", stroke: "steelblue", strokeWidth: 2}),
+    // Significance level line
+    Plot.ruleY([alpha], {stroke: "gray", strokeWidth: 1, strokeDasharray: "5,5"}),
+    // Null hypothesis point
+    Plot.dot([{theta: 1, power: powerFunction(1)}], {
+      x: "theta", 
+      y: "power", 
+      r: 5, 
+      fill: "red"
+    }),
+    Plot.ruleY([0]),
+    Plot.ruleX([1], {stroke: "gray", strokeWidth: 1, strokeDasharray: "3,3"}),
+    
+    // Title above plot
+    Plot.text(["Power Function"], {
+      x: 1.5, 
+      y: 0.98,
+      fontSize: 16, 
+      fontWeight: "bold", 
+      textAnchor: "middle"
+    }),
+    
+    // Annotation for significance level
+    Plot.text([`α=${alpha}`], {
+      x: 2.8, 
+      y: alpha + 0.03,
+      fontSize: 14,
+      textAnchor: "end"
+    })
+  ]
+})
+
+// Combine plots and buttons
+html`<div>
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h3 style="font-size: 20px; font-weight: bold;">Unbiased Two-Sided Test for Gamma Scale Parameter</h3>
+    <p style="font-size: 16px;">Testing H₀: θ = 1 vs H₁: θ ≠ 1 with significance level α = ${alpha}</p>
+    <p style="font-size: 14px;">Left tail: α₁ = ${alpha1.toFixed(3)}, Right tail: α₂ = ${alpha2.toFixed(3)}</p>
+  </div>
+  
+  <div style="margin: 10px 0; text-align: center;">
+    <span style="font-size: 14px; margin-right: 10px;">Quick presets:</span>
+    <button onclick="
+      const sliders = document.querySelectorAll('input[type=range]');
+      if (sliders.length >= 2) {
+        sliders[1].value = 0.05;
+        sliders[1].dispatchEvent(new Event('input', {bubbles: true}));
+      }
+    "
+            style="margin: 0 5px; padding: 5px 10px; background: ${Math.abs(alpha1 - 0.05) < 0.001 ? '#4682b4' : '#f0f0f0'}; 
+                   color: ${Math.abs(alpha1 - 0.05) < 0.001 ? 'white' : 'black'}; 
+                   border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+      Equal-tailed (α₁ = 0.050)
+    </button>
+    <button onclick="
+      const sliders = document.querySelectorAll('input[type=range]');
+      if (sliders.length >= 2) {
+        sliders[1].value = ${unbiasedAlpha1};
+        sliders[1].dispatchEvent(new Event('input', {bubbles: true}));
+      }
+    "
+            style="margin: 0 5px; padding: 5px 10px; background: ${Math.abs(alpha1 - unbiasedAlpha1) < 0.001 ? '#4682b4' : '#f0f0f0'}; 
+                   color: ${Math.abs(alpha1 - unbiasedAlpha1) < 0.001 ? 'white' : 'black'}; 
+                   border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+      Unbiased (α₁ ≈ ${unbiasedAlpha1.toFixed(3)})
+    </button>
+  </div>
+  
+  <div style="display: flex; gap: 20px; justify-content: center;">
+    ${leftPlot}
+    ${rightPlot}
+  </div>
+</div>`
 ```
 
 

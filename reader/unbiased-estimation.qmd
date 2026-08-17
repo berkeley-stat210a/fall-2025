@@ -8,24 +8,9 @@ format:
 
 {{< include latex-macros.tex >}}
 
-::: callout-caution
-## Under construction
-
-Check that examples and proofs are complete and accurate.
-
-Add link to Lecture 2
-:::
-
-## Outline
-
-1.  Convex Loss
-2.  Rao-Blackwell Theorem
-3.  UMVU Estimators
-4.  Examples
-
 ## Unbiased Estimation
 
-Recall from Lecture 2 that we had two primary strategies to choose an estimator:
+Recall from [Lecture 2](estimation.qmd) that we had two primary strategies to choose an estimator:
 
 1.  Summarize the risk function by a scalar (average or supremum)
 2.  Restrict attention to a smaller class of estimators
@@ -34,7 +19,7 @@ Today we'll discuss *unbiased estimation*, which is an example of the second str
 
 Unbiased estimation is especially convenient in models with a complete sufficient statistic $T(X)$. In that case:
 
--   There is at most one unbiased $\delta(T(X))$ (if $\delta_1, \delta_2(T)$ are both unbiased, then $\delta_1 \eqas \delta_2$)
+-   There is at most one unbiased estimator of the form $\delta(T(X))$, because if $\delta_1, \delta_2(T)$ are both unbiased, then $\delta_1 \eqas \delta_2$
 -   If an unbiased estimator exists, it **uniformly minimizes** risk for any convex loss function
 
 ## Convex Loss Functions
@@ -47,7 +32,7 @@ An key fact about convex functions is **Jensen's Inequality:** If $f$ is convex,
 
 $$f(\EE[X]) \leq \EE[f(X)]$$ If $f$ is strictly convex, then the inequality is strict unless $X$ is constant.
 
-We say a loss function $L(\theta, d)$ is (strictly) convex if is (strictly) convex as a function of the estimate $d$, its second argument, holding the parameter $\theta$ fixed.
+We say a loss function $L(\theta, d)$ is a (strictly) convex loss if is (strictly) convex as a function of the estimate $d$, its second argument, holding the parameter $\theta$ fixed. Note convexity in $\theta$ is not relevant here; $\theta$ is just indexing the model.
 
 **Example:** The best-known example of a convex loss function is the squared error loss. Recall that the corresponding risk, the MSE, can be decomposed as the sum of the bias squared and the variance:
 
@@ -70,22 +55,22 @@ $$\bar{\delta}(T(X)) = \EE[\delta(X) \mid T(X)]$$
 
 Then for any convex loss $L(\theta, d)$, we have $R(\theta, \bar{\delta}) \leq R(\theta, \delta)$ for all $\theta$. If $L$ is strictly convex, $\bar{\delta}$ strictly dominates $\delta$ as an estimator unless $\delta(X) \eqPas \bar{\delta}(T(X))$.
 
-*Proof:*
+*Proof:* Conditioning on $T(X)$, we have
 
 $$\begin{aligned}
-R(\theta, \bar{\delta}) &= \EE_\theta\left[\,L(\theta, \;\EE[\delta \mid T])\,\right]\\[5pt]
-&\leq \EE_\theta\left[\,\EE[L(\theta, \delta) \mid T]\,\right]\\[5pt]
-&= \EE_\theta[\,L(\theta, \delta)\,] \\[5pt]
-&= R(\theta, \bar{\delta})
+L(\theta, \bar{\delta}(T(X)))\;=\;L(\theta, \;\EE[\delta \mid T(X)])\;\leq \;\EE[L(\theta, \delta) \mid T(X)],
 \end{aligned}$$
 
-$\bar{\delta}$ is called the Rao-Blackwellization of $\delta$. Note that the condition \$\\delta(X) \\eqPas \\bar{\\delta}(T(X))\$ is equivalent to the condition that $\delta$ depends only on $X$ through $T(X)$.
+where we apply Jensen's inequality in the last step. Marginalizing over $T$ gives the desired result. If we assume further that $L$ is strictly convex, the inequality becomes strict unless $\delta(X) = \delta(T(X))$ almost surely.
 
-Whenever we are dealing with a convex loss, the Rao-Blackwell theorem lets us restrict our attention only to estimators that run through $T(X)$, because any other estimator could be improved (or at least not worsened) by Rao-Blackwellization. The theorem even gives us a recipe for \*\*constructing\*\* the improved estimator.
+
+$\bar{\delta}$ is called a Rao-Blackwellization of $\delta$. Note that the condition $\delta(X) \eqPas \bar{\delta}(T(X))$ is equivalent to the condition that $\delta$ depends only on $X$ through $T(X)$.
+
+Whenever we are dealing with a convex loss, the Rao-Blackwell theorem lets us restrict our attention only to estimators that run through $T(X)$, because any other estimator could be improved (or at least not worsened) by Rao-Blackwellization. The theorem even gives us a recipe for **constructing** the improved estimator.
 
 ## UMVU estimators
 
-In this section we will combine two key facts from this lecture and last concerning unbiased estimation of any estimand $g(\theta)$.
+In this section we will combine two key facts from this lecture and last concerning unbiased estimation of any estimand $g(\theta)$ when we have access to a complete sufficient statistic $T(X)$.
 
 1.  If $T(X)$ is complete sufficient, there can be at most one unbiased estimator based on $T(X)$.
 2.  If the loss is convex, then we can restrict our attention only to estimators that are based on $T(X)$.
@@ -118,13 +103,13 @@ The estimator from this theorem is usually called the *UMVU (Uniformly Minimum V
 1.  $\delta(X)$ is unbiased
 2.  $\text{Var}_\theta \,\delta(X) \leq \text{Var}_\theta \,\tilde{\delta}(X)$ for all $\theta$ and all unbiased $\tilde{\delta}(X)$
 
-Since $\text{MSE}(\theta; \delta) = \text{Var}_\theta(\delta(X))$ for any unbiased estimator, and the squared error loss is strictly convex, Theorem XXX immediately implies the existence of a unique UMVU estimator for any U-estimable $g(\theta)$, whenever we have a complete sufficient statistic.
+Since $\text{MSE}(\theta; \delta) = \text{Var}_\theta(\delta(X))$ for any unbiased estimator, and the squared error loss is strictly convex, the foregoing theorem immediately implies the existence of a unique UMVU estimator for any U-estimable $g(\theta)$, whenever we have a complete sufficient statistic.
 
 Note that in problems where no complete sufficient statistic exists, there can be multiple unbiased estimators based on the minimal sufficient statistic; for example, both the mean and the median are unbiased for the Laplace location parameter, but they are not almost surely equal to each other, and they do not have the same risk function.
 
 ## Finding the UMVUE
 
-Theorem XXX suggests two strategies for finding the UMVUE:
+We have two strategies for finding the UMVUE:
 
 1.  Solve directly for an unbiased estimator based on $T$
 2.  Find any unbiased estimator at all, then Rao-Blackwellize it
@@ -161,77 +146,118 @@ $$
 
 **Strategy 2:**
 
-Alternatively, we can find an unbiased estimator and Rao-Blackwellize it. If $n\geq $, we can use the fact that
+Alternatively, we can find an unbiased estimator and Rao-Blackwellize it. If $n\geq 2$, we can use the fact that
 
 $$
 \EE_\theta [X_1 X_2] = \EE_\theta [X_1] \;\cdot\; \EE_\theta [X_2] = \theta^2
 $$
 to obtain an initial unbiased estimator $\delta_0(X) = X_1X_2$, which we will Rao-Blackwellize.
 
-Conditional on $
+Our calculation begins by recalling that, conditional on $T$, we have 
+$$
+(X_1,\ldots,X_n) \mid T=t \sim \text{Multinom}\left(t, \frac{1}{n}1_n\right),
+$$
+so that, in particular, $X_1 \mid T=t \sim \text{Binom}(t, \frac{1}{n})$, which has mean $t/n$ and variance $t\frac{1}{n}\cdot (1-\frac{1}{n}) = \frac{(n-1)t}{n^2}$ Likewise, conditional on $X_1$ and $T$, we have
+$$
+(X_2,\ldots,X_n) \mid T=t, X_1=x_1 \sim \text{Multinom}\left(t-x_1, \frac{1}{n-1}1_{n-1}\right),
+$$
+where $1_n = (1,\ldots,1) \in \RR^n$, so we likewise have $X_2 \mid T=t, X_1=x_1 \sim \text{Binom}(t-x_1, \frac{1}{n-1})$.
 
-to match the terms
+Hence, we can write 
+$$
+\begin{aligned}
+\EE\left[\, X_1 X_2 \mid T \,\right] 
+&= \EE\left[\, X_1 \EE[X_2 \mid T, X_1] \mid T\,\right]\\[5pt] 
+&= \EE\left[\, X_1 \frac{T-X_1}{n-1} \mid T\,\right]\\[5pt] 
+&= \frac{1}{n-1}\cdot\EE[X_1 T - X_1^2 \mid T]\\[5pt] 
+&= \frac{1}{n-1}\cdot\left(T^2/n - \left[\frac{T (n-1)}{n^2}+\left(T/n\right)^2\right]\right)\\[5pt] 
+&= \frac{T(T-1)}{n^2},
+\end{aligned}
+$$
+giving  us the same answer as above (as we knew it had to).
 
-
-$\delta(T) = (1 - 1/n)^T$ unbiased:
-
-$$\begin{aligned}
-\EE_\theta \delta(T) &= \sum_{t=0}^\infty (1-1/n)^t e^{-n\theta} (n\theta)^t / t! \\
-&= e^{-n\theta} \sum_{t=0}^\infty ((n-1)\theta)^t / t! \\
-&= e^{-n\theta} e^{(n-1)\theta} = e^{-\theta}
-\end{aligned}$$
-
-Alternatively, we could Rao-Blackwellize $\delta_0(X) = I(X_1 = 0)$:
-
-$$\begin{aligned}
-\EE[I(X_1 = 0) | T] &= \PP(X_1 = 0 | T) \\
-&= \frac{\PP(X_1 = 0, X_2 + \cdots + X_n = T)}{\PP(X_2 + \cdots + X_n = T-1) + \PP(X_2 + \cdots + X_n = T)} \\
-&= \frac{\binom{n-1}{T} (1/n)^0 (1-1/n)^T}{\binom{n-1}{T-1} (1/n) (1-1/n)^{T-1} + \binom{n-1}{T} (1-1/n)^T} \\
-&= \frac{(1-1/n)^T}{T/n + (1-1/n)^T} \\
-&= (1-1/n)^T
-\end{aligned}$$
 
 **Example:** $X_1, \ldots, X_n \sim U[0, \theta]$, $\theta > 0$
 
-$T = X_{(n)}$ complete sufficient
+The complete sufficient statistic for the model is $T = X_{(n)}$, and its pdf is 
+$$
+p_\theta(t) = n t^{n-1} / \theta^n \cdot 1\{0 < t < \theta\}
+$$
 
-$p_\theta(t) = n t^{n-1} / \theta^n \cdot I(0 < t < \theta)$
+**Strategy 1**
 
-$\EE_\theta[T] = \frac{n}{n+1} \theta$
+We can start by just checking how far off $T$ is from being an unbiased estimator, and see if we can correct it. From the density above we can recognize that $T/\theta$ follows a $\text{Beta}(n,1)$ distribution, which has mean $\frac{n}{n+1}$ and variance $\frac{n}{(n+1)^2(n+2)}$ (we could also compute these easily enough by integration). 
 
-$T \cdot \frac{n+1}{n}$ is UMVUE
+As a result, we have $\EE_\theta[T] = \frac{n}{n+1} \theta$, so $\frac{n+1}{n} T$ is unbiased, and therefore UMVU.
 
-Alternatively, $2X_1$ is unbiased:
+**Strategy 2**
 
-$$\EE[2X_1 | T] = 2T \cdot \frac{n+1}{2n} = T \cdot \frac{n+1}{n}$$
+Alternatively, we could observe that $2X_1$ is unbiased and try to Rao-Blackwellize it. To do this we need to find the conditional distribution of $X$ given that $X_{(n)}=t$. To warm up, let's just condition on $X_{(n)} = t$ *and* $X_n$ is the maximum. This is equivalent to conditioning on $X_n = t$ and $X_1,\ldots,X_{n-1} \leq t$. In that case, $X_n$ is deterministically $t$ and we have
+$$
+X_1,\ldots,X_{n-1} \mid \max_{i\leq n} X_i \leq t, X_n =t \simiid \text{Unif}[0,t].
+$$
+More generally, define $I^*(X)$ to be the maximizing index. We've just calculated the distribution of $T(X)$ given $I^*(X)=n$ and $T(X)=t$. Since the data are exchangeable (or by Basu's theorem) $I^*(X)$ is also independent of $T(X)$. So the conditional distribution of $X_1$ is that its $t$ if $I^*(X)=1$, which happens with probability $1/n$, and it's $\text{Unif}[0,t]$ otherwise. Wrapping up, we have
 
-Actually, $T$ is inadmissible too! Keener shows $\frac{n-1}{n} T$ has better MSE for any estimator $c \cdot T$.
+$$
+\begin{aligned}
+\EE[X_1 \mid T=t] 
+&= \frac{1}{n}\EE[X_1 \mid T=t, I^*=1] + \frac{n-1}{n}\EE[X_1 \mid T=t, I^* \neq 1]\\
+&= \frac{t}{n} + \frac{t(n-1)}{2n}\\
+&= \frac{t(n+1)}{2n}
+\end{aligned}
+$$
+Hence $\EE[2X_1 \mid T] = \frac{n+1}{n} T$, giving the same estimator as we saw before.
 
-This raises the question: why do we require zero bias?
+**A better estimator**
 
-The UMVUE is often inefficient, inadmissible, or just dumb in cases where another approach makes much more sense.
+Unfortunately, the estimator we just calculated twice is inadmissible.
 
-**Example:** $X \sim \text{Bin}(1000, \theta)$
+For any estimator $cT$, we can calculate its MSE as the squared bias plus the variance
 
-Estimate $g(\theta) = I(\theta > 0.5)$
+$$
+\begin{aligned}
+\text{MSE}(\theta; cT) 
+&= (\EE_\theta [cT] - \theta)^2 + \Var_\theta(cT)\\
+&= (c \EE_\theta [T] - \theta)^2 + c^2\Var_\theta(T)\\
+&= \theta^2\left[(c \EE_\theta [T/\theta] - 1)^2 + c^2\Var_\theta(T/\theta)\right]\\
+&= \theta^2\left[\left(\frac{cn}{n+1}-1\right)^2 + \frac{c^2n}{(n+1)^2(n+2)}\right].
+\end{aligned}
+$$
+The final expression is a quadratic in $c$, which is minimized at $c^* = \frac{n+2}{n+1}$. Thus, $\frac{n+2}{n+1}T$ has a lower MSE than $\frac{n+1}{n}T$ *for every value of $\theta$*. By scaling down our estimator a bit, we reduce its variance enough to compensate for the bias we have introduced.
 
-UMVUE is $I(X > 500)$. Why?
+Thus, we see that by introducing the unbiasedness constraint we have ruled out *all admissible estimators* and are left only with inadmissible ones, the best of which is $\frac{n+1}{n}T$.
 
--   $X = 500$: Conclude $g(\theta) = 1$
--   $X = 499$: Conclude $g(\theta) = 0$
+## Doubts about unbiasedness
 
-This is not epistemically reasonable. Could do much better with e.g. MLE or a Bayes estimator.
+The last example raises the question: why should we require zero bias? There can be good reasons for this: it's nice to be able to say your estimator is correct on average, especially if the estimand is strongly contested by different parties. But we shouldn't take this constraint too seriously because in some cases the UMVUE can be inadmissible, or even ridiculous in cases where other approaches work well.
 
-In fact, our theorem should make us suspicious of UMVUEs: every idiotic function of $T$ is a UMVUE of its own expectation!
+**Example:** Suppose we observe a multivariate Gaussian vector with an unknown location parameter, $X \sim N_d(\mu, I_d)$ for  $\mu \in \RR^d$, where $I_d$ is the identity matrix, and we want to estimate $g(\mu) = \|\mu\|^2$.
 
-**Example:** $X_1, \ldots, X_n \sim N(\mu, 1)$, estimate $g(\mu) = \|\mu\|$
+Since $X$, the complete sufficient statistic for this family, is a natural estimator for $\mu$, we can start with $\|X\|^2$ and try to make it unbiased. If we write $X = \mu + Z$ where $Z \sim N_d(0,I_d)$, then we have
+$$
+\begin{aligned}
+\EE_\mu \|X\|^2 &= \sum_j \EE (Z_j + \mu_j)^2\\
+&= \sum_j \mu_j^2 + 2\mu_j\EE Z_j + \EE Z_j^2\\
+&= \|\mu\|^2 + d,
+\end{aligned}
+$$
+since each cross-term is zero and $\EE Z_j^2 = \Var(Z_j) = 1$. As a result, we can get an unbiased estimator by subtracting off the bias, namely $\delta(X) = \|X\|^2-d$. But this estimator has the very odd property that it can be negative: if $d=10$ and $\|X\|^2=5$, which can happen, we are giving the estimate $-5$ for the non-negative estimand $\|\mu\|^2$. This may not seem like a big deal when we are just doing frequentist calculations, but imagine the authors' embarrassment if such an estimate actually found its way into a journal paper!
 
-$\bar{X}$ is complete sufficient
+From a dry decision theory perspective, we can also recognize this estimator as inadmissible for any reasonable loss function: whenever the estimate is zero, we will always be getting closer to the estimand if we replace it with zero; that is, $\delta_+(X) = (\|X\|^2-d)_+$ will strictly dominate $\delta(X)$, for any reasonable loss function.
 
-$\|\bar{X}\|$ is unbiased: $\EE[\|\bar{X}\|] = \EE[\|N(\mu, 1/n)\|] = \|\mu\|$
+There are even sillier examples of UMVU estimators, as we see next.
 
-So $\|\bar{X}\|$ is UMVUE
+**Example:** Suppose we observe $X \sim \text{Bin}(1000, \theta)$, and want to estimate $g(\theta) = \PP_\theta(X \geq 500)$. What is the UMVU estimator?
 
-If $\mu = 0$, $\delta(\bar{X}) = 0$ about half the time
+:::{.callout-important  icon=false collapse="true" appearance="simple"}
 
-$\|\bar{X}\| + d \cdot \max(0, \|\bar{X}\| - d)$ strictly dominates UMVUE
+## Expand for answer
+
+A simple unbiased estimator for this probability is just the indicator of whether it happened, $1\{X \geq 500\}$. Since $X$ is complete sufficient, this must also be the UMVU estimator.
+
+But this estimator makes no sense! If we see $X=499$ heads out of $1000$, we are estimating that if we repeated the experiment by flipping the coin $1000$ more times, there is no chance we'd get more heads than we got this time. There are perfectly good estimators for this problem; for example if we have any reasonable estimator $\hat\theta$ for $\theta$ (such as $X/n$) we can use the *plug-in estimator* $\PP_{\hat\theta}(X \geq 500)$, and this will increase gradually with $X$. But any such reasonable estimator cannot be unbiased, because all other unbiased estimators have to be worse than the UMVU estimator.
+
+:::
+
+While it may seem like we are beating up the unbiased estimation paradigm here, in fact there is no statistical paradigm that doesn't look a bit ridiculous on some examples. As we'll see later, in the multivariate Gaussian location model above, both the maximum likelihood estimator and the Bayes estimator using the "objective" Jeffreys prior are even worse than the UMVU estimator. Much of the art of applied statistics is to understand the limitations of the different paradigms and choose one that's appropriate for the problem at hand. 
+

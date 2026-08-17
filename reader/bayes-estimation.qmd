@@ -8,170 +8,134 @@ format:
 
 {{< include latex-macros.tex >}}
 
-## Bayes Risk and Bayes Estimator
+## Frequentist motivation for a Bayes Estimator
 
-### Definitions
+We will motivate Bayes estimation first as a strategy for selecting an estimator in the setting of [Lecture 2](estimation.qmd). Recall that, when we discussed possible strategies for choosing between different admissible estimators, we suggested using the *average-case risk* to reduce the risk function to a scalar summary. This average must be taken with respect to some measure $\Lambda$ on the parameter space $\Theta$, which we will call the *prior*.
 
-The Bayes risk is the average case risk:
+That is, for an estimator $\delta$ we can define the average-case or *Bayes risk* with respect to $\Lambda$:
+$$
+r_\Lambda(\delta) = \int_\Theta R(\theta; \delta)\,d\Lambda(\theta).
+$$
+An estimator $\delta_\Lambda$ that minimizes the Bayes risk is called a *Bayes estimator*. If $\Lambda(\Theta) = \infty$, we call the prior *improper*, and otherwise we assume $\Lambda$ is normalized so that $\Lambda(\Theta) = 1$. Then, $\Lambda$ is a probability measure; in that case we call it *proper*, and the integral can be rewritten as an expectation
 
 $$
-r(\pi, \delta) = \EE_\pi[R(\theta, \delta)] = \int R(\theta, \delta) \,d\pi(\theta)
+r_\Lambda(\delta) = \EE_{\theta \sim \Lambda}[R(\theta; \delta)] = \EE[L(\theta, \delta(X))],
+$$
+where the last expectation is taken with respect to the *joint distribution* where $\theta \sim \Lambda$ and $X \mid \theta \sim P_\theta$. The key to finding a Bayes estimator is to calculate the conditional distribution of $\theta$ given $X$, which we call the *posterior*. 
+
+The prior will commonly be represented by a density $\lambda(\theta)$, giving the joint density $\lambda(\theta)p_\theta(x)$. Then the marginal distribution of $X$ is $q(x) = \int_\Theta p_\theta(x)\lambda(\theta)\,d\theta$, and the posterior density is given by Bayes' rule:
+$$
+\lambda(\theta \mid x) = \frac{\lambda(\theta) p_\theta(x)}{q(x)}.
 $$
 
-where $\pi(\theta)$ is a probability measure (for now, we assume it's proper; later we will allow it to be improper).
+The names "prior" and "posterior" evoke a natural epistemic interpretation that the prior represents our subjective beliefs about $\theta$ before we observe the data, and the posterior our beliefs afterward. But nothing about the mathematical formulation of the problem requires that we endorse these interpretations: even if we are dogmatic frequentists, or if we are using a $\Lambda$ that doesn't really correspond to anyone's subjective prior beliefs, the expectation still makes sense as a mathematically equivalent expression to the average-case risk.
 
-Note: $\pi$ and $\delta$ are functionally equivalent for average risk, which makes sense even if we don't believe $\pi$.
+## Bayes estimator
 
+Whatever our interpretation of the marginal expectation that defines $r_\Lambda$, the way to minimize it is the same: we simply choose $\delta(X)$ to minimize the *conditional* expectation of the loss given the data $X$.
+
+**Theorem: Bayes estimation**
+
+Assume $r_\Lambda(\delta_0) < \infty$ for some estimator $\delta_0$. Then $\delta_{\Lambda}$ is Bayes with $r_\Lambda(\delta_{\Lambda}) < \infty$, if and only if
 $$
-r(\pi, \delta) = \EE_\pi[\EE_\theta[L(\theta, \delta(X))]] = \EE[L(\theta, \delta(X))]
+\delta_\Lambda(x) \in \argmin \EE[ L(\theta, d) \mid X=x], \quad \text{ for a.e. } x,
 $$
+meaning the marginal probability that $\delta(X)$ does not minimize the conditional expectation is 0.
 
-where $(\theta, X) \sim p(\theta, x) = p(x|\theta)\pi(\theta)$
-
-An estimator $\delta$ minimizing $r_\text{Bayes}(\delta)$ is called a Bayes estimator. It depends on $\pi$ and $L$.
-
+*Proof:* First, we prove the reverse direction. If $\delta$ is any other estimator, then by assumption we have
 $$
-\delta_\pi = \argmin_\delta \EE[L(\theta, \delta(X))]
+\EE[L(\theta, \delta_\Lambda(X)) \mid X] \;\stackrel{\text{a.s.}}{\leq}\; \EE[L(\theta, \delta(X)) \mid X],
 $$
+and marginalizing over $X$ gives the desired result. Taking $\delta = \delta_0$ establishes that $r_\Lambda(\delta_\Lambda) \leq r_\Lambda(\delta_0) < \infty$.
 
-### Prior and Posterior
-
-- The usual interpretation of $\pi$ is the prior belief about $\theta$ before seeing the data.
-- The conditional distribution $\pi(\theta|X)$ is called the posterior distribution (belief after seeing the data).
-
-Densities:
-- Prior: $\pi(\theta)$
-- Likelihood: $p(x|\theta)$
-- Joint density: $p(\theta, x) = \pi(\theta)p(x|\theta)$
-- Marginal density: $q(x) = \int p(\theta, x) \,d\theta$
-- Posterior density: $\pi(\theta|x) = \frac{p(\theta, x)}{q(x)}$
-
-The Bayes estimator depends on the posterior:
-
+For the forward direction, assume $r_\Lambda(\delta_\Lambda) < \infty$; otherwise $\delta_0$ has better Bayes risk and there is nothing to prove. Define $E_x(d) = \EE[L(\theta; d) \mid X=x]$. By assumption, there is some $\varepsilon > 0$ with $\PP(X \in A_\varepsilon) > 0$, where
 $$
-\delta_\pi(x) = \argmin_d \EE[L(\theta, d)|X=x] = \argmin_d \int L(\theta, d) \pi(\theta|x) \,d\theta
+A_\varepsilon = \left\{x:\; E_x(\delta_\Lambda(x)) - \inf_d E_x(d) > \varepsilon \right\}.
 $$
 
-### Theorem: Characterization of Bayes Estimators
-
-Suppose $X \sim p_\theta(x)$ and $\delta_\pi(x) = \delta(x)$ for some function $\delta$. Then $\delta$ is Bayes with respect to $\pi$ if and only if $\delta(x) \in \argmin_d \EE[L(\theta, d)|X=x]$ for almost every $x$.
-
-Proof:
-1. Let $\delta'$ be any other estimator.
-2. $r(\pi, \delta') = \int \EE[L(\theta, \delta'(X))|X=x] q(x) \,dx$
-3. $r(\pi, \delta) = \int \EE[L(\theta, \delta(X))|X=x] q(x) \,dx$
-4. Define $E_x(d) = \EE[L(\theta, d)|X=x]$
-5. If $\delta(x) \in \argmin_d E_x(d)$, then $E_x(\delta(x)) \leq E_x(\delta'(x))$ for all $x$
-6. This implies $r(\pi, \delta) \leq r(\pi, \delta')$
-
-## Special Cases and Examples
-
-### Squared Error Loss
-
-If $L(\theta, d) = (\theta - d)^2$, then the Bayes estimator is the posterior mean:
-
+For any $x \in A_\varepsilon$, we can find $\delta^*(x)$ such that 
 $$
-\delta_\pi(x) = \EE[\theta|X=x]
+E_x(\delta^*(x)) \leq \min\{E_x(\delta_\Lambda(x)) - \varepsilon, E_x(\delta_0(x))\},
 $$
+and for $x \in A_\varepsilon^C$ take $\delta^*(x)=\delta_\Lambda(x)$. Then 
+$$
+E_x(\delta_\Lambda(x)) - E_x(\delta^*(x)) \geq \varepsilon 1\{x \in A_\varepsilon\}.
+$$
+Taking expectations gives 
+$$
+r_\Lambda(\delta_\Lambda) - r_\Lambda(\delta^*) \geq \varepsilon \PP\{X \in A_\varepsilon\} > 0,
+$$
+so $\delta_\Lambda$ is not Bayes. $\blacksquare$
 
-Proof:
+**Example: Squared error loss**
+
+The form of the Bayes estimator is particularly nice in the case of the squared error loss $L(\theta, d) = (g(\theta)-d)^2$. Then, we can decompose the conditional expected loss as
 $$
 \begin{aligned}
-\EE[(\theta - d)^2|X=x] &= \EE[\theta^2|X=x] - 2d\EE[\theta|X=x] + d^2 \\
-&= \Var(\theta|X=x) + (\EE[\theta|X=x] - d)^2 + \EE[\theta|X=x]^2 - 2d\EE[\theta|X=x] + d^2
+\EE[(g(\theta)-d)^2 \mid X]
+&\;=\; \EE\Big[\big(g(\theta) - \EE[g(\theta) \mid X] + \EE[g(\theta) \mid X] - d\big)^2 \mid X\Big]\\
+&\;=\; \Var(g(\theta) \mid X) + (\EE[g(\theta) \mid X] - d)^2,
 \end{aligned}
 $$
+noting that the cross-term $(g(\theta) - \EE[g(\theta) \mid X])\cdot(\EE[g(\theta) \mid X] - d)$ has zero conditional expectation.
 
-The minimum occurs when $d = \EE[\theta|X=x]$.
+The optimal choice of $d$ is $\EE[g(\theta) \mid X]$, which zeroes the second term, giving Bayes risk $\EE[\Var(g(\theta) \mid X)]$.
 
-### Weighted Squared Error
 
-For $L(\theta, d) = w(\theta)(\theta - d)^2$ (e.g., squared relative error), the Bayes estimator is:
+**Example: Weighted squared error loss**
 
+An alternative loss is the *weighted* squared error loss, which gives more weight to some $\theta$ values than others:
 $$
-\delta_\pi(x) = \frac{\EE[w(\theta)\theta|X=x]}{\EE[w(\theta)|X=x]}
+L(\theta, d) = w(\theta)(g(\theta) - d)^2.
 $$
-
-## Examples
-
-### Beta-Binomial
-
-- $X|\theta \sim \text{Binomial}(n, \theta)$, $\theta \in [0,1]$
-- $\theta \sim \text{Beta}(\alpha, \beta)$, $\alpha, \beta > 0$
-
-The marginal distribution of $X$ is called Beta-Binomial.
-
-Posterior:
+For example, we could care about the *relative* squared error $\left(\frac{g(\theta)-d}{g(\theta)}\right)^2$, in which case $w(\theta) = g(\theta)^{-2}$. Then, our Bayes estimator will minimize
 $$
-\pi(\theta|x) \propto \theta^x (1-\theta)^{n-x} \cdot \theta^{\alpha-1}(1-\theta)^{\beta-1} \propto \theta^{x+\alpha-1}(1-\theta)^{n-x+\beta-1}
+\EE[w(\theta)(g(\theta)-d)^2 \mid X] = d^2 \EE[w(\theta) \mid X] - 2d \EE[w(\theta)g(\theta) \mid X] + \EE[w(\theta)g(\theta)^2 \mid X].
+$$
+Minimizing this quadratic in $d$ gives the Bayes estimator
+$$
+\delta_\Lambda(X) = \frac{\EE[w(\theta)g(\theta) \mid X]}{\EE[ w(\theta) \mid X]}
 $$
 
-Therefore, $\theta|X \sim \text{Beta}(x+\alpha, n-x+\beta)$
+## Conjugate priors
 
+A special class of easy-to-update prior distributions is the set of *conjugate priors*. For data $X$ drawn from a likelihood model $\cP = \{P_\theta:\; \theta\in\Theta\}$, we say a family $\mathcal{Q}$ of priors is *conjugate* to $\cP$ if the posterior distribution is also always in $\mathcal{Q}$. Conjugate priors exist for many exponential families.
+
+**Example: Beta-Binomial**
+
+Suppose that we observe a binomial random variable with a Beta prior:
 $$
-\EE[\theta|X] = \frac{x+\alpha}{n+\alpha+\beta}
+\begin{aligned}
+\theta \sim \text{Beta}(\alpha,\beta) &= \theta^{\alpha-1}(1-\theta)^{\beta-1} \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)} \\
+X \mid \theta \sim \text{Binom}(n,\theta) &= \theta^x(1-\theta)^{n-x}\binom{n}{x}
+\end{aligned}
 $$
+Recall that the $\text{Beta}(\alpha,\beta)$ distribution is an exponential family on the unit interval with mean $\frac{\alpha}{\alpha + \beta}$ and variance $\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$. The marginal distribution of $X$ in this problem is called a *Beta-Binomial* distribution.
 
-Interpret $\alpha+\beta$ as pseudo-trials and $\alpha$ as pseudo-successes.
+In this context, $\alpha$ and $\beta$ are not unknown parameters; rather, the analyst will specify them to define the prior for $\theta$. Parameters of the prior are commonly called *hyperparameters*. Note that the functional form in $\theta$ is similar for the prior and the likelihood, but $\theta$ plays different roles in each: in the Beta prior, $\theta$ is the random variable, but in the binomial likelihood, $\theta$ plays the role of the parameter.
 
-### Normal Mean
-
-- $X_i|\theta \sim N(\theta, \sigma^2)$, $\sigma^2$ known
-- $\theta \sim N(\mu, \tau^2)$
-
-Posterior:
+Note that we only need to calculate the posterior up to a proportionality constant in $\theta$. Since we know it is a probability distribution, we can drop any multiplicative constants along the way and just normalize it at the very end.
 $$
-\pi(\theta|x) \propto \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\theta)^2\right) \exp\left(-\frac{1}{2\tau^2}(\theta-\mu)^2\right)
+\begin{aligned}
+\lambda(\theta \mid X=x) 
+&\propto_\theta \lambda(\theta)p_\theta(x)\\
+&\propto_\theta \theta^{\alpha-1}(1-\theta)^{\beta-1} \cdot \theta^x (1-\theta)^{n-x}\\
+&= \theta^{x + \alpha-1} \cdot (1-\theta)^{n-x + \beta-1}\\
+&\propto_\theta \text{Beta}(x+\alpha, n-x+\beta)
+\end{aligned}
 $$
-
-Complete the square:
-
+Thus, we have calculated that $\theta \mid X=x \sim \text{Beta}(x+\alpha, n-x+\beta)$, and in particular we have the posterior mean
 $$
-\theta|X \sim N\left(\frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}, \frac{1}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}}\right)
+\EE[\theta \mid X] = \frac{X + \alpha}{n + \alpha + \beta}
 $$
+We may recognize the form of this estimator as our estimators from [Lecture 2](estimation.qmd) where we imagined we had observed $k = \alpha+\beta$ "pseudo-trials" with $\alpha$ successes, and then report the success rate after combining the pseudo-trials with the $n$ trials represented by our binomial data. If we take $\alpha = \beta = 1$, we get the uniform prior. Thus, the estimator $\frac{X+1}{n+2}$ minimizes the corresponding Bayes risk $\int_0^1 R(\theta;\delta)\,d\theta$ over all possible estimators $\delta$.
 
+By massaging the expression above, we can interpret the Bayes estimator as a weighted average of the UMVU estimator we'd obtain using the data alone, and the "pseudo-estimator" we'd obtain if we observed only the $k$ pseudo-trials, with the weights corresponding to the relative sample sizes of the real data and the pseudo-data:
 $$
-\EE[\theta|X] = \frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\tau^2}\mu}{\frac{n}{\sigma^2} + \frac{1}{\tau^2}} = w\bar{x} + (1-w)\mu
-$$
-
-where $w = \frac{n\tau^2}{n\tau^2 + \sigma^2}$
-
-If $\frac{1}{\tau^2} = k$, interpret as $k$ pseudo-observations with mean $\mu$.
-
-## Conjugate Priors
-
-In both examples, the prior and likelihood have a similar functional form, and the posterior comes from the same exponential family as the prior. When the posterior is from the same family as the prior, we say the prior is conjugate to the likelihood.
-
-### Conjugate Priors for Exponential Families
-
-Suppose $p_\theta(x) = h(x)\exp(\eta(\theta)'T(x) - A(\theta))$ for carrier $h$. Define:
-
-$$
-\pi(\theta) = g(\theta)\exp(\lambda'u(\theta) - \psi(\lambda))
+\EE[\theta \mid X] = \frac{X}{n} \cdot \frac{n}{n+k} + \frac{\alpha}{k}\cdot \frac{k}{n+k}
 $$
 
-Then:
-
-$$
-\pi(\theta|x) \propto \exp((\lambda + T(x))'u(\theta) - (A(\theta) + \psi(\lambda)))
-$$
-
-Often, $u(\theta) = \eta(\theta)$ and $\lambda$ is interpreted as pseudo-observations.
-
-### Conjugate Prior Examples
-
-1. Normal-Normal:
-   - $X_i|\theta \sim N(\theta, \sigma^2)$, $\sigma^2$ known
-   - $\theta \sim N(\mu, \tau^2)$
-   
-2. Poisson-Gamma:
-   - $X|\theta \sim \text{Poisson}(\theta)$, $\theta > 0$
-   - $\theta \sim \text{Gamma}(\alpha, \beta)$, $\alpha, \beta > 0$
-   
-   Posterior: $\theta|X \sim \text{Gamma}(\alpha + \sum x_i, \beta + n)$
-
-   Interpret $\alpha$ as pseudo-counts and $\beta$ as pseudo-exposure.
-   
+We can visualize this problem below:
 
 ### Beta-binomial example
 
@@ -218,10 +182,10 @@ logBeta = (alpha, beta) => {
 }
 
 // Interactive controls
-viewof n = Inputs.range([1, 50], {value: 10, step: 1, label: "n"})
-viewof x = Inputs.range([0, 50], {value: 6, step: 1, label: "X"})
-viewof pseudoHeads = Inputs.range([0.1, 20], {value: 2, step: 0.1, label: "α (pseudo-heads)"})
-viewof pseudoTails = Inputs.range([0.1, 20], {value: 2, step: 0.1, label: "β (pseudo-tails)"})
+viewof n = Inputs.range([1, 500], {value: 10, step: 1, label: "n"})
+viewof x = Inputs.range([0, 500], {value: 6, step: 1, label: "X"})
+viewof pseudoHeads = Inputs.range([0.1, 200], {value: 2, step: 0.1, label: "α (pseudo-heads)"})
+viewof pseudoTails = Inputs.range([0.1, 200], {value: 2, step: 0.1, label: "β (pseudo-tails)"})
 
 // Ensure X doesn't exceed n
 xClamped = Math.min(x, n)
@@ -317,3 +281,80 @@ Plot.plot({
   ]
 })
 ```
+
+**Example: Normal mean**
+
+As another example, suppose we observe a single observation from a univariate Gaussian location family with a Gaussian prior on the location parameter
+$$
+\begin{aligned}
+\theta \sim N(\mu,\tau^2) &\propto_\theta e^{-(\theta-\mu)^2/2\tau^2}\\
+X \mid \theta \sim N(\theta,\sigma^2) &\propto_\theta e^{-(x-\theta)^2/2\sigma^2}
+\end{aligned}
+$$
+Again, $\theta$ plays a different role in the two densities above, first as the random variable and then as a parameter. Note $\sigma^2$ and $\tau^2$ are both assumed known.
+
+Multiplying the likelihood by the prior gives an expression proportional to the posterior density:
+$$
+\begin{aligned}
+\lambda(\theta \mid x) 
+&\propto_\theta \exp\left\{ -\frac{(x-\theta)^2}{2\sigma^2} -\frac{(\theta-\mu)^2}{2\tau^2}\right\}\\
+&\propto_\theta \exp\left\{ \theta\left(\frac{x}{\sigma^2} + \frac{\mu}{\tau^2}\right)-\theta^2\left(\frac{1}{2\sigma^2} + \frac{1}{2\tau^2}\right)\right\}
+\end{aligned}
+$$
+Since the log-posterior is quadratic in $\theta$, we recognize this as proportional to a Gaussian density. We can find the mean and variance by completing the square. Recalling that
+$$
+a\theta^2-b\theta = \left(\theta - \frac{b}{2a}\right)^2 a - c(a,b),
+$$
+we can continue our calculation with $a=\frac{1}{2}\left(\sigma^{-2} + \tau^{-2}\right)$ and $b= x\sigma^{-2} + \mu\tau^{-2}$, giving
+$$
+\begin{aligned}
+\lambda(\theta \mid x) 
+&\propto_\theta \exp\left\{ -\left(\theta-\frac{x\sigma^{-2}+\mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}}\right)^2 \bigg/ 2\left(\sigma^{-2}+\tau^{-2}\right)^{-1}\right\}\\
+&\propto_\theta N\left(  \frac{x\sigma^{-2}+\mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}}  ,  \frac{1}{\sigma^{-2}+\tau^{-2}} \right).
+\end{aligned}
+$$
+This formula becomes a bit less unlovely if we interpret it in terms of the *precision*, which is defined as the reciprocal of the variance. Then, the posterior precision is $\sigma^{-2} + \tau^{-2}$, the sum of the precisions for the prior and likelihood, and the posterior mean is the precision-weighted average
+$$
+\EE[\theta \mid X] = \frac{X\sigma^{-2}+\mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}} = X \frac{\sigma^{-2}}{\sigma^{-2}+\tau^{-2}} + \mu \frac{\tau^{-2}}{\sigma^{-2}+\tau^{-2}}.
+$$
+This suggests a pseudo-data interpretation, which we can make more concrete if we extend this example to an i.i.d. sample.
+
+**Example: Gaussian i.i.d. sample**
+
+Now, assume we have the same prior but instead of one draw, we have $n$ draws $X_1,\ldots,X_n \simiid N(\theta,\sigma^2)$. If we first make a sufficiency reduction to $\overline{X} \sim N(\theta,\sigma^2/n)$, we can immediately apply our formula from before to obtain:
+$$
+\theta \mid X \sim N\left( \frac{\overline{X} n\sigma^{-2}+\mu\tau^{-2}}{n\sigma^{-2} + \tau^{-2}}, \frac{1}{n\sigma^{-2}+\tau^{-2}}  \right).
+$$
+Since the likelihood precision is linear in the sample size $n$, we could think of the prior as arising from an equivalent sample of $k=\sigma^2/\tau^2$ pseudo-observations with mean $\mu$. Then we have
+$$
+\theta \mid X \sim N\left( \frac{n\overline{X} + k\mu}{n + k}, \frac{\sigma^2}{n+k}  \right),
+$$
+giving a similar interpretation as in the Beta-Binomial example.
+
+
+### Conjugate priors for exponential families
+
+Conjugate priors are commonly available for exponential family models. To understand why, consider a generic $s$-parameter exponential family model where
+$$
+X_1,\ldots,X_n \simiid p_\eta(x) = e^{\eta'T(x)-A(\eta)}h(x),
+$$
+We can always define a conjugate $(s+1)$-parameter prior that is also an exponential family model. For any carrier $\lambda_0$, define for $k\in\RR$, $\mu\in \RR^{s}$:
+$$
+\lambda_{\mu,k}(\eta) = e^{k\mu'\eta - kA(\eta) - B(k\mu,k)}\lambda_0(\eta).
+$$
+Recalling that $\eta$ is no longer a parameter, but the sampled random variable, this is an exponential family model with sufficient statistic $\binom{\eta}{-A(\eta)}$ and natural parameter $\binom{k\mu}{k}$, both in $\RR^{s+1}$.
+
+Then the posterior density is
+$$
+\begin{aligned}
+\lambda(\eta \mid x) 
+&\propto_\eta \left(\prod_{i=1}^n e^{\eta'T(x_i)-A(\eta)}h(x_i)\right) \cdot \lambda_{k,\mu}(\eta)\\
+&\propto_\eta e^{ \left(k\mu + \sum_i T(x_i)\right)'\eta - (k+n)A(\eta)}\lambda_0(\eta)\\
+&\propto_\eta \lambda_{\mu_{\text{post}}(x),n+k}(\eta),
+\end{aligned}
+$$
+where we have a similar pseudo-data interpretation for $\mu_{\text{post}}$.
+$$
+\mu_{\text{post}}(x) = \frac{n \overline{T}(x) + k\mu}{n+k}, \quad\text{for } \overline{T}(x) = \frac{1}{n}\sum_i T(x_i)
+$$
+In many examples, including the examples we saw above, $\mu_{\text{post}}$ corresponds to the posterior expectation for the mean parameter $\EE_\eta T(X)$; but whether or not this is true depends on the functional form of the prior. Another caveat is that, again depending on the functional form of the exponential family distribution, we may not have a closed form for $B(k\mu,k)$.

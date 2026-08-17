@@ -17,7 +17,7 @@ title: "Syllabus"
 
 -   **Lectures:** Tuesday and Thursday 9:30-11am, Evans 60
 -   **Recitation sections:** Every second Friday 2-3pm, starting September 5, Evans 332 ([handouts](recitation.qmd))
--   **Veterans Day:** No class on Tuesday, November 11 (quiz held Thursday, November 13)
+-   **Veterans Day:** No class on Tuesday, November 11 (and no quiz that week)
 -   **Thanksgiving week:**
     -   Tuesday November 25: lecture 9:30-11am on Zoom
     -   Thursday November 27: no lecture

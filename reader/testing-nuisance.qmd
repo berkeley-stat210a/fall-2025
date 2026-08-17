@@ -1,52 +1,121 @@
 ---
 title: "Testing with Nuisance Parameters"
-date: "2023-10-24"
-format:
-  html:
-    toc: true
-    number-sections: true
+format: html
 ---
 
 {{< include latex-macros.tex >}}
 
-## Nuisance Parameters
+# Nuisance Parameters
 
-### Common Setup
+One-parameter families are the exception in statistics, not the rule. In most testing problems, there are additional unknown quantities which are not of direct interest, but which will generically affect the rejection probability of any test we choose. Formally, we will consider a general setup where we observe $X \sim P_{\theta,\lambda}$ from a statistical model
+$$
+\cP = \{P_{\theta,\lambda}:\; (\theta,\lambda) \in \Omega\},
+$$
+where as usual $\theta$ and $\lambda$ could be real vectors or could represent infinite-dimensional parameters such as unknown distributions.
 
-Extra unknown parameters which are not of direct interest:
+We will assume the null and alternative hypotheses concern $\theta$ only; that is, we still want to test $H_0:\;\theta\in\Theta_0$ vs $H_1:\;\theta\in\Theta_1$. We call $\theta$ the **parameter of interest**, and $\lambda$ the **nuisance parameter**.
 
-$\cP = \{P_{\theta, \lambda}: \theta \in \Theta, \lambda \in \Lambda\}$
+**Example (Two-sample Gaussian problem):** We observe $X_1,\ldots,X_n \simiid N(\mu,\sigma^2)$ and $Y_1,\ldots,Y_m \simiid N(\nu,\sigma^2)$. All three parameters $\mu,\nu\in\RR$ and $\sigma^2>0$ are unknown, and we wish to test $H_0:\;\mu = \nu$ vs $H_1:\;\mu \neq \nu$. We can express our hypothesis in terms of a parameter of interest $\theta = \mu - \nu$, in which case our nuisance parameter is $\lambda = (\mu + \nu, \sigma^2)$, or $\lambda = (\mu, \sigma^2)$, or any other representation of the remaining unknown information besides $\theta$.
 
-$H_0: \theta \in \Theta_0$ vs $H_1: \theta \in \Theta_1$
+**Example (Comparing two Poissons):** We observe $X\sim \text{Pois}(\mu)$ and $Y\sim\text{Pois}(\nu)$ and want to test $H_0:\;\mu\leq \nu$ vs $H_1:\;\mu>\nu$. Here, we could call $\mu-\nu$ the parameter of interest, but as we will see shortly it is somewhat more natural to think about the ratio $\frac{\mu}{\nu}$, or $\theta = \frac{\mu}{\mu+\nu}$.
 
-- $\theta$: parameter of interest
-- $\lambda$: nuisance parameter
 
-Issue: $\lambda$ unknown but might affect type I error or power of a given test
 
-### Examples
+**Example (Two-sample binomial problem):** We might observe $X_1\sim \text{Binom}(n_1,\pi_1)$ and $X_2\sim\text{Binom}(n_2,\pi_2)$ and want to test $H_0:\;\pi_1\leq \pi_2$ vs $H_1:\;\pi_1>\pi_2$. The sample sizes $n_1$ and $n_2$ are typically *known* (so they are not nuisance parameters). Here, we could call $\pi_1-\pi_2$ the parameter of interest, but it is somewhat more natural to think about the **odds ratio** $\rho = \frac{\pi_1}{1-\pi_1}/\frac{\pi_2}{1-\pi_2}$, whose log is the difference between the two natural parameters.
 
-1. $X_1, \ldots, X_n \sim \text{iid } N(\mu, \sigma^2)$, $Y_1, \ldots, Y_m \sim \text{iid } N(\nu, \sigma^2)$
-   $\mu, \nu, \sigma^2$ unknown
-   $H_0: \mu = \nu$ vs $H_1: \mu \neq \nu$
-   $\theta = \mu - \nu$, $\lambda = (\mu + \nu, \sigma^2)$ or $(\mu, \sigma^2)$
+## Conditional testing
 
-2. $X \sim \text{Binom}(n_1, \pi_1)$, $X_2 \sim \text{Binom}(n_2, \pi_2)$
-   $n_1, n_2$ known (not nuisance parameters)
-   $H_0: \pi_1 = \pi_2$ vs $H_1: \pi_1 \neq \pi_2$
+Conditional testing offers very effective and fairly strategy for dealing with nuisance parameters. To introduce the idea, consider a simple problem where we observe a binomial random variable with a random sample size. This is a very common situation: for example, suppose that we conduct a survey asking people which of two candidates they favor, and the number of respondents is a random number.
 
-3. $X \sim N(\mu, \sigma^2)$, $\theta \in \mathbb{R}$, $\lambda \in \mathbb{R}$, both unknown
-   How to test $H_0: \theta = 0$ vs $H_1: \theta \neq 0$?
+Let $N$ represent the sample size and assume that, conditional on $N = n$, we will observe a binomial random variable $X \sim \text{Binom}(n,theta)$.
 
-### Idea: Condition on Sufficient Statistic for $\lambda$
+**Example (Random sample size with known distribution):**
+First, consider a simple setting where we actually know the distribution of $N$, for example $N \sim \text{Pois}(10)$; then having observed $N$ and $X$, we want to test $H_0:\;\theta \leq \frac{1}{2}$ vs $H_1:\;\theta > \frac{1}{2}$. The full likelihood for the model is
+$$
+p_\theta(n,x) = \frac{10^n e^{-10}}{n!} \cdot \binom{n}{x}\theta^x(1-\theta)^{n-x}, \quad \text{ for } 0 \leq x \leq n.
+$$
+There is no UMP test[^1], but we have at least two natural options:
 
-Condition on $U(X)$ to eliminate dependence on $\lambda$
+[^1]: The likelihood ratio for each alternative $\theta_1 > \frac{1}{2}$ is a different linear combination of $x$ and $n$:
+$\log \frac{p_{\theta_1}}{p_{1/2}}(n,x) = x \log \frac{\theta_1}{1-\theta_1} - n\log2(1-\theta_1)$
 
-$$p_{\theta, \lambda}(t|u) = \frac{p_{\theta, \lambda}(t, u)}{p_{\lambda}(u)} = \frac{e^{\theta \cdot t} g_\lambda(t, u)}{\int e^{\theta \cdot s} g_\lambda(s, u) ds}$$
+**Option 1: Marginal test** Marginally, we have $X \sim \text{Pois}(10\cdot \theta)$. If we ignore $N$, this distribution has monotone likelihood ratio in $X$, so we could reject if $X > c_\alpha^{(1)}$, the upper-$\alpha$ quantile of a $\text{Pois}(5)$ distribution. This marginal test, which we can call $\phi_1$, will certainly have $\EE_\theta \phi_1(X) \leq \alpha$ for any $\theta \leq \frac{1}{2}$.
 
-Evaluate $H_0: \theta \in \Theta_0$ vs $H_1: \theta \in \Theta_1$ in s-parameter model $\{p_\theta(\cdot|u): \theta \in \Theta\}$
+**Option 2: Conditional test** Conditionally, we have $X \mid N=n \sim \text{Binom}(n,\theta)$, which also has monotone likelihood ratio in $n$. So we can reject if $X > c_\alpha^{(2)}(n)$, the upper-$\alpha$ quantile of a $\text{Binom}\left(n,\frac{1}{2}\right)$ distribution. This conditional test, which we can call $\phi_2$, will have
+$$
+\EE_\theta \left[\phi_2(X) \mid N=n\right] \leq \alpha, \quad \text{ for all } n\geq 0, \text{ and } \theta \leq \frac{1}{2},
+$$
+hence we also have $\EE_\theta \phi_2(X) \leq \alpha$ for $\theta \leq \frac{1}{2}$.
 
-Note: If $s=1$, this family has MLR in $T$. Even if $s>1$, we have still gotten rid of $\lambda$.
+If we let $q_{\theta}(x \mid n)$ represent the pmf of $X$ given $N=n$, then the latter test $\phi_2$ is UMP in the **conditional model**
+$$
+\mathcal{Q}_n = \{q_\theta(x \mid n):\; \theta \in \Theta\},
+$$
+consisting of the candidate conditional distributions for $X$ given $N=n$ (i.e., $\text{Binom}(n,\theta)$).
+
+In general, any level-$\alpha$ (unbiased) test in the conditional model is also level-$\alpha$ (unbiased) in the marginal model: the marginal power is the average conditional power, so any guarantee that the conditional power is below (or above) $\alpha$ also holds perforce for the marginal power. For the same reason, any valid (unbiased) confidence interval in the conditional model is also valid (resp. unbiased) marginally. 
+
+The **conditionality principle** holds that, since $N$ is ancillary in this case, we should condition on its value. Informally, the observed value of $N$ has nothing to do with the parameter $\theta$ that we care about, so we shouldn't really think of it as data informing our inference about $\theta$ even if it is random. Instead, we should just condition on its value and work in the conditional model, treating it as fixed.
+
+Whether or not we accept the conditionality principle, conditioning on part of the data can be a very helpful way to deal with nuisance parameters, as we see next:
+
+**Example (Random sample size with unknown distribution):**
+Now, we can modify the previous example to assume that $N$ is drawn from an *unknown* distribution $P^N$ on $\{0,1,\ldots\}$, but continuing to assume that $X \mid N=n \sim \text{Binom}(n,\theta)$. Having introduced the infinite-dimensional nuisance parameter $P^N$, we no longer have the option of rejecting for (marginally) large values of $X$.
+
+Now the marginal test is no longer even an option, but we can still use the conditional test just as before, since the conditional model $\mathcal{Q}_n$ is no different than it was when $N$ was ancillary. In other words, conditioning on $N$ completely removes the nuisance parameter $P^N$ from the problem. This might be a bad thing if $N$ were for some reason highly informative about $\theta$, but if we don't think it is then we lose little and gain much by conditioning on $N$.
+
+**Example (Comparing two Poissons, continued):** We continue the previous example of comparing independent $X\sim\text{Pois}(\mu)$ and $Y\sim\text{Pois}(\nu)$. If we let $N = X + Y \sim \text{Pois}(\mu + \nu)$, then we have a submodel of the last example:[^2]
+$$
+X \mid N = n \sim \text{Binom}(n,\theta), \quad \text{ for } \theta = \frac{\mu}{\mu + \nu}.
+$$
+
+[^2]: To derive this, note that
+$$
+\begin{aligned}
+\PP_{\mu,\nu}(X=x \mid X+Y=n) &= \frac{\PP_\mu(X=x)\PP_\nu(Y=x-n)}{\PP_{\mu+\nu}(X+Y=n)}\\[5pt]
+&= \frac{\mu^x\nu^{n-x}e^{-\mu-\nu}}{x!y!} \,\big/\, \frac{n!}{(\mu+\nu)^ne^{-(\mu+\nu)}}\\[5pt]
+&= \binom{n}{x}\theta^x(1-\theta)^{n-x}.
+\end{aligned}
+$$
+
+
+Since $Y = N-X$ is recoverable from $N$ and $X$, we can simply regard $(N,X)$ as our full data set. Conditioning on $N$ removes the nuisance parameter $\lambda = \mu + \nu$ from the problem, leaving $H_0:\;\mu \leq \nu \iff \theta \leq \frac{1}{2}$, and $H_1:\;\mu > \nu \iff \theta > \frac{1}{2}$.
+
+As we will see next, this beautiful reduction was not a miraculous coincidence, but a direct consequence of the exponential family structure of the model.
+
+## Multiparameter exponential families
+
+Consider a generic exponential family where we can partition the natural parameter into a parameter of interest $\theta\in\RR^s$ and nuisance parameter $\lambda\in\RR^r$:
+$$
+X \sim p_{\theta,\lambda}(x) = e^{\theta'T(x) + \lambda'U(x) - A(\theta,\lambda)}h(x).
+$$
+Both $\theta$ and $\lambda$ are assumed unknown, and we want to test a hypothesis about $\theta$ with $\lambda$ as a nuisance parameter, i.e. $H_0:\;\theta \in \Theta_0$ vs $H_1:\; \theta \in \Theta_1$. Our basic recipe is to condition on $U(X)$, and then base our inferences on the conditional model for $T(X)$, which depends on $\theta$ alone.
+
+Without loss of generality, we can make a sufficiency reduction to $(T,U)$, since any test $\phi(X)$ has the same power function as $\psi(T(X),U(X))$ where $\psi(t,u) = \EE \left[\phi(X) \mid T=t,U=u\right]$. Then we have 
+$$
+(T, U) \sim p_{\theta,\lambda}(t,u) = e^{\theta't + \lambda'u - A(\theta,\lambda)}g(t,u).
+$$
+When we calculate the conditional density for $T$ given $U$, the factor $e^{\lambda'u-A(\theta,\lambda)}$ in the numerator and denominator cancels, leaving
+$$
+q_\theta(t \mid u) = \frac{p_{\theta,\lambda}(t,u)}{\int p_{\theta,\lambda}(z,u)\,dz} = \frac{e^{\theta't} g(t,u)}{\int e^{\theta'z} g(z,u)\,dz} = e^{\theta't-B_u(\theta)} g(t,u),
+$$
+for $B_u(\theta) = \log\int e^{\theta'z}g(z,u)\,dz$. Because $q_\theta(t \mid u)$ is an exponential family with sufficient statistic $T$ and natural parameter $\theta$, the conditional model $\mathcal{Q}_u$ is an $s$-parameter exponential family, allowing for us to use standard techniques to perform inference on $\theta$ with $\lambda$ removed from the problem.
+
+If $s=1$, the conditional model $\mathcal{Q}_u$ has monotone likelihood ratios in $T$. This makes conditional inference especially simple and appealing, leading to standard one- and two-sided conditional tests and conditional confidence intervals.
+
+The Poisson comparison problem was an example of this:
+$$
+\begin{aligned}
+p_{\mu,\nu}(x,y) 
+&= \frac{\mu^x e^{-\mu}}{x!}\cdot\frac{\nu^y e^{-\nu}}{y!} \\
+&= \exp\{ x\log \mu + y\log \nu - (\mu+\nu) \}\cdot \frac{1}{x!y!}\\[5pt]
+&= \exp\left\{ x\log \frac{\mu}{\nu} + (y+x)\log \nu - (\mu + \nu)\right\}\cdot \frac{1}{x!y!}
+\end{aligned}
+$$
+By adding and subtracting $x\log \nu$ in the exponent in the last step, we have obtained a model of the desired form with $\theta = \log \frac{\mu}{\nu}$, $T(X,Y)=X$, $\lambda = \log \nu$, and $U(X,Y) = X+Y$. Thus, our general strategy tells us to condition on $X+Y$, and once we have done so the optimal conditional test rejects for large values of $X$.
+
+As you will show in the problem set, the binomial comparison problem introduced in the first section is another example of this type of setting, which we can deal with in much the same way. The widget below illustrates how the conditional distribution given $T(X) = X_1+X_2$ depends only on the log odds ratio $\rho = \frac{\pi_1}{1-\pi_1} / \frac{\pi_2}{1-\pi_2}$, and not on the nuisance parameter $\pi_2$ (the case $n_1=n_2=n$ is illustrated, but the same is true for general $n_1,n_2$).
+
 
 ```{ojs}
 //| echo: false
@@ -70,7 +139,7 @@ factorial = (n) => {
 
 // Interactive controls
 viewof n = Inputs.range([4, 20], {value: 8, step: 1, label: "n"})
-viewof theta2 = Inputs.range([0.01, 0.99], {value: 0.30, step: 0.01, label: "θ₂"})
+viewof theta2 = Inputs.range([0.01, 0.99], {value: 0.30, step: 0.01, label: "π₂"})
 viewof rho = Inputs.range([0.02, 50], {value: 1, transform: Math.log, label: "ρ (odds ratio)"})
 viewof t_select = Inputs.range([0, 2*n], {value: Math.min(6, 2*n), step: 1, label: "T = t"})
 
@@ -408,183 +477,43 @@ html`<div style="display: flex; gap: 20px; align-items: center; justify-content:
 </div>`
 ```
 
-## Theorem (Informal)
+## Permutation tests
+
+Even when we can't get a UMPU test, conditional testing can be very useful.
+
+**Example (Two-sample permutation test):** We observe two independent samples of real-valued random variables $X_1, \ldots, X_n \simiid P$, and $Y_1, \ldots, Y_m \simiid Q$, and we want to test whether the distributions are the same or different; i.e., we test $H_0: P=Q$ vs $H_1: P \neq Q$.
+
+We cannot write this model as an exponential family, but we can condition on a statistic that is sufficient under the null hypothesis. If $P=Q$, then we have
+$$
+X_1, \ldots, X_n, Y_1, \ldots, Y_m \simiid P
+$$
+Define the vector $Z = (Z_1, \ldots, Z_{n+m}) = (X_1, \ldots, X_n, Y_1, \ldots, Y_m)$ which concatenates the two samples. Under $H_0$, the vector of **pooled order statistics** $U(Z) = (Z_{(1)}, Z_{(2)}, \ldots, Z_{(n+m)})$ is complete sufficient for $Z=(X,Y)$, and the conditional distribution of $Z$ is uniform on all permutations of $U$; that is, if $\mathcal{S}_{n+m}$ is the group of all permutations on $n+m$ items, then
+$$
+Z \mid U(Z) = u \stackrel{H_0}{\sim} \text{Unif}\{\pi u:\; \pi \in \mathcal{S}_{n+m}\}.
+$$
+Because $U$ is sufficient for the null model, $H_0$ is a *simple null* in the conditional model. But the alternative in the conditional model is highly composite: For example, if $Q$ is stochastically larger than $P$, then the last $m$ observations in $Z$ (the $Y$ values) should be systematically larger than the first $n$ (the $X$ values); or, if $Q$ has more variability, then the sample variance of the last $m$ observations should be systematically larger than that of the first $n$, and so on.
+
+Because there are so many ways that $P$ and $Q$ could differ from each other, there is no generically optimal test statistic for us to use. But the good news is that we can perform a valid conditional test using *any* statistic $T(X,Y)$, by conditioning on $U(X,Y)$ (we will slightly abuse notation by using $(X,Y)$ and $Z$ interchangeably as arguments to $T$ and $U$).
+
+In principle, if we had unlimited computational resources (or a way of analytically simplifying the problem) we could simply reject when $T(X)$ is above its conditional $\alpha$ quantile; or equivalently, we reject for small values of the corresponding $p$-value
+$$
+p(x,y \mid u) = \PP_{H_0}(T(X,Y) \geq T(x,y) \mid U(X,Y) = u) = \frac{1}{(n+m)!}\sum_{\pi \in \mathcal{S}_{n+m}} 1\{T(\pi u) \geq T(x,y)\}.
+$$
+In practice, enumerating all $(n+m)!$ permutations is unnecessary, so we sample permutations to perform a **Monte Carlo test**: for $\pi_1,\ldots,\pi_B \simiid \text{Unif}(\mathcal{S}_{n+m})$, define the Monte Carlo $p$-value
+$$
+p = \frac{1}{B+1} \left(1 + \sum_{b=1}^B 1\left\{T(\pi_b u) \geq T(x,y)\right\}\right).
+$$
+This test is exact: if we let $\pi_0$ denote the permutation for which $\pi_0u = (x,y)$, then under $H_0$, $\pi_0,\pi_1,\ldots,\pi_B$ are i.i.d. draws from $\mathcal{S}_{n+m}$, so $(x,y)=\pi_0 u$ has exactly the same chance to give the largest test statistic as every other permutation has.
+
+Note that usually permutation tests are defined by randomly permutating $(x,y)$, rather than randomly permuting $u$; this is equivalent, since $\tilde\pi_b = \pi_b \circ \pi_0^{-1}$ are also i.i.d. draws from $\mathcal{S}_{n+m}$.
+
+::: callout
+It is worth noting that the concept of a Monte Carlo test can be applied to any situation where we prefer to sample $B$ values from the null distribution rather than directly calculate an exact quantile. There are very interesting extensions to Markov Chain Monte Carlo, that allow us to perform *exact* tests even when we cannot sample 
+:::
+
+Crucially, $U(Z)$ is *not* sufficient for $Z$ under the *full* model where $P$ and $Q$ vary arbitrarily. Suppose we instead conditioned on the order statistics of each sample separately:
+$$
+V(X,Y) = (X_{(1)},\ldots,X_{(n)},Y_{(1)},\ldots,Y_{(m)}).
+$$
+Then, the distribution of $(X,Y)$ given $V$ would be fully known under the null or the alternative: we would have conditioned away the distinction between the null and the alternative, rendering the entire model a singleton. This is *not* what we want to do: whereas conditioning on $U$ and collapsing the null hypothesis to a singleton is convenient, conditioning on $V$ and collapsing the entire model to a singleton renders the data useless.
 
-Let $\cP$ be full rank exp. fam. with densities $p_{\theta, \lambda}(x) = e^{\theta \cdot T(x) + \lambda \cdot U(x) - A(\theta, \lambda)}h(x)$
-
-$\theta \in \mathbb{R}^s$, $\lambda \in \mathbb{R}^r$, $(\theta_0, \lambda_0)$ possible
-
-a) To test $H_0: \theta = \theta_0$ vs $H_1: \theta \neq \theta_0$, there is a UMPU test $\phi(x) = \psi(T(x), U(x))$ where
-
-   $$\psi(t, u) = \begin{cases}
-   1 & \text{if } t > c_2(u) \\
-   \gamma_2(u) & \text{if } t = c_2(u) \\
-   0 & \text{if } c_1(u) < t < c_2(u) \\
-   \gamma_1(u) & \text{if } t = c_1(u) \\
-   1 & \text{if } t < c_1(u)
-   \end{cases}$$
-
-   with $\gamma_1, \gamma_2, c_1, c_2$ chosen to make $\mathbb{E}_{\theta_0}[\phi] = \alpha$ and $\mathbb{E}_{\theta_0}[T\phi] = \theta_0$
-
-b) To test $H_0: \theta \leq \theta_0$ vs $H_1: \theta > \theta_0$, there is a UMPU test $\phi(x) = \psi(T(x), U(x))$ where
-
-   $$\psi(t, u) = \begin{cases}
-   1 & \text{if } t > c(u) \\
-   \gamma(u) & \text{if } t = c(u) \\
-   0 & \text{if } t < c(u)
-   \end{cases}$$
-
-   with $\gamma, c$ chosen to make $\mathbb{E}_{\theta_0}[\phi] = \alpha$
-
-Note: $h$ has disappeared from the problem.
-
-### Example: Poisson Ratio
-
-$X_i \sim \text{iid Poisson}(\mu_i)$, $i=1,2$
-
-$H_0: \mu_1 = \mu_2$ vs $H_1: \mu_1 \neq \mu_2$
-
-$$p(x) = \frac{\mu_1^{x_1} e^{-\mu_1}}{x_1!} \cdot \frac{\mu_2^{x_2} e^{-\mu_2}}{x_2!} = e^{x_1 \log \mu_1 + x_2 \log \mu_2 - \mu_1 - \mu_2}$$
-
-Let $\theta = \log \frac{\mu_1}{\mu_2}$, $\lambda = \log \mu_2$
-
-$H_0: \theta = 0$ vs $H_1: \theta \neq 0$
-
-Reject for conditionally large values of $X_1$ given $X_1 + X_2 = u$:
-
-$$P_\theta(X_1 = x_1 | X_1 + X_2 = u) = \frac{e^{\theta x_1}}{\sum_{i=0}^u e^{\theta i}} = \binom{u}{x_1} \left(\frac{e^\theta}{1+e^\theta}\right)^{x_1} \left(\frac{1}{1+e^\theta}\right)^{u-x_1}$$
-
-$X_1 | X_1 + X_2 \sim \text{Binom}(u, \frac{e^\theta}{1+e^\theta})$
-
-So in the end, we do a Binomial test.
-
-## Proof Sketch
-
-1. Any unbiased test has $\mathbb{P}(\phi=1) \leq h(t,u)$ (continuity)
-2. Power = 0 on boundary $\implies \mathbb{E}_{\theta_0}[T\phi] = \theta_0$ (UK complete sufficient on boundary sub-model)
-3. $\phi$ optimal among all tests with conditional level $\alpha$ by reduction to univariate model
-
-### Detailed Proof
-
-Assume $\phi$ any unbiased test:
-
-1. $\mathbb{E}_\theta[\phi] = \alpha + f(\theta)$, $f(\theta_0) = 0$, $f'(\theta_0) = 0$
-   Keener Thm 12.4
-2. $\mathbb{E}_\theta[\phi]$ infinitely diff on $\mathbb{R}^s$, can diff under $\int$
-3. $\phi$ unbiased $\implies \mathbb{E}_\theta[T\phi] = \frac{\partial}{\partial \theta} \mathbb{E}_\theta[\phi] = \theta$
-
-Step 1: Boundary sub-model $\cP_0 = \{p_{\theta_0, \lambda}: \lambda \in \mathbb{R}^r\}$
-
-$p_{\theta_0, \lambda}(x) = e^{\lambda \cdot U(x) - A(\theta_0, \lambda)}h(x)$
-
-$\cP_0$ is full rank $r$-param exp fam, $U(X)$ complete suff
-
-Let $f(\lambda) = \mathbb{E}_{\theta_0, \lambda}[\phi(X) | U(X)] = \alpha$
-
-$\mathbb{E}_{\theta_0, \lambda}[\phi(X) T(X) | U(X)] = \theta_0$ a.s.
-
-$\mathbb{E}_{\theta_0, \lambda}[\phi(X) | U(X)] = \alpha$ a.s.
-
-Two-sided: $\mathbb{E}_{\theta_0, \lambda}[g(U(X))\phi(X)] = \mathbb{E}_{\theta_0, \lambda}[T(X)\phi(X)] = \theta_0$
-
-$\mathbb{E}_{\theta_0, \lambda}[g(U)\mathbb{E}_{\theta_0, \lambda}[\phi|U]] = \theta_0$
-
-$\mathbb{E}_{\theta_0, \lambda}[g(U) \alpha] = \theta_0$
-
-$\mathbb{E}_{\theta_0, \lambda}[g(U)] = \frac{\theta_0}{\alpha}$
-
-One-sided: $\mathbb{E}_{\theta_0, \lambda}[\phi] = \alpha$ $\forall \lambda$
-
-Steps 2-3: For any value $u$, the conditional model is:
-
-$$p_\theta(t|u) = e^{\theta \cdot t} g(t,u)$$
-
-1-param exp fam.
-
-In one/two-sided case, we have shown $\psi(t,u)$ is UMP/UMPU in $\{p_\theta(\cdot|u)\}$
-
-Let $g(t,u) = \mathbb{E}_{\theta_0}[\phi(X) | T(X)=t, U(X)=u] \leq 1$
-
-$\mathbb{E}_{\theta_0}[\psi(T,U) | U] = \mathbb{E}_{\theta_0}[\phi(X) | U(X)=u]$
-
-$\psi$ if $\theta > \theta_0$
-$\phi(X)$ is a conditional test of $H_0$ vs $H_1$ in $\{p_\theta(\cdot|u)\}$ with power $\leq \alpha$ at boundary
-
-One-sided case: For $\theta > \theta_0$
-$\psi(t,u)$ is the UMP test of $\theta=\theta_0$ vs $\theta>\theta_0$
-in $\{p_\theta(\cdot|u)\}$, which is a 1-param exp fam
-
-Two-sided:
-$\psi(t,u)$ is the UMP test of $\theta=\theta_0$ vs $\theta \neq \theta_0$
-among tests with power $\alpha$ over $\theta=\theta_0$
-Keener Thm 12.22 (main thm for two-sided tests)
-
-In either case, $\psi$ has higher cond. power than $\phi$ a.s.
-
-For $\theta \neq \theta_0$:
-
-$$\mathbb{E}_\theta[\phi] = \mathbb{E}_\theta[\mathbb{E}[\phi(X) | T(X), U(X)]]$$
-$$\leq \mathbb{E}_\theta[\mathbb{E}[\psi(T(X), U(X)) | T(X), U(X)]]$$
-$$= \mathbb{E}_\theta[\psi]$$
-
-### Example: Normal Mean with Unknown Variance
-
-$X \sim N(\mu, \sigma^2)$, $\sigma^2>0$ unknown
-$H_0: \mu=0$ vs $H_1: \mu \neq 0$
-
-$T = \frac{\bar{X}}{\|X\|}$, $U = \|X\|^2$
-
-Optimal test rejects when $\bar{X}$ is extreme given $\|X\|^2$
-
-If $\mu=0$, $\frac{X}{\|X\|}$ is rotationally symmetric
-$\frac{X}{\|X\|} \sim \text{Unif}(S^{n-1})$, $\frac{X}{\|X\|}$ indep of $\|X\|$
-
-Optimal test rejects when $\frac{\bar{X}}{\|X\|}$ extreme (marginally)
-
-Could stop here & simulate
-
-#### Geometric Picture (n=2)
-
-[Insert geometric picture here]
-
-Above test rejects for:
-- conditionally extreme $\bar{X}$ given $\|X\|^2$
-OR
-- marginally extreme $\frac{\bar{X}}{\|X\|}$
-
-Fact: reject for marginally extreme $T$ where
-
-$$T^2 = \frac{(\sum X_i)^2}{\sum X_i^2 - \frac{1}{n}(\sum X_i)^2} = \frac{n\bar{X}^2}{\|X\|^2 - n\bar{X}^2} = \frac{n\bar{X}^2}{S^2}$$
-
-and $S^2 = \frac{1}{n-1}\sum (X_i - \bar{X})^2$
-
-#### Geometric Picture
-
-[Insert second geometric picture here]
-
-$T^2 = \frac{\|\text{Proj}_\mathbf{1}X\|^2}{\|\text{Proj}_{\mathbf{1}^\perp}X\|^2} \cdot \frac{n-1}{n}$
-
-Next major theme: ratios of projections
-
-## Permutation Tests
-
-Even if we don't get a UMPU test at the end, conditioning on null suff. stat. still helps
-
-Example: $X_1, \ldots, X_n \sim \text{iid } P$, $Y_1, \ldots, Y_m \sim \text{iid } Q$
-$H_0: P=Q$ vs $H_1: P \neq Q$
-
-Under $H_0$: $P=Q$, $X_1, \ldots, X_n, Y_1, \ldots, Y_m \sim P$
-
-Let $Z = (Z_1, \ldots, Z_{n+m}) = (X_1, \ldots, X_n, Y_1, \ldots, Y_m)$
-
-Under $H_0$, $U = Z$ is complete sufficient
-
-Let $S_{n+m}$ = Permutations on $n+m$ elements
-
-$(X, Y) = (U_{\pi(1)}, \ldots, U_{\pi(n+m)})$ for $\pi \in S_{n+m}$
-
-Thus for test stat $T$, if $P=Q$:
-
-$$\mathbb{P}(T \geq t | U) = \frac{1}{(n+m)!}\sum_{\pi \in S_{n+m}} 1\{T(Z_{\pi(1)}, \ldots, Z_{\pi(n+m)}) \geq t\}$$
-
-Monte Carlo test: In practice, we sample $\pi_1, \ldots, \pi_B \sim

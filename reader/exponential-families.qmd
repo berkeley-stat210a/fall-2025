@@ -1,7 +1,6 @@
 ---
 title: "Exponential Families"
 author: Will Fithian
-date: 08-29-2023
 format: html
 editor: visual
 ---

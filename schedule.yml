@@ -128,29 +128,267 @@
       items:
         - type: "Lecture"
           id: "10"
-          name: "Unbiased Estimation"
+          name: "Bayes Estimation"
           href: reader/bayes-estimation.qmd
           auxil:
             - id: "Handwritten notes"
               href: handwritten/lecture09-bayesestimation.pdf
-    # - date: "Oct 1"
-    #   items:
-    #     - type: "Homework"
-    #       id: "4"
-    #       name: "Problems"
-    #       href: homework/homework4.pdf
-    #       auxil:
-    #         - id: "LaTeX source"
-    #           href: homework/homework4.tex
+    - date: "Oct 1"
+      items:
+        - type: "Homework"
+          id: "4"
+          name: "Problems"
+          href: homework/homework4.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework4.tex
     - date: "Oct 2"
       items:
         - type: "Lecture"
           id: "11"
-          name: "Score and Fisher Information"
+          name: "Interpretation and Choice of Prior"
           href: reader/bayes-interpretation.qmd
           auxil:
             - id: "Handwritten notes"
               href: handwritten/lecture10-bayesinterp.pdf
+- week: 7
+  days:
+    - date: "Oct 7"
+      items:
+        - type: "Lecture"
+          id: "12"
+          name: "Bayesian Computation"
+          href: reader/bayes-computation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture11-bayescompute.pdf
+    - date: "Oct 8"
+      items:
+        - type: "Homework"
+          id: "5"
+          name: "Problems"
+          href: homework/homework5.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework5.tex
+    - date: "Oct 9"
+      items:
+        - type: "Lecture"
+          id: "13"
+          name: "James--Stein Estimator"
+          href: reader/jamesstein.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture12-jamesstein.pdf
+- week: 8
+  days:
+    - date: "Oct 14"
+      items:
+        - type: "Lecture"
+          id: "14"
+          name: "Minimax Estimation"
+          href: reader/minimax-estimation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture13-minimax.pdf
+    - date: "Oct 15"
+      items:
+        - type: "Homework"
+          id: "6"
+          name: "Problems"
+          href: homework/homework6.pdf
+          auxil:
+            - id: "Data"
+              href: homework/gibbspoisson.csv
+            - id: "LaTeX source"
+              href: homework/homework6.tex
+    - date: "Oct 16"
+      items:
+        - type: "Lecture"
+          id: "15"
+          name: "Hypothesis Testing"
+          href: reader/hypothesis-testing.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture14-hyptesting.pdf
+- week: 9
+  days:
+    - date: "Oct 21"
+      items:
+        - type: "Lecture"
+          id: "16"
+          name: "Testing with one parameter"
+          href: reader/testing-one-parameter.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture15-testonepar.pdf
+    - date: "Oct 22"
+      items:
+        - type: "Homework"
+          id: "7"
+          name: "Problems"
+          href: homework/homework7.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework7.tex
+    - date: "Oct 23"
+      items:
+        - type: "Lecture"
+          id: "17"
+          name: "p-values and confidence intervals"
+          href: reader/testing-interpretation.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture16-pconf.pdf
+- week: 10
+  days:
+    - date: "Oct 28"
+      items:
+        - type: "Lecture"
+          id: "18"
+          name: "Testing with nuisance parameters"
+          href: reader/testing-nuisance.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture17-nuisanceparams.pdf
+    - date: "Oct 29"
+      items:
+        - type: "Homework"
+          id: "8"
+          name: "Problems"
+          href: homework/homework8.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework8.tex
+    - date: "Oct 30"
+      items:
+        - type: "Lecture"
+          id: "19"
+          name: "Testing in linear models"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture18-linearmodel.pdf
+- week: 11
+  days:
+    - date: "Nov 4"
+      items:
+        - type: "Lecture"
+          id: "20"
+          name: "Testing in linear models (second lecture)"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture18-linearmodel.pdf
+    - date: "Nov 5"
+      items:
+        - type: "Homework"
+          id: "9"
+          name: "Problems"
+          href: homework/homework9.pdf
+          auxil:
+            - id: "LaTeX source"
+              href: homework/homework9.tex
+    - date: "Nov 6"
+      items:
+        - type: "Lecture"
+          id: "21"
+          name: "Asymptotics"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture19-asymptotics.pdf
+- week: 12
+  days:
+    - date: "Nov 12"
+      items:
+         - type: "Homework"
+           id: "10"
+           name: "Problems"
+           href: homework/homework10.pdf
+           auxil:
+             - id: "LaTeX source"
+               href: homework/homework10.tex
+             - id: "Data for problem 3"
+               href: homework/confbands.csv
+    - date: "Nov 13"
+      items:
+        - type: "Lecture"
+          id: "22"
+          name: "Maximum likelihood estimation"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture21-mle.pdf
+- week: 13
+  days:
+    - date: "Nov 18"
+      items:
+        - type: "Lecture"
+          id: "23"
+          name: "MLE Consistency"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture22-mle-consistency.pdf
+    - date: "Nov 19"
+      items:
+         - type: "Homework"
+           id: "11"
+           name: "Problems"
+           href: homework/homework11.pdf
+           auxil:
+             - id: "LaTeX source"
+               href: homework/homework11.tex
+    - date: "Nov 20"
+      items:
+        - type: "Lecture"
+          id: "24"
+          name: "Likelihood-based Inference"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture23-likelihoodbasedinference.pdf
+- week: 14
+  days:
+    - date: "Nov 25"
+      items:
+        - type: "Lecture"
+          id: "25"
+          name: "Bootstrap"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture25-bootstrap.pdf
+- week: 15
+  days:
+    - date: "Dec 2"
+      items:
+        - type: "Lecture"
+          id: "26"
+          name: "Multiple Testing (Part I)"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture26-multipletesting.pdf
+    - date: "Dec 5"
+      items:
+         - type: "Homework"
+           id: "12"
+           name: "Problems"
+           href: homework/homework12.pdf
+           auxil:
+             - id: "LaTeX source"
+               href: homework/homework12.tex
+    - date: "Dec 4"
+      items:
+        - type: "Lecture"
+          id: "26"
+          name: "Multiple Testing (Part II)"
+          href: reader/under-construction.qmd
+          auxil:
+            - id: "Handwritten notes"
+              href: handwritten/lecture26-multipletesting.pdf
 - week: 17
   days:
     - date: "Dec 16"

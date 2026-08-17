@@ -41,16 +41,69 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 4 \\
-  {\large {\bf Due on}: Wednesday, Oct. 2}}
+  {\large {\bf Due on}: Wednesday, Oct. 1}}
 \date{}
 
 \maketitle
 
 \paragraph{Instructions:} You may disregard measure-theoretic niceties about conditioning on measure-zero sets, almost-sure equality vs. actual equality, ``all functions'' vs. ``all measurable functions,'' etc. (unless the problem is explicitly asking about such issues).
 
+
+
+\begin{problem}[Complete sufficient statistic for a nonparametric family]
+\label{prob:complete-nonpar}
+
+Consider an i.i.d. sample from the nonparametric family of {\em all} distributions on $\RR$:
+\[
+X_1,\ldots,X_n \simiid P,
+\]
+Formally we can write this model as $\cP = \left\{P^n:\; P \text{ is a probability measure on } \RR\right\}$. Let $T(X) = (X_{(1)},\ldots,X_{(n)})$ denote the vector of order statistics.
+
+\begin{enumerate}[(a)]
+
+\item For a finite set of size $m$, $\cY = \{y_1,\ldots,y_m\} \subseteq \RR$, consider the subfamily $\cP_\cY$ of distributions supported on $\cY$:
+  \[
+  \cP_\cY = \{P^n:\; P(\cY) = 1\} \subseteq \cP.
+  \]
+  Show that $T(X)$ is complete sufficient for this family.
+
+{\bf Hint:}  It may help to review different ways to parameterize the multinomial family.
+
+
+
+\item Show that the vector of order statistics $T(X) = (X_{(1)},\ldots,X_{(n)})$ is a complete sufficient statistic for $\cP$.
+
+
+
+\item Next, consider the restricted subfamily 
+\[
+\cQ_k = \{P^n:\; \EE_P[|X_1|^k] < \infty\} \subseteq \cP,
+\]
+and define the sample mean and variance respectively as
+\[
+\overline X = \frac{1}{n}\sum_{i=1}^n X_i, \quad S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline X)^2.
+\]
+Show that $\overline X$ is the UMVU estimator of $\EE_P X_1$ in $\cQ_1$, and $S^2$ is the UMVU estimator of $\text{Var}_P(X_1)$ in $\cQ_2$.
+
+
+
+% \item \optional Define the cumulative distribution function $F(x) = \PP(X \leq x)$. In the original family $\cP$, find the UMVU estimator of $F(x)$ for a fixed value of $x \in \RR$.
+
+% {\bf Note:} If we come up with an estimator $\widehat{F}(x)$ for each $x$ we can regard the function $\widehat{F}$ as an unbiased estimator for $F$.
+
+% 
+
+\end{enumerate}
+
+\paragraph{Moral:} Without any restrictions on the family $\cP$, we can't do much better than estimating population quantities with sample quantities (when the sample quantities are unbiased). In the case of the mean, for examples, $\overline X$ is always availableas an unbiased estimator of $\EE X$, but if we impose additional assumptions on the family then we might be able to do better.
+\end{problem}
+
+
+
 \begin{problem}[Unbiased estimation in replicated studies]
+\label{prob:unbiased-replication}
 
 One focal issue in the ongoing scientific replication crisis is the ``file drawer problem,'' i.e. the tendency of researchers to report findings (or of journals to publish them) only if they have a $p$-value less than 0.05. Replication studies typically represent cleaner estimates of the results under study, since they are reported regardless of whether they are statistically significant. This is one of the reasons that replication studies often find much smaller effect size estimates than the original studies: if the original study had gotten a good estimate of the (small) true effect, we wouldn't have heard about it.
 
@@ -119,39 +172,14 @@ for $x>0$.
 \end{enumerate}
 
 
-{\bf Moral:} This is a nice estimator that transitions adaptively between the data splitting estimator (when $X_1$ is subject to extreme selection bias) and the unadjusted sample mean (when $X_1$ is nearly unaffected by selection bias). It manages to do this even though we don't know how bad the selection bias is, since that depends on $\mu$. It would be difficult to come up with an estimator like this without the theory of exponential families and UMVU estimators, specifically the idea of Rao-Blackwellization. You can read more about problems like this in \citet{hung2020statistical}.
+\paragraph{Moral:} This is a nice estimator that transitions adaptively between the data splitting estimator (when $X_1$ is subject to extreme selection bias) and the unadjusted sample mean (when $X_1$ is nearly unaffected by selection bias). It manages to do this even though we don't know how bad the selection bias is, since that depends on $\mu$. It would be difficult to come up with an estimator like this without the theory of exponential families and UMVU estimators, specifically the idea of Rao-Blackwellization. You can read more about problems like this in \citet{hung2020statistical}.
 
 \end{problem}
 
-\begin{problem}[Poisson UMVU and Bayes estimation]
-
-Let $X_1,\ldots,X_n \simiid \text{Pois}(\theta)$ and consider estimating 
-\[
-g(\theta) = e^{-\theta} = \PP_\theta(X_1 = 0)
-\]
-
-\begin{enumerate}[(a)]
-\item Find the UMVU estimator for $g(\theta)$ by Rao-Blackwellizing a simple unbiased estimator. You may use without proof the fact that $(X_1,\ldots,X_n) \sim \text{Multinom}(t, (n^{-1},\ldots,n^{-1}) )$ given $\sum_{i=1}^n X_i = t$.
-
-
-
-\item Find the UMVU estimator for $g(\theta)$ directly, using the power series method from class.
-
-
-
-\item Consider Bayes estimation using the Gamma prior 
-\[
-\theta \sim \text{Gamma}(\nu, s) = \frac{1}{\Gamma(\nu)s^{\nu}} \theta^{\nu - 1}e^{-\theta/s},
-\]
-where $\nu$ is the shape parameter and $s$ is the scale parameter. Find the posterior distribution for $\theta$, and the Bayes estimator for $g(\theta)$ under the squared error loss.
-
-{\bf Hint:} The MGF might be useful.
-
-\end{enumerate}
-\end{problem}
 
 
 \begin{problem}[Bayesian law of large numbers]
+\label{prob:bayes-lln}
 
 Let $p(x)$ and $q(x)$ denote two strictly positive probability densities with respect to a common dominating measure $\mu$. The {\em Kullback--Leibler divergence} between $p$ and $q$ is defined as
 \[
@@ -166,7 +194,7 @@ D(p \| q) = \int_{\cX} p(x) \log \frac{p(x)}{q(x)} \,d\mu(x).
 
 
 
-\item Consider a dominated likelihood model $\cP = \{p_{\theta}(x):\; \theta\in \Theta\}$, where the parameter space $\Theta$ is a finite set, and the densities are strictly positive on $\cX$. Let $\lambda$ denote a prior density w.r.t. the counting measure on $\Theta$, and consider the Bayes posterior after observing a sample $X_1,\ldots,X_n \simiid p_{\theta_0}(x)$ for some {\em fixed} value $\theta_0$ (that is, we are doing a {\em frequentist} analysis of the {\em Bayesian} posterior distribution).  Assume that all the densities are distinct; that is, $p_{\theta_1}(X) = p_{\theta_2}(X)$ almost surely if and only if $\theta_1=\theta_2$.
+\item Consider a dominated likelihood model $\cP = \{p_{\theta}(x):\; \theta\in \Theta\}$, where the parameter space $\Theta$ is a finite set, and the densities are strictly positive on $\cX$. Let $\lambda$ denote a prior density w.r.t. the counting measure on $\Theta$, and consider the Bayes posterior after observing a sample $X_1,\ldots,X_n \simiid p_{\theta_0}(x)$ for some {\em fixed} value $\theta_0$ (that is, we are examining the {\em frequency} properties of the {\em Bayesian} posterior distribution).  Assume that all the densities are distinct; that is, $p_{\theta_1}(X) = p_{\theta_2}(X)$ almost surely if and only if $\theta_1=\theta_2$.
 
 If the prior $\lambda$ puts positive mass on all values in $\Theta$, show that as $n\to\infty$, the posterior density eventually concentrates nearly all its mass on the true value $\theta_0$. That is, 
 \[
@@ -177,7 +205,7 @@ If the prior $\lambda$ puts positive mass on all values in $\Theta$, show that a
 
 \end{enumerate}
 
-{\bf Moral:} At least for a finite parameter space, the Bayes estimator always converges to the right answer as long as we put positive mass on the right answer. This result can be generalized with more effort to continuous parameter spaces under some regularity conditions on the likelihood function, similar to the types of conditions we will use to guarantee the MLE is consistent. 
+\paragraph{Moral:} At least for a finite parameter space, the Bayes estimator always converges to the right answer as long as we put positive mass on the right answer. This result can be generalized with more effort to continuous parameter spaces under some regularity conditions on the likelihood function, similar to the types of conditions we will use to guarantee the MLE is consistent. 
 
 The requirement that the prior density should be nonzero everywhere is sometimes called Cromwell's Rule, after Oliver Cromwell's famous plea to the Church of Scotland: ``I beseech you, in the bowels of Christ, think it possible that you may be mistaken.''
 
@@ -185,6 +213,7 @@ The requirement that the prior density should be nonzero everywhere is sometimes
 
 
 \begin{problem}[Fisher information for location and scale families]
+\label{prob:fisher-location-scale}
 
 This problem considers the Fisher information for families with location or scale structure. Your verbal explanations for each part will be graded leniently.
 
@@ -221,30 +250,6 @@ Try to explain in your own words why it makes sense that the Fisher information 
 \end{enumerate}
 \end{problem}
 
-
-
-\begin{problem}[Other loss functions]
-
-Assume for each problem below that there exists an estimator with finite Bayes risk.
-\begin{enumerate}[(a)]
-\item Consider a Bayesian model with a discrete parameter $\theta$. What is the Bayes estimator for the loss $L(\theta, d) = 1\{\theta \neq d\}$?
-
-
-
-
-\item Next consider a Bayesian model with a single real parameter $\theta$, and assume that the posterior distribution of $\theta$ given $X=x$ is absolutely continuous (with respect to the Lebesgue measure) for all $x$. What is the Bayes estimator for the {\em absolute error loss} $L(\theta, d) = |\theta-d|$? 
-
-
-
-
-\item Under the same assumptions as part (b), what loss function $L_\gamma(\theta, d)$ would give the posterior $\gamma$ quantile as its Bayes estimator; that is, the estimator $\delta_\gamma(X)$ has $\PP(\theta < \delta_\gamma(X) \mid X) = \gamma$.
-
-
-
-
-
-\end{enumerate}
-\end{problem}
 
 
 \bibliography{biblio}

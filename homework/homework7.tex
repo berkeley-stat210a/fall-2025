@@ -45,43 +45,77 @@
 
 \begin{document}
 
-\title{Stats 210A, Fall 2024\\
+\title{Stats 210A, Fall 2025\\
   Homework 7 \\
-  {\large {\bf Due on}: Wednesday, Oct. 23}}
+  {\large {\bf Due on}: Wednesday, Oct. 22}}
 \date{}
 
 \maketitle
 
 \paragraph{Instructions:} See the standing homework instructions on the course web page
 
-\begin{problem}[Upper-bounding $\theta$]
+
+\begin{problem}[Minimax estimation for the exponential]
+\label{prob:minimax-exp}
+
+
+
+Assume we observe $X\sim \text{Exp}(\theta)$ and want to 
+
+In this problem we'll consider minimax estimation of $\theta$ in the exponential scale family
+\[
+X \sim \text{Exp}(\theta) = \frac{1}{\theta}e^{-x/\theta}, \quad x>0,
+\]
+under the relative squared error loss $L(\theta, d) = \left(\frac{d-\theta}{\theta}\right)^2$. The mean and variance of an $\text{Exp}(\theta)$ random variable are $\theta$ and $\theta^2$, respectively.
 
 \begin{enumerate}[(a)]
-\item Let $X \sim N(\theta, 1)$ for $\theta\in\RR$, and consider the loss function
+
+\item Consider linear scaling estimators of the form $\delta(x) = cx$, for $c\in[0,1]$. Show that one of these estimators dominates all others, find the optimal $c$ and give its risk function.
+
+
+
+
+\item A conjugate prior for this problem is the inverse-Gamma prior, which has parameters $\alpha,\beta>0$ and density
 \[
-L(\theta, d) = 1\{d < \theta\};
+\theta \sim \text{Inv-Gamma}(\alpha,\beta) = \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{-\alpha-1}e^{-\beta/\theta}.
 \]
-that is, we observe $X$ and try to come up with an upper bound $\delta(x) \in \RR$ for $\theta$. Show that the minimax risk is 0 (note you may not be able to find a minimax estimator).
+Note $\theta\sim \text{Inv-Gamma}(\alpha,\beta)$ when $\theta^{-1}\sim \text{Gamma}(\alpha,1/\beta)$. Find the posterior distribution and Bayes estimator.
+
+{\bf Note:} Since we are not using squared error loss, the Bayes estimator is not just the posterior mean.
+
+{\bf Hint:} It may help to recall that if $Y \sim\text{Gamma}(k,\sigma)$ then $\EE Y = k\sigma$ and $\Var(Y)=k\sigma^2$.
 
 
 
-
-\item Now, consider a problem with the same loss function but without observing any data. Show the minimax risk (considering both randomized and non-randomized estimators) is 1, but the Bayes risk $r_\Lambda = 0$ for any prior $\Lambda$ (note there may be no estimator $\delta_\Lambda$ that attains the minimum Bayes risk).
-
-({\bf Note:} This problem exhibits a ``duality gap'' where the lower bounds we can get by trying different priors will always fall short of the minimax risk.)
+\item Find the Bayes risk for the inverse-Gamma prior with parameters $\alpha,\beta$.
 
 
 
-\item {\bf Optional} (not graded, no extra points): Now consider the same loss function, but now $X \sim N(\theta, \sigma^2)$ and $\sigma^2$ is unknown too. Find the minimax risk.
+\item Use the previous results to show that your estimator from part (a) is minimax.
 
-{\bf Hint:} consider estimators of the form $\delta(X) = c|X|$.
+
+
+\item Now find the objective Bayes estimator, using the Jeffreys prior, and give its risk function. Can you relate the result to the results in the previous parts?
+
+{\bf Hint:} It may help to recall the general result you showed on a previous homework regarding the Jeffreys prior for scale families.
 
 
 
 \end{enumerate}
+
+\paragraph{Moral:} In some sense, the Jeffreys prior in scale families plays the same role that the flat prior plays in location families. In this problem, since we chose a scale-invariant loss based on relative error, the problem is equally hard everywhere in the parameter space, so the problem exhibits a kind of scale symmetry that is analogous to the translational symmetry that we see when we have a location family and a translationally invariant loss.
+
 \end{problem}
 
-\begin{problem}[MLR and location families]
+
+\begin{problem}[Monotone likelihood ratio and location families]
+\label{prob:mlr-location}
+
+A one-parameter family $\cP = \{P_\theta:\;\theta\in\Theta\}$, with $\Theta\subseteq \RR$, has {\em monotone likelihood ratios} in a statistic $T(X)$ if
+\[
+\frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} \text{ is a non-decreasing function of } T(X), \text{ for all } \theta_0\leq \theta_1.
+\]
+
 \begin{enumerate}[(a)]
 \item Assume $X\sim p_\theta(x) = p_0(x-\theta)$, a location family with $p_0$ continuous and strictly positive. Show that the family has MLR in $x$ if and only if $\log p_0$ is concave. 
 
@@ -120,17 +154,18 @@ Let $\theta_0, \theta_1$ be any two real numbers with $\theta_1> \theta_0$ and c
 
 
 
-\item {\bf Optional:} (not graded, no extra points) In words, can you explain why the optimal LRT rejection regions for the Cauchy distribution take this odd form? Think about how you would explain to a scientific collaborator why you are proposing such an odd test, beyond ``it fell out of an optimization problem.''
+\item In words, can you explain why the optimal LRT rejection regions for the Cauchy distribution take this odd form? Think about how you would explain to a scientific collaborator why you are proposing such an odd test, beyond ``it fell out of an optimization problem.''
 
 
 
 \end{enumerate}
 
-{\bf Moral:} When we think carefully about how to design rejection regions, we can get surprising results. In particular, for location families with heavy tails, extreme values are not that informative for distinguishing between two smaller values of the location parameter. Concretely, $X=10^6$ doesn't help us distinguish between $\theta_1=1$ vs. $\theta_0=0$. By contrast, if the tails are lighter ($\log p_0$ concave implies the density shrinks at least exponentially) then more extreme $X$ values always give stronger evidence for distinguishing between any two parameter values; this is what MLR means.
+\paragraph{Moral:} When we think carefully about how to design rejection regions, we can get surprising results. In particular, for location families with heavy tails, extreme values are not that informative for distinguishing between two smaller values of the location parameter. Concretely, $X=10^6$ doesn't help us distinguish between $\theta_1=1$ vs. $\theta_0=0$. By contrast, if the tails are lighter ($\log p_0$ concave implies the density shrinks at least exponentially) then more extreme $X$ values always give stronger evidence for distinguishing between any two parameter values; this is what MLR means.
 \end{problem}
 
 
 \begin{problem}[Some UMP tests]
+\label{prob:some-ump-tests}
 
 Numerically find the UMP test for the following hypothesis testing problems at level $\alpha=0.05$. For each problem,
 \begin{enumerate}[(i)]
@@ -160,35 +195,14 @@ Numerically find the UMP test for the following hypothesis testing problems at l
 
 \end{enumerate}
 
-{\bf Moral:} Once again, when we use the right test we often can deliver noticeably better power than if we chose an {\em ad hoc} test.
-\end{problem}
-
-
-\begin{problem}[Uniform UMP test]
-We usually can't get a UMP two-sided test, but this problem gives an amusing counterexample where it is possible, for our old friend the German tank problem. Let $X_1, \ldots, X_n \simiid \text{Unif}[0,\theta]$ for $\theta > 0$.
-\begin{enumerate}[(a)]
-\item Consider the problem of testing $H_0: \theta = \theta_0$
-  versus $H_1: \theta > \theta_0$.  Show that any test $\phi$ for which $\phi(x) = 1$ when $x_{(n)} = \max\{x_1, \ldots, x_n\} > \theta_0$ is UMP at level $\alpha = \EE_{\theta_0}[\phi(X)]$.
-
-  
-
-
-\item  Now consider the problem of testing $H_0: \theta = \theta_0$
-against $H_1: \theta \neq \theta_0$.  Show that a unique UMP level-$\alpha$ test exists,
-and is given by
-\[
-\phi(x) = 1\left\{x_{(n)} > \theta_0 \text{ or } x_{(n)} < \theta_0 \alpha^{1/n}\right\}
-\]
-
-
-
-\end{enumerate}
-
+\paragraph{Moral:} Once again, when we use the right test we often can deliver noticeably better power than if we chose an {\em ad hoc} test.
 \end{problem}
 
 
 
 \begin{problem}[Bayesian hypothesis testing]
+\label{prob:bayes-testing}
+
 Consider a univariate Gaussian problem with $X\mid \theta \sim N(\theta, 1)$, where $\theta=0$ under the null hypothesis and $\theta\sim \Lambda_1$ under the alternative hypothesis (assume $\Lambda_1(\{0\})=0$). In addition let $\pi_0$ denote the {\em a priori} probability that the null hypothesis is true; therefore the full prior is a mixture between a point mass at 0 and $\Lambda_1$.
 
 \begin{enumerate}[(a)]
@@ -229,7 +243,7 @@ and give the minimizing value of $\tau^2$, both as functions of $x$, for $x > 1$
 \end{enumerate}
 
 
-{\bf Moral:} $p$-values are commonly misinterpreted as representing ``the probability that the null hypothesis is true, given the data.'' This is an Bayesian statement and it depends on our prior beliefs. In fact, as this problem shows, even in a Bayesian setting, the $p$-value is generally not a good approximation for the posterior probability that the null is true.
+\paragraph{Moral:} $p$-values are commonly misinterpreted as representing ``the probability that the null hypothesis is true, given the data.'' This is an Bayesian statement and it depends on our prior beliefs. In fact, as this problem shows, even in a Bayesian setting, the $p$-value is generally not a good approximation for the posterior probability that the null is true.
 \end{problem}
 
 \bibliography{biblio}

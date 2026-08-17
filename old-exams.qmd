@@ -5,6 +5,8 @@ editor: visual
 
 ## Exams from previous semesters
 
+-   [Fall 2023](old-exams/final2024.pdf) [(Solutions)](old-exams/solution2024.pdf)
+
 -   [Fall 2023](old-exams/final2023.pdf) [(Solutions)](old-exams/solution2023.pdf)
 
 -   [Fall 2021](old-exams/final2021.pdf) [(Solutions)](old-exams/solution2021.pdf)

@@ -34,6 +34,15 @@ website:
           - reader/sufficiency.qmd
           - reader/completeness.qmd
           - reader/unbiased-estimation.qmd
+          - reader/bayes-estimation.qmd
+          - reader/bayes-interpretation.qmd
+          - reader/bayes-computation.qmd
+          - reader/jamesstein.qmd
+          - reader/minimax-estimation.qmd
+          - reader/hypothesis-testing.qmd
+          - reader/testing-one-parameter.qmd
+          - reader/testing-interpretation.qmd
+          - reader/testing-nuisance.qmd
       - href: license.qmd
         text: License
 

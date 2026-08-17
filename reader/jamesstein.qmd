@@ -1,12 +1,12 @@
 ---
 title: "The James-Stein Estimator"
-format:
-  html:
-    toc: true
-    number-sections: true
+author: Will Fithian
+format: html
+editor: visual
 ---
 
 {{< include latex-macros.tex >}}
+
 
 ## Gaussian sequence model
 
@@ -19,8 +19,8 @@ Note that this model is somewhat more general than it appears. If
 $X_1,\ldots,X_n \simiid N_d(\theta, \sigma^2 I_d)$ for known
 $\sigma^2> 0$, we could make a sufficiency reduction to obtain
 
-$$Z = \frac{1}{\sigma\sqrt{n}} \sum_i X_i \sim N_d(\theta, I_d).$$ For
-simplicity we will discuss the \`\`vanilla'' version here, but we can
+$$Z = \frac{1}{\sigma\sqrt{n}} \sum_i X_i \sim N_d(\mu, I_d), \quad \text{for } \mu = \theta\sqrt{n}/\sigma$$ For
+simplicity we will discuss the "vanilla" version here, but we can
 always translate our results to the more general setting via this
 transformation.
 
@@ -47,7 +47,7 @@ The hierarchical Bayes estimator uses a Bayes estimator for $\zeta$, but if we t
 $$\hat{\zeta}_{\text{UMVU}}(X) = \frac{d-2}{\|X\|^2},$$
 which we can verify using the identity 
 $$\EE[1/Y] = \frac{1}{d-2}, \quad \text{ if } Y \sim \chi_d^2 = \text{Gamma}(d/2, 2), \text{ for } d > 2,$$
-which is proved in the handwritten notes. Plugging in $\hat\zeta_\text{UMVU}$ results in an estimator called the *James-Stein* estimator, 
+which was proved in [Lecture 10](bayes-estimation.qmd). Plugging in $\hat\zeta_\text{UMVU}$ results in an estimator called the *James-Stein* estimator, 
 $$ \delta_{\text{JS}}(X)= \left(1 - \frac{d-2}{\|X\|^2}\right)X = \delta_{\hat\zeta_{\text{UMVU}}}(X) $$
 
 ### James-Stein Paradox

@@ -12,21 +12,23 @@ editor: visual
 
 -   [Homework 3](homework/homework3.pdf) ([LaTeX source](homework/homework3.tex))
 
-<!-- -   [Homework 4](homework/homework4.pdf) ([LaTeX source](homework/homework4.tex)) -->
+-   [Homework 4](homework/homework4.pdf) ([LaTeX source](homework/homework4.tex))
 
-<!-- -   [Homework 5](homework/homework5.pdf) ([Data for Problem 5](homework/gibbspoisson.csv)) ([LaTeX source](homework/homework5.tex)) -->
+-   [Homework 5](homework/homework5.pdf) ([LaTeX source](homework/homework5.tex))
 
-<!-- -   [Homework 6](homework/homework6.pdf) ([LaTeX source](homework/homework6.tex)) -->
+-   [Homework 6](homework/homework6.pdf) ([Data for Gibbs Sampler Problem](homework/gibbspoisson.csv)) ([LaTeX source](homework/homework6.tex))
 
-<!-- -   [Homework 7](homework/homework7.pdf) ([LaTeX source](homework/homework7.tex)) -->
+-   [Homework 7](homework/homework7.pdf) ([LaTeX source](homework/homework7.tex))
 
-<!-- -   [Homework 8](homework/homework8.pdf) ([LaTeX source](homework/homework8.tex)) -->
+-   [Homework 8](homework/homework8.pdf) ([LaTeX source](homework/homework8.tex))
 
-<!-- -   [Homework 9](homework/homework9.pdf) ([LaTeX source](homework/homework9.tex)) -->
+-   [Homework 9](homework/homework9.pdf) ([LaTeX source](homework/homework9.tex))
 
-<!-- -   [Homework 10](homework/homework10.pdf) ([Data for Problem 3](homework/confbands.csv)) ([LaTeX source](homework/homework10.tex)) -->
+-   [Homework 10](homework/homework10.pdf) ([Data for Problem 3](homework/confbands.csv)) ([LaTeX source](homework/homework10.tex))
 
-<!-- -   [Homework 11](homework/homework11.pdf) ([LaTeX source](homework/homework11.tex)) -->
+-   [Homework 11](homework/homework11.pdf) ([LaTeX source](homework/homework11.tex))
+
+-   [Homework 11](homework/homework12.pdf) ([LaTeX source](homework/homework12.tex))
 
 ## Standing homework instructions
 
