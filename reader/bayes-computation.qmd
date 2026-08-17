@@ -1,0 +1,750 @@
+---
+title: "Markov Chain Monte Carlo"
+format:
+  html:
+    toc: true
+    number-sections: true
+---
+
+{{< include latex-macros.tex >}}
+
+
+# Why Bayesian computation is difficult
+
+We have seen simple examples of hierarchical Bayesian models, but one great advantage of Bayesian models is the way they allow us to model complex relationships between many quantities of interest. When performing inference on these quantities, however, the computations required can be difficult. 
+
+The primary difficulty in calculating the Bayesian posterior
+$$
+\lambda(\theta \mid x) = \frac{\lambda(\theta) p_\theta(x)}{\int_{\Theta} \lambda(\zeta)p_\zeta(x)\,d\zeta},
+$$
+is that the denominator, an integral over a possibly high-dimensional parameter space, can be very difficult to calculate. In our discussion so far we have mostly ignored the denominator, which is only a normalizing constant in $\theta$, because in problems with simple conjugate priors, or more generally in cases with only one or two parameters, the normalization is very easy. However, it is only in rare special cases that we can derive a nice closed form expression for this integral; in most cases, it requires involved calculations. By contrast, even in more complex problems the numerator is relatively easy to calculate.
+
+Much of the work done by Bayesian statisticians is in coming up with efficient ways to calculate posterior probabilities, or sample from the posterior, when we can efficiently compute the numerator but need more help with the denominator. The most common by far is **Markov chain Monte Carlo** (MCMC), a general strategy for sampling from computationally difficult distributions, where the analyst devises a method for sampling a sequence of random variables $\theta^{(0)},\theta^{(1)},\ldots,$ whose distribution converges to the posterior distribution, then uses a well-chosen subset of the $\theta^{(t)}$ variables (for large enough $t$) as a proxy for a sample from the posterior.
+
+# Markov chains
+
+## Markov chains and stationarity
+
+A Markov chain is a sequence of random variables $X^{(0)},X^{(1)},X^{(2)},\ldots$ the distribution of $X^{(t+1)}$ given $X^{(0)},\ldots,X^{(t)}$ depends on $X^{(t)}$ alone. A Markov chain is sometimes called *memoryless*: at "time" $t$, the only thing we need to know about the entire history of the chain up until $t$ is the present state $X^{(t)}$.
+
+In particular, a **stationary Markov chain** with transition kernel $Q(y \mid x)$ and initial distribution $\pi_0(x)$ (on state space $\cX$ with base measure $\mu$) is a sequence of random variables  $X^{(0)},X^{(1)},X^{(2)},\ldots$ where $X^{(0)}\sim \pi_0$ and $X^{(t+1)}$ given $X^{(0)},\ldots,X^{(t)}$ is distributed as $Q(\cdot\mid X^{(t)})$.
+
+Fixing $x$, we can think of the function $Q(\cdot \mid x)$ as the probability density of $X^{(t+1)}$ given $X^{(t)}=x$.
+
+The joint density of the chain up to finite time $T$ can therefore be factored as $\pi_0(x^{(0)})\prod_{t=0}^{T-1} Q(x^{(t+1)}\mid x^{(t)})$, so a Markov chain is thus a special kind of graphical model wherein there is an arrow pointing from each variable to the next, but there are no other arrows.
+
+We can calculate the transition probabilities after two steps integrating over the probability of all two step paths
+$$
+Q^2(y \mid x) = \int_{\cX} Q(y\mid z)Q(z \mid x)\,d\mu(z),
+$$
+and more generally the transition probabilities after $n$ steps as $Q^n(y \mid x) = \int_{\cX} Q(y\mid z)Q^{n-1}(z \mid x)\,d\mu(z)$. Then the distribution of $X^{(t)}$ is
+$$
+\pi_t(y) = \int_{\cX} Q^t(y\mid x)\pi_0(x)\,d\mu(x).
+$$
+
+We say a distribution $\pi$ is **stationary** for $Q$ if this operation leaves $\pi$ fixed:
+$$
+\pi(y) = \int_\cX Q(y\mid x)\pi(x)\,d\mu(x).
+$$
+A sufficient (but not necessary) condition for $\pi$ to be stationary for $Q$ is **detailed balance**:
+$$
+\pi(x)Q(y\mid x) = \pi(y)Q(x\mid y), \quad \text{ for all } x, y\in \cX.
+$$
+The proof is one line: if we have detailed balance, then
+$$
+\int Q(y\mid x)\pi(x)\,d\mu(x) = \pi(y)\int Q(x\mid y)\,d\mu(x) = \pi(y),
+$$
+since $Q(x \mid y)$ is a probability density.
+
+## Convergence
+
+The idea of Markov chain Monte Carlo methods is to devise a Markov chain transition kernel $Q$ whose stationary distribution $\pi$ is the posterior distribution that we want to sample from. One reason this works is that Markov chains tend to converge over time to their stationary distributions, under mild conditions. Denote the transition kernel for $2$ steps as $Q^2(y \mid x) = \int
+
+**Theorem (Markov chain convergence):** Suppose $X^{(0)},X^{(1)},\ldots$ is a Markov chain with transition kernel $Q$ and stationary distribution $\pi$. If additionally the chain is:
+1. Irreducible: for all $x,y\in\cX$, there is some $n$ for which $Q^n(y \mid x)>0$, and
+2. Aperiodic: for all $x\in\cX$, the greatest common divisor of $\{n:\; Q^n(x \mid x)>0\}$ is $1$.
+Then, regardless of the initial distribution $\pi_0$, $\pi_t \to \pi$ in total variation distance as $t\to\infty$, meaning
+$$
+\|\pi_t-\pi\|_{\text{TV}} = \sup_{A \in \cX} |\pi_t(A)-\pi(A)| \to 0
+$$
+Intuitively, the irreducibility condition ensures the sample space is not split into "parallel universes" that don't communicate with each other, and the aperiodic condition ensures we are not regularly cycling through subsets of the sample space. Aperiodicity is especially easy to fix, just by making a new transition kernel that flips a coin to choose randomly between transitioning according to $Q$ and staying in place (check for yourself that this does not change the stationary distribution).
+
+::: {.callout-caution}
+Note this theorem applies to discrete sample spaces; for continuous sample spaces it is a bit more complicated to state the two conditions. They go through without modification if we assume $Q$ is continuous, but more generally we might have to worry about measure-zero pathologies of the kind that we have been ignoring all semester.
+:::
+
+*Proof sketch (discrete case):* Let $Y^{(0)},Y^{(1)},\ldots$ be an independent Markov chains with initial distribution $\pi$ and transition kernel $Q$. We construct a probabilistic *coupling* between the two chains.
+
+Let $\tau = \min\{t:\; X^{(t)}=Y^{(t)}\}$ and define the *coupled chain* that starts as $X^{(t)}$ but then switches to $Y^{(t)}$ after they meet.
+$$
+Z^{(t)} = \begin{cases} X^{(t)} & \text{ if } t\leq\tau\\ Y^{(t)} & \text{ if } t > \tau\end{cases}
+$$
+It can be shown that $Z$ is also a Markov chain with transition kernel $Q$ and transition kernel $\pi_0$, so $Z^{(t)} \sim \pi_t$. Moreover,
+$$
+\|\pi_t-\pi\|_{\text{TV}} = \sup_{A \subseteq \cX} |\PP(Z^{(t)}\in A) - \PP(Y^{(t)}\in A)| \leq \PP(\tau > t),
+$$
+since $Z^{(t)}=Y^{(t)}$ on the event $\{\tau \leq t\}$. The key step, which we omit here for brevity, is that the irreducibility and aperiodicity conditions, plus the existence of a stationary distribution $\pi$, guarantee that $\tau < \infty$ with probability $1$, so $\PP(\tau>t)\to 0$. $\blacksquare$
+
+
+The important implication of this theorem from our perspective is that, if we can only find an irreducible and aperiodic transition kernel $Q$ on the state space $\Theta$, whose stationary distribution is the posterior $\lambda(\theta \mid x)$, we will be able to sample from the posterior by running the Markov chain $\theta^{(0)},\theta^{(1)},\ldots$ from any initialization $\theta^{(0)}$.
+
+
+# The Gibbs sampler
+
+There exist a multitude of MCMC algorithms, but we will focus on one that goes well with the hierarchical models we were discussing in the last lecture.
+
+## Directed Graphical Models
+
+One special class of models that come up often in Bayesian modeling is **directed graphical models**. For a random vector $Z=(Z_1,\ldots,Z_d)$ and directed graph $G=(V,E)$ on vertex set $\{1,\ldots,d\}$, we say the density $p$ is a directed graphical model if it can be factored as
+$$
+p(z) = \prod_{i=1}^d p_i(z_i \mid z_{\text{Pa}(i)}),
+$$
+where $\text{Pa}(i)$ is the set of "parent vertices" that point to $i$, that is $\text{Pa}(i)=\{j:\; j\to i \in E\}$.
+
+One example of a graphical model is the first $T$ steps of a Markov chain, whose distribution we can factor as
+$$
+\pi_0(x^{(0)}) \prod_{t=1}^{T} Q(x^{(t)} \mid x^{(t-1)}),
+$$
+giving the following graph:
+```{ojs}
+//| label: fig-markov
+//| fig-cap: "Markov chain graphical model"
+//| echo: false
+
+{
+  const width = 700;
+  const height = 200;
+  const nodeRadius = 25;
+  
+  const svg = d3.create("svg")
+      .attr("width", width)
+      .attr("height", height);
+  
+  // Define nodes for Markov chain - ellipsis is now a node
+  const nodes = [
+    {id: "x0", x: 100, y: 100, label: "X⁽⁰⁾"},
+    {id: "x1", x: 220, y: 100, label: "X⁽¹⁾"},
+    {id: "x2", x: 340, y: 100, label: "X⁽²⁾"},
+    {id: "dots", x: 460, y: 100, label: "⋯"},
+    {id: "xT", x: 580, y: 100, label: "X⁽ᵀ⁾"}
+  ];
+  
+  const links = [
+    {source: nodes[0], target: nodes[1]},
+    {source: nodes[1], target: nodes[2]},
+    {source: nodes[2], target: nodes[3]},
+    {source: nodes[3], target: nodes[4]}
+  ];
+  
+  // Helper function to calculate arrow endpoints with spacing
+  function getArrowCoordinates(source, target, radius, spacing) {
+    const dx = target.x - source.x;
+    const dy = target.y - source.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const unitX = dx / distance;
+    const unitY = dy / distance;
+    
+    return {
+      x1: source.x + unitX * (radius + spacing),
+      y1: source.y + unitY * (radius + spacing),
+      x2: target.x - unitX * (radius + spacing),
+      y2: target.y - unitY * (radius + spacing)
+    };
+  }
+  
+  // Define larger arrowhead marker
+  svg.append("defs").append("marker")
+      .attr("id", "arrowhead")
+      .attr("viewBox", "0 0 10 10")
+      .attr("refX", 10)
+      .attr("refY", 5)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
+      .attr("orient", "auto")
+    .append("path")
+      .attr("d", "M 0 0 L 10 5 L 0 10 z")
+      .attr("fill", "#333");
+  
+  // Draw arrows with spacing from nodes
+  svg.selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("x1", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.x1;
+      })
+      .attr("y1", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.y1;
+      })
+      .attr("x2", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.x2;
+      })
+      .attr("y2", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.y2;
+      })
+      .attr("stroke", "#333")
+      .attr("stroke-width", 2)
+      .attr("marker-end", "url(#arrowhead)");
+  
+  // Draw nodes (excluding the ellipsis node)
+  svg.selectAll("circle")
+      .data(nodes.filter(d => d.id !== "dots"))
+      .join("circle")
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", nodeRadius)
+      .attr("fill", "white")
+      .attr("stroke", "#333")
+      .attr("stroke-width", 2);
+  
+  // Add labels
+  svg.selectAll("text.label")
+      .data(nodes)
+      .join("text")
+      .attr("class", "label")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y + 5)
+      .attr("text-anchor", "middle")
+      .style("font-size", "18px")
+      .text(d => d.label);
+  
+  return svg.node();
+}
+```
+
+The Gaussian hierarchical model
+$$
+\begin{aligned}
+\tau^2 &\sim \lambda_0\\
+\theta_i &\simiid N(0,\tau^2), \quad \text{ for } i = 1,\ldots,d\\
+X_i \mid \theta &\simind N(\theta_i,1)
+\end{aligned}
+$$
+is another example, with the following graph:
+
+```{ojs, echo=FALSE}
+//| label: fig-dgm
+//| fig-cap: "Hierarchical directed graphical model"
+//| echo: false
+
+{
+  const width = 600;
+  const height = 400;
+  const nodeRadius = 25;
+  
+  const svg = d3.create("svg")
+      .attr("width", width)
+      .attr("height", height);
+  
+  // Define nodes - tau is centered horizontally
+  const nodes = [
+    {id: "tau", x: 300, y: 70, label: "τ²"},
+    {id: "theta1", x: 175, y: 180, label: "θ₁"},
+    {id: "theta2", x: 250, y: 180, label: "θ₂"},
+    {id: "thetam", x: 400, y: 180, label: "θₘ"},
+    {id: "x1", x: 175, y: 290, label: "X₁"},
+    {id: "x2", x: 250, y: 290, label: "X₂"},
+    {id: "xm", x: 400, y: 290, label: "Xₘ"}
+  ];
+  
+  const links = [
+    {source: nodes[0], target: nodes[1]},
+    {source: nodes[0], target: nodes[2]},
+    {source: nodes[0], target: nodes[3]},
+    {source: nodes[1], target: nodes[4]},
+    {source: nodes[2], target: nodes[5]},
+    {source: nodes[3], target: nodes[6]}
+  ];
+  
+  // Helper function to calculate arrow endpoints with spacing
+  function getArrowCoordinates(source, target, radius, spacing) {
+    const dx = target.x - source.x;
+    const dy = target.y - source.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const unitX = dx / distance;
+    const unitY = dy / distance;
+    
+    return {
+      x1: source.x + unitX * (radius + spacing),
+      y1: source.y + unitY * (radius + spacing),
+      x2: target.x - unitX * (radius + spacing),
+      y2: target.y - unitY * (radius + spacing)
+    };
+  }
+  
+  // Define larger arrowhead marker
+  svg.append("defs").append("marker")
+      .attr("id", "arrowhead")
+      .attr("viewBox", "0 0 10 10")
+      .attr("refX", 10)
+      .attr("refY", 5)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
+      .attr("orient", "auto")
+    .append("path")
+      .attr("d", "M 0 0 L 10 5 L 0 10 z")
+      .attr("fill", "#333");
+  
+  // Draw arrows with spacing from nodes
+  svg.selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("x1", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.x1;
+      })
+      .attr("y1", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.y1;
+      })
+      .attr("x2", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.x2;
+      })
+      .attr("y2", d => {
+        const coords = getArrowCoordinates(d.source, d.target, nodeRadius, 3);
+        return coords.y2;
+      })
+      .attr("stroke", "#333")
+      .attr("stroke-width", 2)
+      .attr("marker-end", "url(#arrowhead)");
+  
+  // Add dots in middle layer
+  svg.append("text")
+      .attr("x", 325)
+      .attr("y", 185)
+      .attr("text-anchor", "middle")
+      .style("font-size", "24px")
+      .text("⋯");
+  
+  // Add dots in bottom layer
+  svg.append("text")
+      .attr("x", 325)
+      .attr("y", 295)
+      .attr("text-anchor", "middle")
+      .style("font-size", "24px")
+      .text("⋯");
+  
+  // Draw nodes
+  svg.selectAll("circle")
+      .data(nodes)
+      .join("circle")
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", nodeRadius)
+      .attr("fill", "white")
+      .attr("stroke", "#333")
+      .attr("stroke-width", 2);
+  
+  // Add labels
+  svg.selectAll("text.label")
+      .data(nodes)
+      .join("text")
+      .attr("class", "label")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y + 5)
+      .attr("text-anchor", "middle")
+      .style("font-size", "18px")
+      .text(d => d.label);
+  
+  return svg.node();
+}
+```
+
+The graphical model form implies that we can write the joint distribution of the parameters and data as
+$$
+\lambda_0(\tau^2)\cdot \prod_{i=1}^d \lambda(\theta_i \mid \tau^2) p_{\theta_i}(x_i),
+$$
+giving one factor for each node.
+
+## Gibbs sampler
+
+The Gibbs sampler is an MCMC algorithm that's especially convenient for (sparsely connected) directed graphical models. We give the algorithm in terms of a parameter vector $\theta = (\theta_1,\ldots,\theta_d)$, which we would like to sample from the posterior $\lambda(\theta \mid X)$. Let $\theta_{-j} = (\theta_1,\ldots,\theta_{j-1},\theta_{j+1},\ldots,\theta_d)$ denote the vector with the $j$th coordinate removed.
+
+**Gibbs Sampler Algorithm:**
+
+::: {style="margin-left: 2em;"}
+Initialize $\theta = \theta^{(0)}$
+
+For $t = 1, 2, \ldots, T$:
+:::
+
+::: {style="margin-left: 4em;"}
+For $j=1,\ldots, d$:
+:::
+
+::: {style="margin-left: 6em;"}
+Resample $\theta_j \sim \lambda(\theta_j \mid \theta_{-j}, X)$
+:::
+
+::: {style="margin-left: 4em;"}
+Record $\theta^{(t)}= \theta$.
+:::
+
+::: {style="margin-left: 2em;"}
+Return $\theta^{(0)},\theta^{(1)},\ldots,\theta^{(T)}$.
+:::
+
+By the instruction "Resample $\theta_j$," we mean hold $\theta_{-j}$ fixed and replace $\theta_j$ with a fresh draw from its conditional distribution given the rest.
+
+::: {.callout-tip}
+There are two common variations on the inner loop where we update the $d$ coordinates of $\theta$ one-by-one in order. We could instead either update the $d$ coordinates in a random order, or update a single random coordinate $J^{(t)}\sim \text{Unif}\{1,\ldots,d\}$.
+
+Another variation is that it can sometimes be convenient to update blocks of covariates at a time; e.g. we could resample the pair $(\theta_1,\theta_2)$ from their joint distribution given $(\theta_3,\ldots,\theta_d)$ and $X$.
+:::
+
+**Proposition:** The posterior $\pi(\theta) = \lambda(\theta\mid X)$ is stationary for the Gibbs sampler algorithm.
+
+*Proof:* The Gibbs sampler transition kernel is a composition of $d$ distinct transition kernels $Q_1,\ldots,Q_d$ corresponding to the $d$ steps of the inner for loop. We begin by showing that $\pi$ is stationary for each $Q_j$. Thus, if $\theta \sim \pi$ and $\zeta \mid \theta \sim Q_j(\cdot \mid \theta)$, we need to show that (marginally) $\zeta \sim \pi$ as well.
+
+Because $\zeta_{-j} = \theta_{-j}$ almost surely, they must have the same distribution. Moreover, $\theta_j \mid \theta_{-j}$ is drawn from the distribution $\lambda(\theta_j \mid \theta_{-j}, X)$ by assumption, and $\zeta_j \mid \theta_{-j}$ is also drawn from $\lambda(\theta_j \mid \theta_{-j}, X)$ by construction of the Gibbs sampler algorithm. Hence, $\zeta \sim \lambda(\theta \mid X)$ as well.
+
+Thus, we see that $pi$ is a stationary distribution for each $Q_j$; but then it follows that it is stationary for the composition of such kernels too. Define $\theta^{(t,0)}=\theta^{(t)}$, then $\theta^{(t,1)}$ to be the value after updating $\theta_1$ via $Q_1$, and so on up to $\theta^{(t,d)}=\theta^{(t+1)}$. We have shown that, if $\theta^{(t,j-1)} \sim \pi$, then $\theta^{(t,j)}\sim\pi$ as well, for every $j$; it follows that if $\theta^{(t)}=\theta^{(t,0)} \sim \pi$, then $\theta^{(t+1)}=\theta^{(t,d)}\sim \pi$ as well; hence $\pi$ is stationary for the "full-update" kernel $Q$ that specifies the distribution of $\theta^{(t+1)}$ given $\theta^{(t)}$.$\blacksquare$
+
+If $\lambda(\theta\mid X) > 0$ on $\Theta$, and $\Theta^\circ$ is a connected subset of $\RR^d$, then the Gibbs sampler is irreducible (because we can get from anywhere to anywhere else by making tiny moves following a smooth path through the interior) and aperiodic (because there's a positive probability density on staying in the same place). If $\Theta$ is disconnected, however, the Gibbs sampler may not be irreducible: for example, if $\Theta = (-1,0)^2 \cup (0,1)^2 \in \RR^2$ (or if that is the support of the posterior), then there is no way to move between the two connected components by changing one coordinate at a time.
+
+## Computational advantages of the Gibbs sampler
+
+The great advantage of the Gibbs sampler when we have a graphical model is that, when we update $\theta_j$, all of the factors that *do not* involve $\theta_j$ cancel out of the numerator and the denominator. For example, in our hierarchical Gaussian model, when we update $\theta_j$ we have simply
+$$
+\lambda(\theta_j \mid \tau^2,\theta_{-j},X) 
+= \frac{\lambda(\theta_j \mid \tau^2) p_{\theta_j}(X_j)}{\int \lambda(\zeta \mid \tau^2)p_\zeta(X_j) \,d\zeta}.
+$$
+As we have set up the problem, this posterior distribution is very simple: we are back to the simple Bayes problem with a conjugate prior $\theta\sim N(0,\tau^2)$ and we just need to sample $\theta_j \sim N\left(\frac{\tau^2}{1+\tau^2}X_i, \frac{\tau^2}{1+\tau^2}\right)$.
+
+Even if we did not get a lot of cancellations, or couldn't appeal to a simple conjugate prior update, a single Gibbs step would still be computationally tractable because the integral is only one-dimensional.
+
+# MCMC in practice
+
+The magic of MCMC is that running an irreducible and aperiodic Markov chain with stationary distribution $\lambda(\theta\mid X)$ for *long enough* will eventually give us samples that are approximately drawn from the posterior. The only trouble, in practice, is that this can be very long indeed.
+
+The applet below is meant to give some intuition for why the Gibbs sampler (for instance) does not always mix very quickly. The left plot shows the "trace" $\theta_1^{(0)},\ldots,\theta_1^{(T)}$ for a run of the Gibbs sampler on a mixture between two bivariate Gaussian distributions centered at $\pm \binom{\mu}{\mu}$
+$$
+\theta \sim \frac{1}{2}\cdot \left(p\left(\theta-\binom{\mu}{\mu}\right)  + p\left(\theta-\binom{-\mu}{-\mu}\right)\right),
+$$
+where each component has covariance matrix $\Sigma = \begin{pmatrix}1&\rho\\ \rho & 1\end{pmatrix}$:
+
+$$
+p(z) = \frac{1}{2\pi\sqrt{1-\rho^2}}\exp\left\{-\frac{1}{2} z'\Sigma^{-1}z\right\}.
+$$
+As you can see by playing with the parameters $\mu$ and $\rho$, it can take very long to move between components, or it can take many steps to move around within the components. This bivariate example is somewhat stylized, but the problems evident here can be significantly worse in high dimensions. The trace plot is commonly used as a diagnostic to see how well the chain is mixing. As you can see, it is good at picking up when we are switching back and forth between posterior modes or exploring the sample space very slowly (both potentially signs that we might need to come up with a different MCMC strategy) but it cannot pick up the more worrying possiblility that we are simply missing one high probability region of the posterior.
+
+```{ojs}
+//| echo: false
+
+d3 = require("d3@7")
+
+viewof mu = Inputs.range([0, 4], {value: 2, step: 0.1, label: "μ"})
+
+viewof rho = Inputs.range([-0.99, 0.99], {value: 0.5, step: 0.01, label: "ρ"})
+
+viewof theta1_init = Inputs.range([-6, 6], {value: 1, step: 0.1, label: "θ₁⁽⁰⁾"})
+
+viewof theta2_init = Inputs.range([-6, 6], {value: 1, step: 0.1, label: "θ₂⁽⁰⁾"})
+
+viewof runButton = Inputs.button("Run New Chain")
+
+bivariateNormalPDF = (x1, x2, mu1, mu2, rho) => {
+  const z1 = x1 - mu1
+  const z2 = x2 - mu2
+  const denom = 2 * Math.PI * Math.sqrt(1 - rho * rho)
+  const exponent = -1 / (2 * (1 - rho * rho)) * (z1 * z1 - 2 * rho * z1 * z2 + z2 * z2)
+  return Math.exp(exponent) / denom
+}
+
+mixtureDensity = (x1, x2, mu, rho) => {
+  return 0.5 * bivariateNormalPDF(x1, x2, mu, mu, rho) + 
+         0.5 * bivariateNormalPDF(x1, x2, -mu, -mu, rho)
+}
+
+sampleTheta1GivenTheta2 = (theta2, mu, rho) => {
+  const sd = Math.sqrt(1 - rho * rho)
+  const mean1 = mu + rho * (theta2 - mu)
+  const mean2 = -mu + rho * (theta2 + mu)
+  
+  const marginalSD = 1
+  const p1 = Math.exp(-0.5 * Math.pow((theta2 - mu) / marginalSD, 2))
+  const p2 = Math.exp(-0.5 * Math.pow((theta2 - (-mu)) / marginalSD, 2))
+  
+  const component = Math.random() < p1 / (p1 + p2) ? 1 : 2
+  
+  const mean = component === 1 ? mean1 : mean2
+  return mean + sd * d3.randomNormal()()
+}
+
+sampleTheta2GivenTheta1 = (theta1, mu, rho) => {
+  const sd = Math.sqrt(1 - rho * rho)
+  const mean1 = mu + rho * (theta1 - mu)
+  const mean2 = -mu + rho * (theta1 + mu)
+  
+  const marginalSD = 1
+  const p1 = Math.exp(-0.5 * Math.pow((theta1 - mu) / marginalSD, 2))
+  const p2 = Math.exp(-0.5 * Math.pow((theta1 - (-mu)) / marginalSD, 2))
+  
+  const component = Math.random() < p1 / (p1 + p2) ? 1 : 2
+  
+  const mean = component === 1 ? mean1 : mean2
+  return mean + sd * d3.randomNormal()()
+}
+
+allSamples = {
+  runButton
+  
+  const nSteps = 200
+  const result = [[theta1_init, theta2_init]]
+  
+  for (let i = 0; i < nSteps; i++) {
+    const current = result[result.length - 1]
+    const newTheta1 = sampleTheta1GivenTheta2(current[1], mu, rho)
+    const newTheta2 = sampleTheta2GivenTheta1(newTheta1, mu, rho)
+    result.push([newTheta1, newTheta2])
+  }
+  
+  return result
+}
+
+animatedSamples = {
+  let steps = []
+  
+  // Start with initial point
+  steps.push({
+    theta1: allSamples[0][0],
+    theta2: allSamples[0][1],
+    type: "initial"
+  })
+  
+  // For each Gibbs iteration, create two steps: theta1 update, then theta2 update
+  for (let i = 1; i < allSamples.length; i++) {
+    const prev = allSamples[i - 1]
+    const curr = allSamples[i]
+    
+    // Step 1: Update theta1 (horizontal move)
+    steps.push({
+      theta1: curr[0],
+      theta2: prev[1],
+      type: "theta1",
+      fromTheta1: prev[0],
+      fromTheta2: prev[1]
+    })
+    
+    // Step 2: Update theta2 (vertical move)
+    steps.push({
+      theta1: curr[0],
+      theta2: curr[1],
+      type: "theta2",
+      fromTheta1: curr[0],
+      fromTheta2: prev[1]
+    })
+  }
+  
+  let currentIndex = 0
+  
+  while (currentIndex <= steps.length) {
+    yield steps.slice(0, currentIndex)
+    currentIndex++
+    await Promises.delay(25)
+  }
+}
+
+contourData = {
+  const grid = []
+  const xMin = -6
+  const xMax = 6
+  const yMin = -6
+  const yMax = 6
+  const resolution = 200
+  
+  for (let i = 0; i < resolution; i++) {
+    for (let j = 0; j < resolution; j++) {
+      const x = xMin + (xMax - xMin) * j / (resolution - 1)
+      const y = yMin + (yMax - yMin) * i / (resolution - 1)
+      grid.push({
+        x: x,
+        y: y,
+        z: mixtureDensity(x, y, mu, rho)
+      })
+    }
+  }
+  return grid
+}
+
+traceData = {
+  const fullUpdates = []
+  for (let i = 0; i < animatedSamples.length; i++) {
+    const step = animatedSamples[i]
+    if (step && (step.type === "initial" || step.type === "theta2")) {
+      fullUpdates.push({
+        iteration: fullUpdates.length,
+        theta1: step.theta1,
+        theta2: step.theta2
+      })
+    }
+  }
+  return fullUpdates
+}
+
+spatialData = {
+  return animatedSamples.map(step => ({
+    theta1: step.theta1,
+    theta2: step.theta2,
+    type: step.type,
+    fromTheta1: step.fromTheta1,
+    fromTheta2: step.fromTheta2
+  }))
+}
+
+html`<div>
+  <div style="margin-bottom: 20px;">
+    <style>
+      button {
+        background-color: #4CAF50 !important;
+        color: white !important;
+        border: none !important;
+        padding: 10px 20px !important;
+        font-size: 16px !important;
+        cursor: pointer !important;
+        border-radius: 4px !important;
+      }
+      button:hover {
+        background-color: #45a049 !important;
+      }
+    </style>
+    ${viewof runButton}
+  </div>
+  <div style="display: flex; gap: 20px;">
+    <div>${tracePlot}</div>
+    <div>${spatialPlot}</div>
+  </div>
+</div>`
+
+tracePlot = Plot.plot({
+  width: 500,
+  height: 500,
+  marginTop: 60,
+  marginLeft: 100,
+  marginBottom: 100,
+  marginRight: 120,
+  style: {fontSize: "25px"},
+  x: {
+    domain: [0, 200],
+    label: "Iteration",
+    labelAnchor: "center",
+    labelOffset: 60
+  },
+  y: {
+    domain: [-6, 6],
+    label: "Value",
+    labelAnchor: "center",
+    labelOffset: 70
+  },
+  marks: [
+    Plot.line(traceData, {x: "iteration", y: "theta1", stroke: "steelblue", strokeWidth: 2}),
+    Plot.line(traceData, {x: "iteration", y: "theta2", stroke: "red", strokeWidth: 2}),
+    Plot.ruleY([0]),
+    Plot.text(["Trace Plot"], {
+      x: 100,
+      y: 7,
+      fontSize: 28,
+      fontWeight: "bold",
+      textAnchor: "middle"
+    }),
+    Plot.lineX([{x: 140, y: 5.5}, {x: 150, y: 5.5}], {
+      x: "x", y: "y", stroke: "steelblue", strokeWidth: 2
+    }),
+    Plot.text(["θ₁"], {
+      x: 152,
+      y: 5.5,
+      fontSize: 24,
+      fill: "black",
+      textAnchor: "start"
+    }),
+    Plot.lineX([{x: 140, y: 4.8}, {x: 150, y: 4.8}], {
+      x: "x", y: "y", stroke: "red", strokeWidth: 2
+    }),
+    Plot.text(["θ₂"], {
+      x: 152,
+      y: 4.8,
+      fontSize: 24,
+      fill: "black",
+      textAnchor: "start"
+    })
+  ]
+})
+
+spatialPlot = Plot.plot({
+  width: 500,
+  height: 500,
+  marginTop: 60,
+  marginLeft: 100,
+  marginBottom: 100,
+  marginRight: 40,
+  style: {fontSize: "25px"},
+  x: {
+    domain: [-6, 6],
+    label: "θ₁",
+    labelAnchor: "center",
+    labelOffset: 60
+  },
+  y: {
+    domain: [-6, 6],
+    label: "θ₂",
+    labelAnchor: "center",
+    labelOffset: 70
+  },
+  marks: [
+    Plot.contour(contourData, {
+      x: "x",
+      y: "y",
+      value: "z",
+      stroke: "gray",
+      strokeWidth: 1.5,
+      thresholds: 10,
+      smooth: true
+    }),
+    Plot.link(spatialData.filter(d => d.type === "theta1"), {
+      x1: "fromTheta1",
+      y1: "fromTheta2",
+      x2: "theta1",
+      y2: "fromTheta2",
+      stroke: "steelblue",
+      strokeWidth: 2
+    }),
+    Plot.link(spatialData.filter(d => d.type === "theta2"), {
+      x1: "fromTheta1",
+      y1: "fromTheta2",
+      x2: "theta1",
+      y2: "theta2",
+      stroke: "red",
+      strokeWidth: 2
+    }),
+    Plot.dot(spatialData.slice(-1), {
+      x: "theta1",
+      y: "theta2",
+      r: 5,
+      fill: "purple"
+    }),
+    Plot.dot(spatialData.slice(0, 1), {
+      x: "theta1",
+      y: "theta2",
+      r: 4,
+      fill: "green",
+      stroke: "darkgreen",
+      strokeWidth: 2
+    }),
+    Plot.ruleX([0]),
+    Plot.ruleY([0]),
+    Plot.text(["Parameter Space"], {
+      x: 0,
+      y: 7,
+      fontSize: 28,
+      fontWeight: "bold",
+      textAnchor: "middle"
+    })
+  ]
+})
+```
+
+Two additional implementation details commonly used in MCMC are **burn-in**, where we run the chain for some number $B$ of steps to wait for the Markov chain to converge, and **thinning**, where we run the chain for some number $s$ of steps between successive samples in order to get posterior draws that are less correlated with each other. That is, we take $\theta^{(B)},\theta^{(B+s)},\theta^{(B+2s)},\ldots$ as our "sample" from $\lambda(\theta\mid X)$. Armed with this proxy sample, we can do anything we'd do if we knew the actual posterior: calculate posterior means, give return high-probability "credible intervals," or minimize any other expected loss function we like.

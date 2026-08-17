@@ -1,0 +1,18 @@
+---
+title: "Recitation"
+format: html
+---
+
+## Recitation handouts
+
+-   [Recitation 1: probability review](recitation/recitation1-probability.pdf)
+
+-   [Recitation 2: more on probability](recitation/recitation2.pdf)
+
+-   [Recitation 3: matrix algebra](recitation/recitation3.pdf)
+
+-   [Recitation 4: projection matrices](recitation/recitation4.pdf)
+
+-   [Recitation 5: normal theory distributions](recitation/recitation5.pdf)
+
+*Materials created by Dohyeong Ki (Fall 2021 GSI)*
